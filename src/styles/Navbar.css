@@ -1,0 +1,228 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    transition: background-color 0.5s ease;
+}
+
+.logo {
+    width: 170px;
+    height: 40px;
+    padding-left: 50px;
+}
+
+@media screen and (max-width: 1040px) {
+    .logo {
+        padding-left: 10px;
+    }
+}
+
+.nav-links {
+    list-style-type: none;
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    margin-right: 20px;
+    /* Added space between menu items and social media section */
+}
+
+@media screen and (max-width: 1080px) {
+    .nav-links {
+        padding-right: 50px;
+    }
+}
+
+@media screen and (max-width: 830px) {
+    .nav-links {
+        padding-right: 20px;
+    }
+}
+
+@media screen and (max-width: 810px) {
+    .nav-links {
+        padding-right: 5px;
+    }
+}
+
+.nav-links-text {
+    display: flex;
+    margin-right: 100px;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links-text {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        /* Reduced gap for smaller screens */
+    }
+}
+
+.nav-links li {
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 930px) {
+    .nav-links li {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 870px) {
+    .nav-links li {
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .nav-links li {
+        font-size: 15px;
+    }
+}
+
+.nav-links li a {
+    margin-right: 20px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+
+.social-media-list {
+    display: flex;
+    margin: 0;
+    padding-top: 5px;
+    margin-right: 20px;
+    /* Added space to the right of social media section */
+    gap: 10px;
+    /* Added gap between social media icons */
+}
+
+@media screen and (max-width: 768px) {
+    .social-media-list {
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding-bottom: 5px;
+        padding-left: 0;
+        gap: 10px;
+        /* Reduced gap for smaller screens */
+        margin-right: 0;
+        /* Remove right margin for smaller screens */
+    }
+}
+
+.social-media-list a {
+    margin-right: 10px;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+}
+
+.hamburger {
+    width: 100%;
+    height: 3px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.active .hamburger:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.active .hamburger:nth-child(2) {
+    opacity: 0;
+}
+
+.active .hamburger:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.logo-container a:hover img {
+    filter: brightness(0.8);
+    /* Change the brightness on hover */
+}
+
+.nav-links li a:hover,
+.social-media-list a:hover {
+    color: black;
+    /* Change color on hover */
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links-deactivated {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        /* Adjust this value to ensure the menu starts from the top */
+        left: 0;
+        width: 100%;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 998;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-links-activated {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        padding-top: 10px;
+        top: 0px;
+        /* Adjust this value to ensure the menu starts from the top */
+        left: 0;
+        width: 100%;
+        background-color: rgb(23, 20, 38);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 998;
+        transition: transform 0.3s ease;
+        margin: 0;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-links-text {
+        padding-top: 10px;
+        gap: 5px;
+    }
+
+    .social-media-list {
+        gap: 5px;
+    }
+}
+
+.white {
+    color: white;
+}
+
+.colored {
+    color: black;
+}
+
+.search {
+    width: 30px;
+    height: 30px;
+    margin-right: 50px;
+}
