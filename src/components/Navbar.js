@@ -6,10 +6,10 @@ import { useMediaQuery } from 'react-responsive'; // Import media query hook
 import Hamburger from 'hamburger-react'; // Import Hamburger component
 import '../styles/Navbar.css';
 
-const syntaktesBlackImgPath = '../syntaktes.png';
-const syntaktesWhiteImgPath = '../syntaktes-white.png';
-const searchBlackImgPath = '../icons/search-black.png';
-const searchWhiteImgPath = '../icons/search-white.png';
+const syntaktesBlackImgPath = process.env.PUBLIC_URL +'/syntaktes.png';
+const syntaktesWhiteImgPath = process.env.PUBLIC_URL +'/syntaktes-white.png';
+const searchBlackImgPath = process.env.PUBLIC_URL +'/icons/search-black.png';
+const searchWhiteImgPath = process.env.PUBLIC_URL +'/icons/search-white.png';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
