@@ -30,9 +30,9 @@ const Contact = () => {
 
     return (
         <div className="contact-container">
-            <h1>Contact Us</h1>
+            <h1>Επικοινωνήστε</h1>
             <form className="contact-form" onSubmit={handleSubmit}>
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">Όνομα</label>
                 <input
                     type="text"
                     id="name"
@@ -52,7 +52,7 @@ const Contact = () => {
                     required
                 />
 
-                <label htmlFor="message">Message</label>
+                <label htmlFor="message">Μύνημα</label>
                 <textarea
                     id="message"
                     name="message"
@@ -60,7 +60,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                 ></textarea>
-                <button type="submit">Submit</button>
+                <button type="submit">Υποβολή</button>
             </form>
         </div>
     );

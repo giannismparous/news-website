@@ -3,24 +3,25 @@ import '../styles/ArticleEditor.css';
 import ArticleEditor from '../components/ArticleEditor';
 import Article from '../components/Article';
 import Login from '../components/Login';
-import { fetchArticles } from '../firebase/firebaseConfig';
+import { fetchArticles, deleteArticle } from '../firebase/firebaseConfig';
 import '../styles/Admin.css'; // Import the Admin CSS
 
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [articles, setArticles] = useState([]);
   const [showEditor, setShowEditor] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState();
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [articleToDelete, setArticleToDelete] = useState(null);
 
   const reset = () => {
-    if (showEditor) setSelectedArticle();
+    if (showEditor) setSelectedArticle(null);
     setShowEditor(!showEditor);
-  }
+  };
 
   const fetchArticlesFromServer = async () => {
     try {
       const fetchedArticles = await fetchArticles('articles'); // Pass your collection key here
-      setArticles(fetchedArticles);
+      setArticles([...fetchedArticles].reverse());
     } catch (error) {
       console.error('Error fetching articles:', error);
     }
@@ -41,13 +42,31 @@ const Admin = () => {
     setShowEditor(true);
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteArticle('articles', articleToDelete);
+      fetchArticlesFromServer();
+      setArticleToDelete(null); // Close the confirmation dialog
+    } catch (error) {
+      console.error('Error deleting article:', error);
+    }
+  };
+
+  const confirmDelete = (article) => {
+    setArticleToDelete(article);
+  };
+
+  const cancelDelete = () => {
+    setArticleToDelete(null);
+  };
+
   return (
     <div className="admin-container">
       {isLoggedIn ? (
         <div className="admin-content">
           <div className="new-article-button-container">
             <button className="new-article-button" onClick={reset}>
-              {showEditor ? '← Back to Articles' : '+ New Article'}
+              {showEditor ? '← Πίσω' : '+ Δημιουργία άρθρου'}
             </button>
           </div>
           {showEditor ? (
@@ -64,7 +83,8 @@ const Admin = () => {
                     category={article.category}
                     imagePath={article.imagePath}
                   />
-                  <button className="edit-button" onClick={() => handleEdit(article)}>Edit</button>
+                  <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
+                  <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
                 </div>
               ))}
             </div>
@@ -72,6 +92,16 @@ const Admin = () => {
         </div>
       ) : (
         <Login onLogin={handleLogin} />
+      )}
+      {articleToDelete && (
+        <>
+          <div className="backdrop" />
+          <div className="confirmation-dialog">
+            <p>Are you sure you want to delete this article?</p>
+            <button className="confirm-button" onClick={handleDelete}>Yes</button>
+            <button className="cancel-button" onClick={cancelDelete}>No</button>
+          </div>
+        </>
       )}
     </div>
   );

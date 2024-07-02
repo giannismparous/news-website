@@ -7,6 +7,10 @@
     max-width: 800px;
 }
 
+.editor-container form {
+    gap: 20px;
+}
+
 .editor-container h1 {
     margin-bottom: 20px;
     text-align: center;
@@ -22,17 +26,12 @@
 .editor-container textarea {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 .editor-container textarea {
     height: 150px;
-}
-
-.editor-container input[type="file"] {
-    margin-bottom: 15px;
 }
 
 .editor-container button {
@@ -65,4 +64,10 @@
 
 .new-article-button:hover {
     background-color: #007B9E;
+}
+
+.form-last-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

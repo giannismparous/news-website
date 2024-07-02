@@ -1,0 +1,102 @@
+.article-view-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+.left-column {
+    width: 40%;
+    padding-right: 20px;
+    padding-top: 35px;
+}
+
+.column-vertical {
+    display: flex;
+    flex-direction: column;
+    max-width: 950px;
+}
+
+.article-content {
+    width: 90%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.article-content .share-buttons {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.article-content .share-buttons strong {
+    margin-right: 10px;
+}
+
+.article-content .share-buttons>* {
+    margin: 0 5px;
+}
+
+.article-view-container .koinonia-articles-small .small-article-container h2 {
+    font-size: 0.9rem;
+}
+
+.article-view-relevant-articles {
+    padding-top: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.article-view-container .container {
+    width: 90%;
+}
+
+.article-content h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.article-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.article-info {
+    text-align: left;
+}
+
+.article-view-container .koinonia-article-large .article h2 {
+    font-size: 1.1rem;
+}
+
+.article-view-container .left-column .small-article-container h2 {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .article-view-container {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+
+    .left-column {
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .article-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .article-content h1 {
+        font-size: 1.5rem;
+    }
+}
