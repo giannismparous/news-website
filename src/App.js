@@ -11,6 +11,7 @@ import ArticleView from './components/ArticleView';
 import Search from './components/Search';
 import SubscribePopup from './components/SubscribePopup';
 import Podcasts from './pages/Podcasts';
+import About from './pages/About';
 
 const App = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -58,6 +59,7 @@ const App = () => {
         <Route path="/" exact element={<Home />} />
         <Route path="/category/:categoryName" element={<Category />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/articles/:articleId" element={<ArticleView />} />
         <Route path="/:articleId" element={<ArticleView />} />

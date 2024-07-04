@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 
-const Article = ({ id, title, content, category, imagePath, author, date, showContent = true, maxWordsPreview=50 }) => {
+const Article = ({ id, title, content, category, imagePath, author, date, showContent = true, maxWordsPreview=30 }) => {
   // Strip HTML tags from content
   const strippedContent = content.replace(/<[^>]*>?/gm, '');
   const words = strippedContent.split(' ');

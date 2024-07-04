@@ -1,9 +1,10 @@
 .trending-container {
+    margin-bottom: 100px;
     width: 100%;
     color: white;
     padding: 0 0 20px 0;
     text-align: center;
-    top: 64px;
+    top: 83px;
     position: relative;
 }
 
@@ -23,6 +24,9 @@
     width: 100%;
     text-align: center;
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container {
@@ -96,14 +100,14 @@
 
 .politismos-articles-small-columns h2,
 .oikonomia-articles-small-columns h2 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .latest-articles-small .article h2,
 .kosmos-articles-small .article h2,
 .politismos-articles-small .article h2,
 .oikonomia-articles-small .article h2 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .latest-articles-small .article div,
@@ -127,7 +131,7 @@
     color: #328835;
     text-decoration: none;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.7rem;
 }
 
 .see-all a:hover {
@@ -178,7 +182,7 @@
 .kosmos-articles-small .article-title,
 .politismos-articles-small .article-title,
 .oikonomia-articles-small .article-title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #333;
     text-align: start;
 }
@@ -336,7 +340,7 @@ h2 {
 }
 
 .koinonia-articles-small .article-title {
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .koinonia-articles .koinonia-article-large .article {
@@ -367,12 +371,14 @@ h2 {
 }
 
 .carousel-caption h3 {
-    font-size: 5rem;
+    font-size: 4rem;
     margin: 0;
     margin-bottom: 20px;
     padding-left: 200px;
     padding-right: 200px;
-    color: yellow;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 80%;
 }
 
 .carousel-caption p {
