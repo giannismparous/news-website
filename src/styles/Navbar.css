@@ -173,8 +173,8 @@
 }
 
 .sidebar li a:hover {
-    color: rgb(76, 175, 80)
-        /* Change color on hover */
+    color: #e29403d3;
+    /* Change color on hover */
 }
 
 .navbar {
@@ -217,9 +217,19 @@
 
 .nav-bar-links li a {
     text-decoration: none;
+    font-size: 2rem;
 }
 
 .nav-bar-links li a:hover {
-    color: rgb(76, 175, 80)
-        /* Change color on hover */
+    color: #e29403d3;
+    /* Change color on hover */
+}
+
+.nav-bar-links .right {
+    margin-left: 200px;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
 }

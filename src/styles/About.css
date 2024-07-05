@@ -7,11 +7,15 @@
 }
 
 .about-container h1 {
-    font-size: 5rem;
+    font-size: 3.5rem;
 }
 
 .about-container p {
-    font-size: 4rem;
+    font-size: 1.6rem;
     padding-left: 100px;
     padding-right: 100px;
+}
+
+.bold {
+    font-weight: bold;
 }

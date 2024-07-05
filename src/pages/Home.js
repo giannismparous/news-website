@@ -114,6 +114,7 @@ const Home = () => {
                             <Link to={`/articles/${article.id}`} className="article-link">
                             <div className="carousel-caption">
                                 {/* <p>{article.category}</p> */}
+                                <p>ΕΚΤΟΣ ΣΥΝΟΡΩΝ</p>
                                 <h3>{article.title}</h3>
                             </div>
                             </Link>
@@ -122,7 +123,7 @@ const Home = () => {
                 </Carousel>
             </div>
             <div className="container">
-                <h1>Επικαιρότητα</h1>
+                <h1>NEWS ROOM</h1>
                 <div className="latest-articles">
                     <div className="latest-article-large">
                         {latestArticles[0] && (

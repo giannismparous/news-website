@@ -125,7 +125,7 @@ const Navbar = () => {
 
     return (
         <div>
-            <nav className="navbar" style={{ backgroundColor: (isHovered || (isMobile && menuOpen)) ? 'rgb(51,51,51)' : scrollPosition === 0 ? 'transparent' : 'rgba(51,51,51,0.9)' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <nav className="navbar" style={{ backgroundColor: (isHovered || (isMobile && menuOpen)) ? 'rgb(131,131,131)' : scrollPosition === 0 ? 'transparent' : 'rgba(131,131,131,0.9)' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <Hamburger
                 label="Show menu"
                 rounded
@@ -186,10 +186,15 @@ const Navbar = () => {
                 <ul className='nav-bar-links'>
                   <li><Link to="/category/Πολιτική" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Πολιτική</Link></li>
                   <li><Link to="/category/Απόψεις" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>
-                  <li><Link to="/category/Πολιτική" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Podcast</Link></li>
                   <li><Link to="/category/Απόψεις" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Kedpress/EΣΗΕΑ</Link></li>
                   <li><Link to="/category/Απόψεις" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Off the record</Link></li>
                 </ul>
+                <div className='vertical'>
+                  <ul className='nav-bar-links right'>
+                    <li><Link to="/category/Πολιτική" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Podcast</Link></li>
+                    <li><Link to="/category/Απόψεις" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>VideoTV</Link></li>
+                  </ul>
+                </div>
             </nav>
             <div className={sidebar ? 'sidebar active' : 'sidebar'}>
               <ul>
@@ -201,7 +206,7 @@ const Navbar = () => {
                 <li><Link to="/category/Διεθνή" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Art</Link></li>
                 <li><Link to="/category/Πολιτική" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Pet</Link></li>
                 <li><Link to="/category/podcasts" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Podcast</Link></li>
-                <li><Link to="/category/Κοινωνία" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Keypress/ ΕΣΗΕΑ</Link></li>
+                <li><Link to="/category/Κοινωνία" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Kedpress/ ΕΣΗΕΑ</Link></li>
                 <li><Link to="/category/Media" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Υγεία/ Συντάξεις</Link></li>
                 <li><Link to="/category/Πολιτισμός" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Εργασία</Link></li>
                 <li><Link to="/category/Διεθνή" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Off the record</Link></li>
