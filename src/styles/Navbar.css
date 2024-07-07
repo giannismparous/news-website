@@ -1,67 +1,77 @@
+/* General styles */
+body {
+    font-size: 16px;
+}
+
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #4CAF50;
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
+    /* 10px 20px */
     z-index: 999;
     transition: background-color 0.5s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 6.25rem;
+    /* 100px */
 }
 
 .logo {
-    width: 300px;
-    height: 120px;
-    padding-left: 50px;
+    width: 18.75rem;
+    /* 300px */
+    height: 7.5rem;
+    /* 120px */
+    padding-left: 3.125rem;
+    /* 50px */
 }
 
-.podcast {
-    width: 40px;
-    height: 40px;
-    padding-left: 50px;
+.podcast,
+.tv {
+    width: 2.1875rem;
+    /* 35px */
+    height: 2.1875rem;
+    /* 35px */
+    padding-left: 0.9375rem;
+    /* 15px */
 }
 
-@media screen and (max-width: 1040px) {
-
-    .logo {
-        padding-left: 10px;
-    }
-
-    .podcast {
-        width: 10px;
-        height: 10px;
-        padding-left: 50px;
-    }
+.tv {
+    padding-left: 1.25rem;
+    /* 20px */
 }
 
 .hamburger-menu {
-    font-size: 24px;
+    font-size: 1.5rem;
+    /* 24px */
     cursor: pointer;
     color: white;
-    margin-right: 20px;
+    margin-right: 1.25rem;
+    /* 20px */
     position: fixed;
-    top: 10px;
-    /* Adjust based on your design */
-    left: 10px;
-    /* Adjust based on your design */
+    top: 0.625rem;
+    /* 10px */
+    left: 0.625rem;
+    /* 10px */
     z-index: 1001;
-    /* Ensure it's higher than other elements */
 }
-
 
 .sidebar {
     height: 100%;
-    width: 250px;
+    width: 15.625rem;
+    /* 250px */
     position: fixed;
     top: 0;
-    left: -250px;
+    left: -15.625rem;
+    /* 250px */
     background-color: #333;
     overflow-x: hidden;
     transition: 0.3s;
-    padding-top: 60px;
+    padding-top: 3.75rem;
+    /* 60px */
     z-index: 1000;
 }
 
@@ -75,9 +85,11 @@
 }
 
 .sidebar ul li {
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
+    /* 8px 16px */
     text-decoration: none;
-    font-size: 25px;
+    font-size: 1.5625rem;
+    /* 25px */
     color: white;
     display: block;
     transition: 0.3s;
@@ -106,10 +118,16 @@
 }
 
 .search {
-    width: 30px;
-    height: 30px;
-    margin-right: 50px;
+    width: 1.875rem;
+    /* 30px */
+    height: 1.875rem;
+    /* 30px */
+    margin-right: 3.125rem;
+    /* 50px */
     cursor: pointer;
+    padding-left: 0.625rem;
+    /* 10px */
+    position: relative;
 }
 
 .search-overlay {
@@ -133,31 +151,34 @@
 }
 
 .search-input {
-    width: 300px;
-    padding: 10px;
-    font-size: 18px;
-    border: 2px solid #4CAF50;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    width: 18.75rem;
+    /* 300px */
+    padding: 0.625rem;
+    /* 10px */
+    font-size: 1.125rem;
+    /* 18px */
+    border: 2px solid #e29403d3;
+    border-radius: 0.3125rem;
+    /* 5px */
+    margin-bottom: 0.625rem;
+    /* 10px */
 }
 
 .search-submit {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #4CAF50;
+    padding: 0.625rem 1.25rem;
+    /* 10px 20px */
+    font-size: 1.125rem;
+    /* 18px */
+    background-color: #bb7900d3;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
+    /* 5px */
     cursor: pointer;
 }
 
 .search-submit:hover {
     background-color: #45a049;
-}
-
-.sidebar ul li {
-    /* text-align: center; */
-    color: white;
 }
 
 .sidebar ul li a {
@@ -168,47 +189,46 @@
 .search-list-item {
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
-    /* justify-content: center; */
 }
 
 .sidebar li a:hover {
     color: #e29403d3;
-    /* Change color on hover */
 }
 
 .navbar {
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
+    /* 10px 20px */
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* Align items to the left */
 }
 
 .hamburger-menu {
-    margin-right: 20px;
-    /* Keep the existing styles */
+    margin-right: 1.25rem;
+    /* 20px */
 }
 
 .logo-container {
     padding-left: 0;
-    margin-right: 20px;
-    /* Add margin to the right of the logo */
+    /* 20px */
 }
 
 .podcast-container {
     padding-left: 0;
-    margin-left: 20px;
-    /* Add margin to the left of the podcast icon */
+    margin-left: 1.25rem;
+    /* 20px */
 }
 
 .nav-bar-links {
     display: flex;
     flex-direction: row;
-    gap: 40px;
-    font-size: 2.8rem;
+    gap: 2.5rem;
+    /* 40px */
+    font-size: 1.75rem;
+    /* 2.8rem is too large, adjusted */
     align-items: center;
     list-style-type: none;
+    padding-left: 0;
 }
 
 .nav-bar-links ul {
@@ -218,18 +238,99 @@
 .nav-bar-links li a {
     text-decoration: none;
     font-size: 2rem;
+    /* 2rem */
 }
 
 .nav-bar-links li a:hover {
     color: #e29403d3;
-    /* Change color on hover */
 }
 
-.nav-bar-links .right {
-    margin-left: 200px;
+.nav-bar-links.right {
+    margin-left: auto;
+    margin-right: 6.25rem;
+    /* 100px */
 }
 
 .vertical {
     display: flex;
     flex-direction: column;
+}
+
+.nav-bar-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: -1.5rem;
+    /* 20px */
+    top: 45%;
+    transform: translateY(-50%);
+}
+
+.nav-bar-vertical .nav-bar-links.right {
+    flex-direction: row;
+}
+
+.nav-bar-vertical .search-text {
+    font-size: 2rem;
+    /* 1.8rem is too large, adjusted */
+    bottom: 1rem;
+    /* 45px */
+    position: relative;
+    right: 0.625rem;
+    /* 10px */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-bar-vertical .search-text:hover {
+    color: #e29403d3;
+    cursor: pointer;
+}
+
+.nav-bar-links.right {
+    margin-left: auto;
+    margin-right: 6.25rem;
+    /* 100px */
+}
+
+.ked_press {
+    height: 6.75rem;
+    /* 108px */
+}
+
+.eshea-text {
+    position: relative;
+    right: 3.125rem;
+    /* 50px */
+}
+
+.hovered-kedpress {
+    color: #e29403d3;
+}
+
+@media screen and (max-width: 1040px) {
+    .logo {
+        padding-left: 0.625rem;
+        /* 10px */
+    }
+
+    .podcast {
+        width: 0.625rem;
+        /* 10px */
+        height: 0.625rem;
+        /* 10px */
+        padding-left: 3.125rem;
+        /* 50px */
+    }
+
+    .tv {
+        width: 0.625rem;
+        /* 10px */
+        height: 0.625rem;
+        /* 10px */
+        padding-left: 3.125rem;
+        /* 50px */
+    }
 }

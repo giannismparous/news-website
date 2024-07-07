@@ -1,10 +1,9 @@
 .article {
     background-color: #f9f9f9;
-    /* border: 1px solid #ddd; */
-    /* border-radius: 8px; */
     padding: 15px;
     margin-bottom: 20px;
     padding-top: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .container h1 {
@@ -37,6 +36,7 @@
 .article h2 {
     color: #333;
     font-size: 2.5rem;
+    transition: color 0.3s ease;
 }
 
 .article p {
@@ -47,8 +47,8 @@
 .article-image {
     width: 100%;
     height: auto;
-    /* border-radius: 8px; */
     margin-bottom: 15px;
+    transition: transform 0.3s ease;
 }
 
 .read-more {
@@ -59,10 +59,25 @@
 
 .article-link {
     text-decoration: none;
-    /* Remove underline */
     color: inherit;
-    /* Inherit text color */
-    /* You can add additional styling as needed */
+}
+
+/* Hover Effects */
+.article:hover .article-image {
+    transform: scale(1.05);
+}
+
+.article:hover h2 {
+    color: rgb(231, 166, 46);
+}
+
+
+.small-article-container:hover .article-image {
+    transform: scale(1.05);
+}
+
+.small-article-container:hover .article-title {
+    color: rgb(231, 166, 46);
 }
 
 /* Responsive Design */

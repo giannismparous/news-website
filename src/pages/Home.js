@@ -158,7 +158,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>Διεθνή</h1>
+                <h1>ΔΙΕΘΝΗ</h1>
                 <div className="kosmos-articles">
                     <div className="kosmos-articles-small">
                         {diethniArticles.slice(0, 2).map(article => (
@@ -193,7 +193,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>Πολιτισμός</h1>
+                <h1>ΠΟΛΙΤΙΣΜΟΣ</h1>
                 <div className="politismos-articles">
                     <div className="politismos-article-large">
                         {politismosArticles[0] && (
@@ -229,7 +229,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>Οικονομία</h1>
+                <h1>ΟΙΚΟΝΟΜΙΑ</h1>
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {oikonomiaArticles.slice(0, 4).map((article, index) => (
@@ -265,7 +265,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>Πολιτική</h1>
+                <h1>ΠΟΛΙΤΙΚΗ</h1>
                 <div className="latest-articles">
                     <div className="latest-article-large">
                         {politikiArticles[0] && (
@@ -300,7 +300,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>Κοινωνία</h1>
+                <h1>ΚΟΙΝΩΝΙΑ</h1>
                 <div className="koinonia-articles">
                     <div className="koinonia-article-large">
                         {koinoniaArticles.slice(0, 3).map(article => (
@@ -348,7 +348,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>Media</h1>
+                <h1>MEDIA</h1>
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {mediaArticles.slice(0, 4).map((article, index) => (
@@ -384,7 +384,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>Διεθνή</h1>
+                <h1>ΔΙΕΘΝΗ</h1>
                 <div className="latest-articles">
                     <div className="latest-article-large">
                         {diethniArticles[0] && (
@@ -419,7 +419,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>Γνώση</h1>
+                <h1>ΓΝΩΣΗ</h1>
                 <div className="koinonia-articles">
                     <div className="koinonia-article-large">
                         {gnwsiArticles.slice(0, 3).map(article => (

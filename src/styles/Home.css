@@ -36,6 +36,32 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
+}
+
+
+.container h1 {
+    position: relative;
+    /* Ensure relative positioning for proper vertical line */
+    display: inline-block;
+    /* Make sure h1 doesn't take full width */
+    margin-bottom: 20px;
+    /* Adjust margin as needed */
+}
+
+.container h1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    /* Adjust the position of the vertical line */
+    width: 4px;
+    /* Adjust the width of the vertical line */
+    height: 100%;
+    /* Take full height of container */
+    background-color: #e29403d3;
+    /* Color of the vertical line */
+    border-radius: 50px;
 }
 
 .latest-articles,

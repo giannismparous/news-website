@@ -12,6 +12,7 @@ import Search from './components/Search';
 import SubscribePopup from './components/SubscribePopup';
 import Podcasts from './pages/Podcasts';
 import About from './pages/About';
+import VideoTV from './pages/VideoTV';
 
 const App = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -65,6 +66,7 @@ const App = () => {
         <Route path="/:articleId" element={<ArticleView />} />
         <Route path="/search/:query" element={<Search />} />
         <Route path="/podcasts" element={<Podcasts/>}/>
+        <Route path="/videotv" element={<VideoTV/>}/>
       </Routes>
       <Footer />
     </div>
