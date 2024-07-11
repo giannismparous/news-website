@@ -72,6 +72,7 @@
 }
 
 
+
 .small-article-container:hover .article-image {
     transform: scale(1.05);
 }
@@ -88,10 +89,44 @@
     }
 
     .article h2 {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
     .article-image {
         margin-bottom: 10px;
     }
+
+    .article-info p {
+        font-size: 1.1rem;
+    }
+
+    .small-article-container {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .small-article-container .article-title {
+        font-size: 1.5rem;
+    }
+
+    .small-article-container .article-image {
+        margin-bottom: 10px;
+    }
+
+    .small-article-container .article-category {
+        font-size: 1.4rem;
+    }
+
+}
+
+@media (max-width: 520px) {
+
+    .small-article-container .article-title {
+        font-size: 0.9rem;
+    }
+
+    .small-article-container .article-category {
+        font-size: 0.9rem;
+    }
+
 }

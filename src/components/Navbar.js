@@ -44,8 +44,8 @@ const Navbar = () => {
     const navigate = useNavigate();
 
 
-    const isMobile = useMediaQuery({ maxWidth: 768 }); // Check if screen width is <= 768px
-    const isMobile2 = useMediaQuery({ maxWidth: 450 }); // Check if screen width is <= 768px
+    const isMobile = useMediaQuery({ maxWidth: 768 });
+    const isMobile2 = useMediaQuery({ maxWidth: 980 });
 
     useEffect(() => {
       const handleScroll = () => {
@@ -205,10 +205,10 @@ const Navbar = () => {
                     />
                   </Link>
                 </div> */}
-                <ul className='nav-bar-links'>
+                {!isMobile && <ul className='nav-bar-links'>
                   <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Πολιτική</Link></li>
                   <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>
-                  <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Off the record</Link></li>
+                  <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
                   <li><Link to="/category/Κοινωνία"><img 
                   src={
                     kedpressImgPath
@@ -230,8 +230,8 @@ const Navbar = () => {
             scrollPosition === 0 && !isHovered && !isMobile ? 'colored' : 'white'
           } ${kedPressIsHovered ? 'hovered-kedpress' : ''}`}
         >/EΣΗΕΑ</Link></li>
-                </ul>
-                <div className="nav-bar-vertical">
+                </ul>}
+                {!isMobile2 && !isMobile && <div className="nav-bar-vertical">
                   <ul className='nav-bar-links right'>
                     <li><Link to="/podcasts" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}><span onMouseEnter={handleMouseEnterPodcast}
                   onMouseLeave={handleMouseLeavePodcast}>Podcast</span><img 
@@ -283,22 +283,23 @@ const Navbar = () => {
                   className="search"
                   onClick={toggleSearch}
                   /></div>
-                </div>
+                </div>}
             </nav>
             <div className={sidebar ? 'sidebar active' : 'sidebar'}>
               <ul>
                 <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Πολιτική</Link></li>
                 <li><Link to="/category/Οικονομία" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>
+                <li><Link to="/category/Διεθνή" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
+                <li><Link to="/category/Κοινωνία" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Kedpress/ ΕΣΗΕΑ</Link></li>
                 <li><Link to="/category/Κοινωνία" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Εκτός Συνόρων</Link></li>
                 <li><Link to="/category/Media" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Αγορά/ Καταναλωτές</Link></li>
                 <li><Link to="/category/Πολιτισμός" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Plus/ Life</Link></li>
+                <li><Link to="/category/Πολιτισμός" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Σπορ</Link></li>
                 <li><Link to="/category/Διεθνή" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Art</Link></li>
                 <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Pet</Link></li>
                 <li><Link to="/category/podcasts" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Podcast</Link></li>
-                <li><Link to="/category/Κοινωνία" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Kedpress/ ΕΣΗΕΑ</Link></li>
                 <li><Link to="/category/Media" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Υγεία/ Συντάξεις</Link></li>
                 <li><Link to="/category/Πολιτισμός" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Εργασία</Link></li>
-                <li><Link to="/category/Διεθνή" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Off the record</Link></li>
                 <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Δικαστικά</Link></li>
                 <li>
                   <div className='search-list-item'>

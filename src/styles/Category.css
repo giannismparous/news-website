@@ -30,6 +30,20 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1320px) {
+    .category-container {
+        display: flex;
+        flex-direction: column;
+        margin-left: 0;
+        margin-right: 0;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        width: 100%;
+    }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .category-container {
         padding: 10px 20px;

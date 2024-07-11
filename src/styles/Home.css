@@ -55,7 +55,7 @@
     top: 0;
     left: -10px;
     /* Adjust the position of the vertical line */
-    width: 4px;
+    width: 8px;
     /* Adjust the width of the vertical line */
     height: 100%;
     /* Take full height of container */
@@ -211,7 +211,6 @@
 .kosmos-articles-small .article-title,
 .politismos-articles-small .article-title,
 .oikonomia-articles-small .article-title {
-    font-size: 1.5rem;
     color: #333;
     text-align: start;
 }
@@ -285,6 +284,7 @@ h2 {
     .politismos-articles-small-columns .article-details,
     .oikonomia-articles-small-columns .article-details {
         text-align: center;
+        width: 100%;
     }
 }
 
@@ -368,35 +368,10 @@ h2 {
     justify-content: start;
 }
 
-.koinonia-articles-small .article-title {
-    font-size: 1.5rem;
-}
 
 .koinonia-articles .koinonia-article-large .article {
     margin-bottom: 0;
     padding-bottom: 0;
-}
-
-@media (max-width: 768px) {
-    .koinonia-articles {
-        flex-direction: column;
-    }
-
-    .koinonia-article-large,
-    .koinonia-articles-small {
-        flex: none;
-    }
-
-    .koinonia-articles-small .article-image {
-        width: 100%;
-        height: auto;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-
-    .koinonia-articles-small .article-details {
-        text-align: center;
-    }
 }
 
 .carousel-caption h3 {
@@ -415,4 +390,171 @@ h2 {
     font-size: 2rem;
     margin: 0;
     margin-bottom: 10px;
+}
+
+@media (max-width: 1700px) {
+
+    .carousel-caption h3 {
+        font-size: 3.5rem;
+    }
+
+}
+
+@media (max-width: 1100px) {
+
+    .carousel-caption h3 {
+        font-size: 3rem;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .koinonia-articles {
+        flex-direction: column;
+    }
+
+    .koinonia-article-large,
+    .koinonia-articles-small {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .koinonia-articles-small .article-image {
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .koinonia-articles-small .article-details {
+        text-align: center;
+    }
+
+    .politismos-articles-small-columns,
+    .oikonomia-articles-small-columns {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .carousel-caption h3 {
+        font-size: 1.8rem;
+    }
+
+    .koinonia-articles a {
+        width: 100%;
+    }
+
+    .latest-articles a {
+        width: 50%;
+    }
+
+    .latest-articles .article-details .article-link {
+        width: 100%;
+    }
+
+    .koinonia-articles .article-details .article-link {
+        width: 100%;
+    }
+
+
+    .koinonia-articles-small .small-article-container,
+    .latest-articles .small-article-container {
+        width: 100%;
+    }
+
+    .koinonia-articles-small .article-details,
+    .latest-articles-small .article-details {
+        width: 100%;
+    }
+
+    .koinonia-article-large .article {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .carousel-caption h3 {
+        font-size: 1.3rem;
+    }
+
+}
+
+@media (max-width: 1490px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1.8rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1.8rem;
+    }
+
+    .nav-bar-links {
+        gap: 2rem;
+    }
+
+}
+
+@media (max-width: 1380px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1.5rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1.5rem;
+    }
+
+    .nav-bar-links {
+        gap: 1.5rem;
+    }
+
+}
+
+@media (max-width: 1260px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1.3rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1.3rem;
+    }
+
+    .nav-bar-links {
+        gap: 1rem;
+    }
+
+}
+
+@media (max-width: 1140px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1rem;
+    }
+
+    .nav-bar-links {
+        gap: 0.8rem;
+    }
+
+}
+
+@media (max-width: 1000px) {
+
+
+    .nav-bar-links {
+        gap: 0.6rem;
+    }
+
 }

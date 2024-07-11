@@ -310,27 +310,92 @@ body {
     color: #e29403d3;
 }
 
-@media screen and (max-width: 1040px) {
-    .logo {
-        padding-left: 0.625rem;
-        /* 10px */
+@media (max-width: 1490px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1.8rem;
     }
 
-    .podcast {
-        width: 0.625rem;
-        /* 10px */
-        height: 0.625rem;
-        /* 10px */
-        padding-left: 3.125rem;
-        /* 50px */
+    .nav-bar-vertical .search-text {
+        font-size: 1.8rem;
     }
 
-    .tv {
-        width: 0.625rem;
-        /* 10px */
-        height: 0.625rem;
-        /* 10px */
-        padding-left: 3.125rem;
-        /* 50px */
+    .nav-bar-links {
+        gap: 2rem;
     }
+
+}
+
+@media (max-width: 1380px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1.5rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1.5rem;
+    }
+
+    .nav-bar-links {
+        gap: 1.5rem;
+    }
+
+    .eshea-text {
+        right: 2.7rem;
+    }
+
+
+}
+
+@media (max-width: 1260px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1.3rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1.3rem;
+    }
+
+    .nav-bar-links {
+        gap: 1rem;
+    }
+
+    .eshea-text {
+        right: 2rem;
+    }
+
+}
+
+@media (max-width: 1140px) {
+
+    .nav-bar-links li a {
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .nav-bar-vertical .search-text {
+        font-size: 1rem;
+    }
+
+    .nav-bar-links {
+        gap: 0.8rem;
+    }
+
+    .eshea-text {
+        right: 1.8rem;
+    }
+
+}
+
+@media (max-width: 1000px) {
+
+
+    .nav-bar-links {
+        gap: 0.6rem;
+    }
+
 }
