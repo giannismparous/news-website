@@ -18,9 +18,9 @@ const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     
 
-    const syntaktesBlackImgPath = process.env.PUBLIC_URL +'/syntaktes3.png';
-    const syntaktesWhiteImgPath = process.env.PUBLIC_URL +'/syntaktes1-white.png';
-    const syntaktesOrangeImgPath = process.env.PUBLIC_URL +'/syntaktes1-orange.png';
+    const syntaktesBlackImgPath = process.env.PUBLIC_URL +'/syntaktes11.png';
+    const syntaktesWhiteImgPath = process.env.PUBLIC_URL +'/syntaktes11.png';
+    const syntaktesOrangeImgPath = process.env.PUBLIC_URL +'/syntaktes11.png';
     const searchBlackImgPath = process.env.PUBLIC_URL +'/icons/search-black.png';
     const searchWhiteImgPath = process.env.PUBLIC_URL +'/icons/search-white.png';
     const searchOrangeImgPath = process.env.PUBLIC_URL +'/icons/search-orange.png';

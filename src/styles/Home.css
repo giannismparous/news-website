@@ -46,18 +46,19 @@
     display: inline-block;
     /* Make sure h1 doesn't take full width */
     margin-bottom: 20px;
+    right: 5px;
     /* Adjust margin as needed */
 }
 
 .container h1::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 5px;
     left: -10px;
     /* Adjust the position of the vertical line */
     width: 8px;
     /* Adjust the width of the vertical line */
-    height: 100%;
+    height: 70%;
     /* Take full height of container */
     background-color: #e29403d3;
     /* Color of the vertical line */
@@ -482,79 +483,107 @@ h2 {
 
 }
 
-@media (max-width: 1490px) {
-
-    .nav-bar-links li a {
-        text-decoration: none;
-        font-size: 1.8rem;
+@media (max-width: 1535px) {
+    .carousel-caption h3 {
+        font-size: 3.3rem;
     }
 
-    .nav-bar-vertical .search-text {
-        font-size: 1.8rem;
+    .carousel-caption p {
+        font-size: 1.9rem;
+        margin: 0;
+        margin-bottom: 10px;
     }
-
-    .nav-bar-links {
-        gap: 2rem;
-    }
-
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1460px) {
+    .carousel-caption h3 {
+        font-size: 3.1rem;
+    }
+}
 
-    .nav-bar-links li a {
-        text-decoration: none;
+@media (max-width: 1385px) {
+    .carousel-caption h3 {
+        font-size: 2.9rem;
+    }
+}
+
+@media (max-width: 1310px) {
+    .carousel-caption h3 {
+        font-size: 2.7rem;
+    }
+
+    .carousel-caption p {
+        font-size: 1.3rem;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 1220px) {
+    .carousel-caption h3 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 1155px) {
+    .carousel-caption h3 {
+        font-size: 2.3rem;
+    }
+}
+
+@media (max-width: 1080px) {
+    .carousel-caption h3 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 985px) {
+    .carousel-caption h3 {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 845px) {
+    .carousel-caption h3 {
         font-size: 1.5rem;
     }
 
-    .nav-bar-vertical .search-text {
-        font-size: 1.5rem;
+    .carousel-caption p {
+        font-size: 1.1rem;
+        margin: 0;
+        margin-bottom: 10px;
     }
-
-    .nav-bar-links {
-        gap: 1.5rem;
-    }
-
 }
 
-@media (max-width: 1260px) {
-
-    .nav-bar-links li a {
-        text-decoration: none;
+@media (max-width: 675px) {
+    .carousel-caption h3 {
         font-size: 1.3rem;
     }
 
-    .nav-bar-vertical .search-text {
-        font-size: 1.3rem;
+    .carousel-caption p {
+        font-size: 0.9rem;
+        margin: 0;
+        margin-bottom: 10px;
     }
-
-    .nav-bar-links {
-        gap: 1rem;
-    }
-
 }
 
-@media (max-width: 1140px) {
-
-    .nav-bar-links li a {
-        text-decoration: none;
-        font-size: 1rem;
+@media (max-width: 675px) {
+    .carousel-caption h3 {
+        font-size: 1.1rem;
     }
-
-    .nav-bar-vertical .search-text {
-        font-size: 1rem;
-    }
-
-    .nav-bar-links {
-        gap: 0.8rem;
-    }
-
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 520px) {
+    .carousel-caption h3 {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 450px) {
 
 
-    .nav-bar-links {
-        gap: 0.6rem;
+    .carousel-caption h3 {
+        width: 80%;
     }
 
 }
