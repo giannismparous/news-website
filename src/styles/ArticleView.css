@@ -104,3 +104,72 @@
         font-size: 1.5rem;
     }
 }
+
+@media (max-width: 1310px) {
+
+    .article-view-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+
+    .left-column {
+        padding-left: 20px;
+    }
+
+}
+
+.article-view-container .article-content h1 {
+    font-size: 3rem;
+    text-align: start;
+}
+
+.article-view-container .article p {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 1040px) {
+
+    .article-view-container .article p {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    .article-view-container .koinonia-article-large .article h2 {
+        font-size: 1.3rem;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .article-view-container .article-content h1 {
+        font-size: 2.2rem;
+        text-align: start;
+    }
+
+    .article-content {
+        padding: 0;
+    }
+
+    .article-content img {
+        width: 80%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+}
+
+@media (max-width: 450px) {
+
+    .article-view-container .article-content h1 {
+        font-size: 1.8rem;
+        text-align: start;
+    }
+
+}

@@ -6,6 +6,7 @@ import { FacebookIcon, TwitterIcon, LinkedinIcon, EmailIcon } from 'react-share'
 import '../styles/ArticleView.css'; // Import the CSS file for ArticleView
 import SmallArticle from './SmallArticle'; // Import SmallArticle component
 import Article from './Article';
+import { useMediaQuery } from 'react-responsive';
 
 const ArticleView = () => {
   const { articleId } = useParams(); // Assuming your route provides articleId as a param
@@ -13,6 +14,8 @@ const ArticleView = () => {
   const [article, setArticle] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);
   const [latestArticles, setLatestArticles] = useState([]);
+
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -45,7 +48,7 @@ const ArticleView = () => {
   return (
     <>
       <div className='article-view-container'>
-        <div className='left-column'>
+        {!isMobile && <div className='left-column'>
           <div className='article-view-details'>
             <p>{article.category} | {article.date ? article.date : "24/6/2024 | 13:00"}</p>
           </div>
@@ -61,7 +64,7 @@ const ArticleView = () => {
               />
             ))}
           </div>
-        </div>
+        </div>}
         <div className='column-vertical'>
           <div className='article-content'>
             {article.imagePath && <img src={article.imagePath} alt={article.title} />}
