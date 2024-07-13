@@ -21,6 +21,8 @@ const Navbar = () => {
     const syntaktesBlackImgPath = process.env.PUBLIC_URL +'/syntaktes-black.png';
     const syntaktesWhiteImgPath = process.env.PUBLIC_URL +'/syntaktes-black.png';
     const syntaktesOrangeImgPath = process.env.PUBLIC_URL +'/syntaktes-orange.png';
+    const kedpressBlackImgPath = process.env.PUBLIC_URL +'/icons/ked_press.png';
+    const kedpressOrangeImgPath = process.env.PUBLIC_URL +'/icons/ked_press-orange.png';
     const searchBlackImgPath = process.env.PUBLIC_URL +'/icons/search-black.png';
     const searchWhiteImgPath = process.env.PUBLIC_URL +'/icons/search-white.png';
     const searchOrangeImgPath = process.env.PUBLIC_URL +'/icons/search-orange.png';
@@ -30,7 +32,6 @@ const Navbar = () => {
     const tvBlackImgPath = process.env.PUBLIC_URL +'/icons/tv-black.png';
     const tvWhiteImgPath = process.env.PUBLIC_URL +'/icons/tv-white.png';
     const tvOrangeImgPath = process.env.PUBLIC_URL +'/icons/tv-orange.png';
-    const kedpressImgPath = process.env.PUBLIC_URL +'/icons/ked_press.png';
 
     const [scrollPosition, setScrollPosition] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -211,13 +212,13 @@ const Navbar = () => {
                   <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
                   <li><Link to="/category/Κοινωνία"><img 
                   src={
-                    kedpressImgPath
-                      ? kedpressImgPath
+                    kedPressIsHovered
+                      ? kedpressOrangeImgPath
                       : isHovered
-                      ? kedpressImgPath
+                      ? kedpressBlackImgPath
                       : scrollPosition === 0
-                      ? kedpressImgPath
-                      : kedpressImgPath
+                      ? kedpressBlackImgPath
+                      : kedpressBlackImgPath
                   }
                   onMouseEnter={handleMouseEnterKedPress}
                   onMouseLeave={handleMouseLeaveKedPress}

@@ -473,6 +473,30 @@ h2 {
         width: 100%;
     }
 
+    .latest-articles-small .article::after,
+    .kosmos-articles-small .article::after,
+    .politismos-articles-small .article::after,
+    .politismos-articles-small-columns .small-article-column::after,
+    .oikonomia-articles-small-columns .small-article-column::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+    }
+
+    .latest-articles .latest-article-large .article::after,
+    .kosmos-articles .kosmos-articles-small .small-article-container::after,
+    .politismos-articles .politismos-article-large .article::after,
+    .koinonia-articles .koinonia-article-large .article::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+    }
+
+
 }
 
 @media (max-width: 600px) {
