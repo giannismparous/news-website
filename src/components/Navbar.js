@@ -154,7 +154,7 @@ const Navbar = () => {
                 rounded
                 hideOutline={false}
                 direction="left"
-                size={100}
+                size={isMobile2 ? 30 : 100}
                 color={
                   hamburgerIsHovered
                     ? '#45a049'

@@ -496,6 +496,16 @@ h2 {
         background-color: black;
     }
 
+    .latest-articles .latest-articles-small .small-article-container-outer::after,
+    .koinonia-articles .koinonia-articles-small .small-article-container-outer::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+    }
+
+
 
 }
 

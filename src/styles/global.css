@@ -9,3 +9,13 @@ body {
     /* font-family: 'Noto Serif', serif; */
     font-family: 'Fira Sans Extra Condensed', sans-serif;
 }
+
+@media (max-width: 980px) {
+
+    body {
+        margin-top: 0px;
+        /* font-family: 'Noto Serif', serif; */
+        font-family: 'Fira Sans Extra Condensed', sans-serif;
+    }
+
+}

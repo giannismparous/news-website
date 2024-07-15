@@ -141,6 +141,7 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {latestArticles.slice(1, 4).map(article => (
+                            <div className="small-article-container-outer">
                             <SmallArticle
                                 key={article.id}
                                 id={article.id}
@@ -150,6 +151,7 @@ const Home = () => {
                                 date={article.date}
                                 imagePath={article.imagePath}
                             />
+                            </div>
                         ))}
                         <div className="see-all">
                             <a href="/">Δείτε περισσότερα →</a>
@@ -158,7 +160,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>ΔΙΕΘΝΗ</h1>
+                <h1>ΠΟΛΙΤΙΚΗ</h1>
                 <div className="kosmos-articles">
                     <div className="kosmos-articles-small">
                         {diethniArticles.slice(0, 2).map(article => (
@@ -193,7 +195,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>ΠΟΛΙΤΙΣΜΟΣ</h1>
+                <h1>ΑΠΟΨΕΙΣ</h1>
                 <div className="politismos-articles">
                     <div className="politismos-article-large">
                         {politismosArticles[0] && (
@@ -229,7 +231,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>ΟΙΚΟΝΟΜΙΑ</h1>
+                <h1>ΠΑΡΑΣΚΗΝΙΑ</h1>
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {oikonomiaArticles.slice(0, 4).map((article, index) => (
@@ -265,7 +267,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>ΠΟΛΙΤΙΚΗ</h1>
+                <h1>KEDPRESS/ ΕΣΗΕΑ</h1>
                 <div className="latest-articles">
                     <div className="latest-article-large">
                         {politikiArticles[0] && (
@@ -283,6 +285,7 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {politikiArticles.slice(1, 4).map(article => (
+                            <div className="small-article-container-outer">
                             <SmallArticle
                                 key={article.id}
                                 id={article.id}
@@ -292,6 +295,7 @@ const Home = () => {
                                 date={article.date}
                                 imagePath={article.imagePath}
                             />
+                            </div>
                         ))}
                         <div className="see-all">
                             <a href="/">Δείτε περισσότερα →</a>
@@ -300,7 +304,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>ΚΟΙΝΩΝΙΑ</h1>
+                <h1>ΕΚΤΟΣ ΣΥΝΟΡΩΝ</h1>
                 <div className="koinonia-articles">
                     <div className="koinonia-article-large">
                         {koinoniaArticles.slice(0, 3).map(article => (
@@ -348,7 +352,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>MEDIA</h1>
+                <h1>ΑΓΟΡΑ/ ΚΑΤΑΝΑΛΩΤΕΣ</h1>
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {mediaArticles.slice(0, 4).map((article, index) => (
@@ -384,7 +388,7 @@ const Home = () => {
                 </div>  
             </div>
             <div className="container">
-                <h1>ΔΙΕΘΝΗ</h1>
+                <h1>PLUS/ LIFE</h1>
                 <div className="latest-articles">
                     <div className="latest-article-large">
                         {diethniArticles[0] && (
@@ -402,6 +406,7 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {diethniArticles.slice(1, 4).map(article => (
+                            <div className="small-article-container-outer">
                             <SmallArticle
                                 key={article.id}
                                 id={article.id}
@@ -411,6 +416,7 @@ const Home = () => {
                                 date={article.date}
                                 imagePath={article.imagePath}
                             />
+                            </div>
                         ))}
                         <div className="see-all">
                             <a href="/">Δείτε περισσότερα →</a>
@@ -419,7 +425,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="container">
-                <h1>ΓΝΩΣΗ</h1>
+                <h1>ΣΠΟΡ</h1>
                 <div className="koinonia-articles">
                     <div className="koinonia-article-large">
                         {gnwsiArticles.slice(0, 3).map(article => (
@@ -437,6 +443,7 @@ const Home = () => {
                     </div>
                     <div className="koinonia-articles-small">
                         {gnwsiArticles.slice(3, 6).map(article => (
+                            <div className="small-article-container-outer">
                             <SmallArticle
                                 key={article.id}
                                 id={article.id}
@@ -446,10 +453,12 @@ const Home = () => {
                                 date={article.date}
                                 imagePath={article.imagePath}
                             />
+                            </div>
                         ))}
                     </div>
                     <div className="koinonia-articles-small">
                         {gnwsiArticles.slice(6, 9).map(article => (
+                            <div className="small-article-container-outer">
                             <SmallArticle
                                 key={article.id}
                                 id={article.id}
@@ -459,12 +468,194 @@ const Home = () => {
                                 date={article.date}
                                 imagePath={article.imagePath}
                             />
+                            </div>
                         ))}
                     </div>
                 </div>
                 <div className="see-all">
                     <a href="/">Δείτε περισσότερα →</a>
                 </div>  
+            </div>
+            <div className="container">
+                <h1>ART</h1>
+                <div className="latest-articles">
+                    <div className="latest-article-large">
+                        {latestArticles[0] && (
+                            <Article
+                                key={latestArticles[0].id}
+                                id={latestArticles[0].id}
+                                title={latestArticles[0].title}
+                                content={latestArticles[0].content}
+                                category={latestArticles[0].category}
+                                author={latestArticles[0].author}
+                                date={latestArticles[0].date}
+                                imagePath={latestArticles[0].imagePath}
+                            />
+                        )}
+                    </div>
+                    <div className="latest-articles-small">
+                        {latestArticles.slice(1, 4).map(article => (
+                            <div className="small-article-container-outer">
+                            <SmallArticle
+                                key={article.id}
+                                id={article.id}
+                                title={article.title}
+                                category={article.category}
+                                author={article.author}
+                                date={article.date}
+                                imagePath={article.imagePath}
+                            />
+                            </div>
+                        ))}
+                        <div className="see-all">
+                            <a href="/">Δείτε περισσότερα →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="container">
+                <h1>PET</h1>
+                <div className="kosmos-articles">
+                    <div className="kosmos-articles-small">
+                        {diethniArticles.slice(0, 2).map(article => (
+                            <SmallArticle
+                                key={article.id}
+                                id={article.id}
+                                title={article.title}
+                                category={article.category}
+                                author={article.author}
+                                date={article.date}
+                                imagePath={article.imagePath}
+                            />
+                        ))}
+                    </div>
+                    <div className="kosmos-article-large">
+                        {diethniArticles[3] && (
+                            <Article
+                                key={diethniArticles[3].id}
+                                id={diethniArticles[3].id}
+                                title={diethniArticles[3].title}
+                                content={diethniArticles[3].content}
+                                category={diethniArticles[3].category}
+                                author={diethniArticles[3].author}
+                                date={diethniArticles[3].date}
+                                imagePath={diethniArticles[3].imagePath}
+                            />
+                        )}
+                        <div className="see-all">
+                            <a href="/">Δείτε περισσότερα →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="container">
+                <h1>ΥΓΕΙΑ/ ΣΥΝΤΑΞΕΙΣ</h1>
+                <div className="politismos-articles">
+                    <div className="politismos-article-large">
+                        {politismosArticles[0] && (
+                            <Article
+                                key={politismosArticles[0].id}
+                                id={politismosArticles[0].id}
+                                title={politismosArticles[0].title}
+                                content={politismosArticles[0].content}
+                                category={politismosArticles[0].category}
+                                author={politismosArticles[0].author}
+                                date={politismosArticles[0].date}
+                                imagePath={politismosArticles[0].imagePath}
+                            />
+                        )}
+                    </div>
+                    <div className="politismos-articles-small-columns">
+                        {politismosArticles.slice(1, 5).map((article, index) => (
+                            <div className="small-article-column" key={article.id}>
+                                <SmallArticle
+                                    id={article.id}
+                                    title={article.title}
+                                    category={article.category}
+                                    author={article.author}
+                                    date={article.date}
+                                    imagePath={article.imagePath}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="see-all">
+                    <a href="/">Δείτε περισσότερα →</a>
+                </div>  
+            </div>
+            <div className="container">
+                <h1>ΕΡΓΑΣΙΑ</h1>
+                <div className="oikonomia-articles">
+                    <div className="oikonomia-articles-small-columns">
+                        {oikonomiaArticles.slice(0, 4).map((article, index) => (
+                            <div className="small-article-column" key={article.id}>
+                                <SmallArticle
+                                    id={article.id}
+                                    title={article.title}
+                                    category={article.category}
+                                    author={article.author}
+                                    date={article.date}
+                                    imagePath={article.imagePath}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="oikonomia-article-large">
+                        {oikonomiaArticles[4] && (
+                            <Article
+                                key={oikonomiaArticles[4].id}
+                                id={oikonomiaArticles[4].id}
+                                title={oikonomiaArticles[4].title}
+                                content={oikonomiaArticles[4].content}
+                                category={oikonomiaArticles[4].category}
+                                author={oikonomiaArticles[4].author}
+                                date={oikonomiaArticles[4].date}
+                                imagePath={oikonomiaArticles[4].imagePath}
+                            />
+                        )}
+                    </div>
+                </div>
+                <div className="see-all">
+                    <a href="/">Δείτε περισσότερα →</a>
+                </div>  
+            </div>
+            <div className="container">
+                <h1>ΔΙΚΑΣΤΙΚΑ</h1>
+                <div className="latest-articles">
+                    <div className="latest-article-large">
+                        {politikiArticles[0] && (
+                            <Article
+                                key={politikiArticles[0].id}
+                                id={politikiArticles[0].id}
+                                title={politikiArticles[0].title}
+                                content={politikiArticles[0].content}
+                                category={politikiArticles[0].category}
+                                author={politikiArticles[0].author}
+                                date={politikiArticles[0].date}
+                                imagePath={politikiArticles[0].imagePath}
+                            />
+                        )}
+                    </div>
+                    <div className="latest-articles-small">
+                        {politikiArticles.slice(1, 4).map(article => (
+                            <div className="small-article-container-outer">
+                            <SmallArticle
+                                key={article.id}
+                                id={article.id}
+                                title={article.title}
+                                category={article.category}
+                                author={article.author}
+                                date={article.date}
+                                imagePath={article.imagePath}
+                            />
+                            </div>
+                        ))}
+                        <div className="see-all">
+                            <a href="/">Δείτε περισσότερα →</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );

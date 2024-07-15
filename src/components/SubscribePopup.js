@@ -19,7 +19,7 @@ const SubscribePopup = ({ onClose }) => {
   return (
     <div className="popup">
       <div className="popup-inner">
-        <button className="close-btn" onClick={onClose}>🗙</button>
+        <button className="close-btn" onClick={onClose}>&#x2715;</button>
         <h2>Διάβασε, μάθε, ενημερώσου! Εγγραφή για τα πιο ενδιαφέροντα άρθρα!</h2>
         <form onSubmit={handleSubmit}>
           <input

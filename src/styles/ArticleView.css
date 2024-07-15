@@ -174,3 +174,21 @@
     }
 
 }
+
+@media (max-width: 980px) {
+
+
+    .article-view-container {
+        margin-top: 100px;
+
+    }
+
+    .article-view-container h1,
+    .share-buttons,
+    p {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+}
