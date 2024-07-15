@@ -8,6 +8,7 @@ import '../styles/Admin.css'; // Import the Admin CSS
 
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [uid, setUid] = useState(null); // Add uid state
   const [articles, setArticles] = useState([]);
   const [showEditor, setShowEditor] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -33,8 +34,9 @@ const Admin = () => {
     }
   }, [isLoggedIn]);
 
-  const handleLogin = () => {
+  const handleLogin = (uid) => {
     setIsLoggedIn(true);
+    setUid(uid); // Set uid on login
   };
 
   const handleEdit = (article) => {
@@ -70,7 +72,7 @@ const Admin = () => {
             </button>
           </div>
           {showEditor ? (
-            <ArticleEditor article={selectedArticle} onArticleAdded={fetchArticlesFromServer} />
+            <ArticleEditor article={selectedArticle} onArticleAdded={fetchArticlesFromServer} uid={uid} />
           ) : (
             <div>
               <h1 className="admin-header">All Articles</h1>

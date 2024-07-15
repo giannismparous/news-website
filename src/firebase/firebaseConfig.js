@@ -158,7 +158,8 @@ export const attemptLogin = async (username,password) => {
         category: newArticle.category,
         imagePath: newArticle.imagePath,
         id: currentId,
-        date: currentDate
+        date: currentDate,
+        author: newArticle.author
       });
 
       await updateDoc(infoRef, {

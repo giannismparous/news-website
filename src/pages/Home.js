@@ -6,6 +6,7 @@ import '../styles/Home.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 const Home = () => {
     const [articles, setArticles] = useState([]);
@@ -105,6 +106,8 @@ const Home = () => {
 
     const latestArticles = articles.slice(0, 4);
 
+    const isMobile = useMediaQuery({ maxWidth: 550 });
+
     return (
         <>
             <div className="trending-container">
@@ -136,6 +139,7 @@ const Home = () => {
                                 author={latestArticles[0].author}
                                 date={latestArticles[0].date}
                                 imagePath={latestArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -150,6 +154,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}
@@ -172,6 +177,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                         ))}
                     </div>
@@ -186,6 +192,7 @@ const Home = () => {
                                 author={diethniArticles[3].author}
                                 date={diethniArticles[3].date}
                                 imagePath={diethniArticles[3].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                         <div className="see-all">
@@ -208,6 +215,7 @@ const Home = () => {
                                 author={politismosArticles[0].author}
                                 date={politismosArticles[0].date}
                                 imagePath={politismosArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -221,6 +229,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    showContent={!isMobile}
                                 />
                             </div>
                         ))}
@@ -243,6 +252,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    showContent={!isMobile}
                                 />
                             </div>
                         ))}
@@ -258,6 +268,7 @@ const Home = () => {
                                 author={oikonomiaArticles[4].author}
                                 date={oikonomiaArticles[4].date}
                                 imagePath={oikonomiaArticles[4].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -280,6 +291,7 @@ const Home = () => {
                                 author={politikiArticles[0].author}
                                 date={politikiArticles[0].date}
                                 imagePath={politikiArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -294,6 +306,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}
@@ -317,6 +330,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                         ))}
                     </div>
@@ -330,6 +344,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                         ))}
                     </div>
@@ -343,6 +358,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                         ))}
                     </div>
@@ -364,6 +380,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    showContent={!isMobile}
                                 />
                             </div>
                         ))}
@@ -379,6 +396,7 @@ const Home = () => {
                                 author={mediaArticles[4].author}
                                 date={mediaArticles[4].date}
                                 imagePath={mediaArticles[4].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -401,6 +419,7 @@ const Home = () => {
                                 author={diethniArticles[0].author}
                                 date={diethniArticles[0].date}
                                 imagePath={diethniArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -415,6 +434,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}
@@ -438,6 +458,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                         ))}
                     </div>
@@ -452,6 +473,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}
@@ -467,6 +489,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}
@@ -490,6 +513,7 @@ const Home = () => {
                                 author={latestArticles[0].author}
                                 date={latestArticles[0].date}
                                 imagePath={latestArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -504,6 +528,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}
@@ -526,6 +551,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                         ))}
                     </div>
@@ -540,6 +566,7 @@ const Home = () => {
                                 author={diethniArticles[3].author}
                                 date={diethniArticles[3].date}
                                 imagePath={diethniArticles[3].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                         <div className="see-all">
@@ -562,6 +589,7 @@ const Home = () => {
                                 author={politismosArticles[0].author}
                                 date={politismosArticles[0].date}
                                 imagePath={politismosArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -575,6 +603,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    showContent={!isMobile}
                                 />
                             </div>
                         ))}
@@ -597,6 +626,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    showContent={!isMobile}
                                 />
                             </div>
                         ))}
@@ -612,6 +642,7 @@ const Home = () => {
                                 author={oikonomiaArticles[4].author}
                                 date={oikonomiaArticles[4].date}
                                 imagePath={oikonomiaArticles[4].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -634,6 +665,7 @@ const Home = () => {
                                 author={politikiArticles[0].author}
                                 date={politikiArticles[0].date}
                                 imagePath={politikiArticles[0].imagePath}
+                                showContent={!isMobile}
                             />
                         )}
                     </div>
@@ -648,6 +680,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                showContent={!isMobile}
                             />
                             </div>
                         ))}

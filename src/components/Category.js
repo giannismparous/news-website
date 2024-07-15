@@ -4,12 +4,15 @@ import { fetchArticles, fetchArticlesByCategory } from '../firebase/firebaseConf
 import Article from './Article';
 import '../styles/Category.css'; // Import the new CSS file for the category page
 import SmallArticle from './SmallArticle';
+import { useMediaQuery } from 'react-responsive';
 
 const Category = () => {
   const { categoryName } = useParams();
 
   const [articles, setArticles] = useState([]);
   const [latestArticles, setLatestArticles] = useState([]);
+
+  const isMobile = useMediaQuery({ maxWidth: 550 });
 
   const fetchArticlesFromServer = async () => {
     try {
@@ -40,6 +43,7 @@ const Category = () => {
               author={article.author}
               date={article.date}
               imagePath={article.imagePath}
+              showContent={!isMobile}
             />
         ))}
       </div>
@@ -57,6 +61,7 @@ const Category = () => {
                         author={article.author}
                         date={article.date}
                         imagePath={article.imagePath}
+                        showContent={!isMobile}
                     />
                 ))}
             </div>
@@ -70,6 +75,7 @@ const Category = () => {
                         author={article.author}
                         date={article.date}
                         imagePath={article.imagePath}
+                        showContent={!isMobile}
                     />
                 ))}
             </div>
@@ -83,6 +89,7 @@ const Category = () => {
                         author={article.author}
                         date={article.date}
                         imagePath={article.imagePath}
+                        showContent={!isMobile}
                     />
                 ))}
             </div>

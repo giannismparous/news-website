@@ -10,7 +10,7 @@ const Login = ({ onLogin }) => {
 
     const uid = await attemptLogin(username, password);
     if (uid) {
-      onLogin(); // Call onLogin prop to set isLoggedIn to true in Admin component
+      onLogin(uid); // Pass uid to onLogin
     } else {
       alert('Login failed. Please check your credentials.');
     }

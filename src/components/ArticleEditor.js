@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { addNewArticle, db, editArticle, fetchArticleById, storage } from '../firebase/firebaseConfig';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/ArticleEditor.css';
+import CustomClipboard from './CustomClipboard';
 
-const ArticleEditor = ({ article, onArticleAdded }) => {
+Quill.register('modules/clipboard', CustomClipboard);
+
+const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as prop
   const [id, setId] = useState();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
-  const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [image, setImage] = useState(null);
   const [imagePath, setImagePath] = useState('');
@@ -27,7 +29,6 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
           setTitle(fetchedArticle.title);
           setContent(fetchedArticle.content);
           setCategory(fetchedArticle.category);
-          setAuthor(fetchedArticle.author);
           setDate(fetchedArticle.date);
           setImagePath(fetchedArticle.imagePath);
         }
@@ -36,7 +37,6 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
         setTitle('');
         setContent('');
         setCategory('');
-        setAuthor('');
         setDate('');
         setImagePath('');
       }
@@ -67,10 +67,16 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
     };
   };
 
+  const formatCategory = (category) => {
+    return category.replace(/\s+/g, '_').replace(/\//g, '');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const formattedCategory = formatCategory(category);
+
       if (!article) {
         let imagePath = '';
 
@@ -83,8 +89,8 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
         const newArticle = {
           title,
           content,
-          category,
-          author,
+          category: formattedCategory,
+          author: uid, // Set author to uid
           imagePath,
         };
 
@@ -101,8 +107,8 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
           id,
           title,
           content,
-          category,
-          author,
+          category: formattedCategory,
+          author: uid, // Set author to uid
           date,
           imagePath,
         };
@@ -140,7 +146,10 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
       handlers: {
         image: handleQuillImageUpload
       }
-    }
+    },
+    clipboard: {
+      matchVisual: false,
+    },
   }), []);
 
   const formats = [
@@ -159,20 +168,26 @@ const ArticleEditor = ({ article, onArticleAdded }) => {
           placeholder="Title"
           required
         />
-        <input
-          type="text"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
           required
-        />
-        <input
-          type="text"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          placeholder="Author"
-          required
-        />
+        >
+          <option value="">Select Category</option>
+          <option value="Πολιτική">Πολιτική</option>
+          <option value="Απόψεις">Απόψεις</option>
+          <option value="Παρασκήνια">Παρασκήνια</option>
+          <option value="Kedpress/ ΕΣΗΕΑ">Kedpress/ ΕΣΗΕΑ</option>
+          <option value="Εκτός Συνόρων">Εκτός Συνόρων</option>
+          <option value="Αγορά/ Καταναλωτές">Αγορά/ Καταναλωτές</option>
+          <option value="Plus/ Life">Plus/ Life</option>
+          <option value="Σπορ">Σπορ</option>
+          <option value="Art">Art</option>
+          <option value="Pet">Pet</option>
+          <option value="Υγεία/ Συντάξεις">Υγεία/ Συντάξεις</option>
+          <option value="Εργασία">Εργασία</option>
+          <option value="Δικαστικά">Δικαστικά</option>
+        </select>
         <ReactQuill
           ref={quillRef}
           value={content}
