@@ -117,6 +117,28 @@ body {
     color: black;
 }
 
+.radio {
+    width: 1.875rem;
+    /* 30px */
+    height: 1.875rem;
+    /* 30px */
+    margin-right: 3.125rem;
+    /* 50px */
+    cursor: pointer;
+    padding-left: 0.625rem;
+    /* 10px */
+    position: relative;
+}
+
+.no-text-decoration {
+    text-decoration: none;
+}
+
+.side-bar-item:hover {
+    color: #e29403d3;
+    cursor: pointer;
+}
+
 .search {
     width: 1.875rem;
     /* 30px */

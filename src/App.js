@@ -13,6 +13,7 @@ import SubscribePopup from './components/SubscribePopup';
 import Podcasts from './pages/Podcasts';
 import About from './pages/About';
 import VideoTV from './pages/VideoTV';
+import Radio from './pages/Radio';
 
 const App = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -67,6 +68,7 @@ const App = () => {
         <Route path="/search/:query" element={<Search />} />
         <Route path="/podcasts" element={<Podcasts/>}/>
         <Route path="/videotv" element={<VideoTV/>}/>
+        <Route path="/radio" element={<Radio/>}/>
       </Routes>
       <Footer />
     </div>

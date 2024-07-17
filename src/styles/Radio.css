@@ -1,0 +1,15 @@
+.radio-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-top: 200px;
+}
+
+.radio-container {
+    margin-bottom: 20px;
+}
+
+.radio-container h2 {
+    font-size: 1.8rem;
+}
