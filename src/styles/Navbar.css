@@ -20,10 +20,14 @@ body {
     /* 100px */
 }
 
+.logo-container {
+    margin-right: 20px;
+}
+
 .logo {
-    width: 20rem;
+    width: 15rem;
     /* 300px */
-    height: 13rem;
+    height: 5.5rem;
     /* 120px */
     padding-left: 3.125rem;
     /* 50px */
@@ -434,8 +438,8 @@ body {
 @media (max-width: 980px) {
 
     .logo {
-        width: 17rem;
-        height: 10rem;
+        width: 13rem;
+        height: 4rem;
         top: 5px;
         position: relative;
         padding-left: 4rem

@@ -183,7 +183,7 @@ const Navbar = () => {
                 <div className="logo-container" 
                 onMouseEnter={handleMouseEnterLogo}
                 onMouseLeave={handleMouseLeaveLogo}>
-                  <Link to="/" className="logo-container">
+                  <Link to="/">
                     <img
                       src={
                         logoIsHovered

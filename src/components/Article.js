@@ -2,7 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 
-const Article = ({ id, title, content, category, imagePath, author, date, showContent = true, maxWordsPreview=30 }) => {
+const Article = ({ id, title, content, category, imagePath, authorImagePath,author, date, showContent = true, maxWordsPreview=30 }) => {
+  // Function to format category names
+  const formatCategoryName = (name) => {
+    switch (name) {
+      case 'Kedpress_ΕΣΗΕΑ':
+        return 'Kedpress/ ΕΣΗΕΑ';
+      case 'Υγεία_Συντάξεις':
+        return 'Υγεία/ Συντάξεις';
+      case 'Plus_Life':
+        return 'Plus/ Life';
+      case 'Εκτός Συνόρων':
+        return 'Εκτός Συνόρων';
+      case 'Αγορά_Καταναλωτές':
+        return 'Αγορά/ Καταναλωτές';
+      default:
+        return name;
+    }
+  };
+
   // Strip HTML tags from content
   const strippedContent = content.replace(/<[^>]*>?/gm, '');
   const words = strippedContent.split(' ');
@@ -19,15 +37,16 @@ const Article = ({ id, title, content, category, imagePath, author, date, showCo
       </Link>
       <div className='article-info'>
         <Link to={`/articles/${id}`} className="article-link">
-        <h2>{title}</h2>
-        <p><em>{category} | {displayDate}</em></p>
-        {showContent && (
-          <div>
-            <p className="content-text">
-              {displayContent} {hasMore && <span className="read-more">[...]</span>}
-            </p>
-          </div>
-        )}
+          <h2>{title}</h2>
+          <p><em>{formatCategoryName(category)} | {displayDate}</em></p>
+          {showContent && (
+            <div>
+              <p 
+                className="content-text" 
+                dangerouslySetInnerHTML={{ __html: displayContent + (hasMore ? ' <span class="read-more">[...]</span>' : '') }}
+              ></p>
+            </div>
+          )}
         </Link>
       </div>
     </div>

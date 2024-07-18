@@ -9,6 +9,24 @@ import Article from './Article';
 import { useMediaQuery } from 'react-responsive';
 
 const ArticleView = () => {
+
+  const formatCategoryName = (name) => {
+    switch (name) {
+      case 'Kedpress_ΕΣΗΕΑ':
+        return 'Kedpress/ ΕΣΗΕΑ';
+      case 'Υγεία_Συντάξεις':
+        return 'Υγεία/ Συντάξεις';
+      case 'Plus_Life':
+        return 'Plus/ Life';
+      case 'Εκτός Συνόρων':
+        return 'Εκτός Συνόρων';
+      case 'Αγορά_Καταναλωτές':
+        return 'Αγορά/ Καταναλωτές';
+      default:
+        return name;
+    }
+  };
+
   const { articleId } = useParams(); // Assuming your route provides articleId as a param
 
   const [article, setArticle] = useState(null);
@@ -50,7 +68,7 @@ const ArticleView = () => {
       <div className='article-view-container'>
         {!isMobile && <div className='left-column'>
           <div className='article-view-details'>
-            <p>{article.category} | {article.date ? article.date : "24/6/2024 | 13:00"}</p>
+            <p>{formatCategoryName(article.category)} | {article.date ? article.date : "24/6/2024 | 13:00"}</p>
           </div>
           <div className='article-view-relevant-articles'>
             <h3>Σχετικά άρθρα</h3>

@@ -73,7 +73,7 @@
 }
 
 .article-view-container .koinonia-article-large .article h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 .article-view-container .left-column .small-article-container h2 {
@@ -133,6 +133,13 @@
     font-size: 1.2rem;
 }
 
+.article-view-container .koinonia-articles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
 @media (max-width: 1040px) {
 
     .article-view-container .article p {
@@ -141,7 +148,14 @@
     }
 
     .article-view-container .koinonia-article-large .article h2 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+    }
+
+    .article-view-container .koinonia-articles {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 50px;
     }
 
 }

@@ -29,10 +29,27 @@ const Category = () => {
     fetchArticlesFromServer();
   }, [categoryName]);
 
+  const formatCategoryName = (name) => {
+    switch (name) {
+      case 'Kedpress_ΕΣΗΕΑ':
+        return 'Kedpress/ ΕΣΗΕΑ';
+      case 'Υγεία_Συντάξεις':
+        return 'Υγεία/ Συντάξεις';
+      case 'Plus_Life':
+        return 'Plus/ Life';
+      case 'Εκτός Συνόρων':
+        return 'Εκτός Συνόρων';
+      case 'Αγορά_Καταναλωτές':
+        return 'Αγορά/ Καταναλωτές';
+      default:
+        return name;
+    }
+  };
+
   return (
     <>
       <div className='category-container'>
-        <h1>{categoryName}</h1>
+        <h1>{formatCategoryName(categoryName)}</h1>
         {articles.map(article => (
             <Article
               key={article.id}

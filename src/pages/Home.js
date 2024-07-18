@@ -108,6 +108,23 @@ const Home = () => {
 
     const isMobile = useMediaQuery({ maxWidth: 550 });
 
+    const formatCategoryName = (name) => {
+        switch (name) {
+          case 'Kedpress_ΕΣΗΕΑ':
+            return 'Kedpress/ ΕΣΗΕΑ';
+          case 'Υγεία_Συντάξεις':
+            return 'Υγεία/ Συντάξεις';
+          case 'Plus_Life':
+            return 'Plus/ Life';
+          case 'Εκτός Συνόρων':
+            return 'Εκτός Συνόρων';
+          case 'Αγορά_Καταναλωτές':
+            return 'Αγορά/ Καταναλωτές';
+          default:
+            return name;
+        }
+      };
+
     return (
         <>
             <div className="trending-container">
@@ -117,7 +134,7 @@ const Home = () => {
                             <Link to={`/articles/${article.id}`} className="article-link">
                             <div className="carousel-caption">
                                 {/* <p>{article.category}</p> */}
-                                <p>ΕΚΤΟΣ ΣΥΝΟΡΩΝ</p>
+                                <p>{formatCategoryName(article.category).toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}</p>
                                 <h3>{article.title}</h3>
                             </div>
                             </Link>
