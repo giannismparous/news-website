@@ -331,7 +331,6 @@ const Navbar = () => {
                 <li><Link to="/category/Σπορ" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Σπορ</Link></li>
                 <li><Link to="/category/Art" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Art</Link></li>
                 <li><Link to="/category/Pet" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Pet</Link></li>
-                <li><Link to="/category/Podcast" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Podcast</Link></li>
                 <li><Link to="/category/Υγεία_Συντάξεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Υγεία/ Συντάξεις</Link></li>
                 <li><Link to="/category/Εργασία" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Εργασία</Link></li>
                 <li><Link to="/category/Δικαστικά" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Δικαστικά</Link></li>
