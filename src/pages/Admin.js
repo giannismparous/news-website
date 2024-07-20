@@ -57,13 +57,15 @@ const Admin = () => {
   const confirmDelete = (article) => {
     setArticleToDelete(article);
   };
-
   const cancelDelete = () => {
     setArticleToDelete(null);
   };
 
   return (
     <div className="admin-container">
+      {isLoggedIn && (
+        <div className="uid-display">Συνδεδεμένος Χρήστης: {uid}</div> // Display the UID on the top right
+      )}
       {isLoggedIn ? (
         <div className="admin-content">
           <div className="new-article-button-container">
@@ -84,6 +86,7 @@ const Admin = () => {
                     content={article.content}
                     category={article.category}
                     imagePath={article.imagePath}
+                    date={article.date}
                   />
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>

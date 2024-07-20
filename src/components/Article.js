@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 
-const Article = ({ id, title, content, category, imagePath, authorImagePath,author, date, showContent = true, maxWordsPreview=30 }) => {
+const Article = ({ id, title, content, category, imagePath, authorImagePath, author, date, showContent = true, maxWordsPreview = 30 }) => {
   // Function to format category names
   const formatCategoryName = (name) => {
     switch (name) {
@@ -33,16 +33,24 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath,auth
   return (
     <div className="article">
       <Link to={`/articles/${id}`} className="article-link">
-        {imagePath && <img src={imagePath} alt={title} className="article-image" />}
+        {category === 'Απόψεις' ? (
+          <img src={authorImagePath} alt={author} className="article-image profile-pic" />
+        ) : (
+          imagePath && <img src={imagePath} alt={title} className="article-image" />
+        )}
       </Link>
       <div className='article-info'>
         <Link to={`/articles/${id}`} className="article-link">
           <h2>{title}</h2>
-          <p><em>{formatCategoryName(category)} | {displayDate}</em></p>
+          <p>
+            <em>
+              {category === 'Απόψεις' ? author : formatCategoryName(category)} | {displayDate}
+            </em>
+          </p>
           {showContent && (
             <div>
-              <p 
-                className="content-text" 
+              <p
+                className="content-text"
                 dangerouslySetInnerHTML={{ __html: displayContent + (hasMore ? ' <span class="read-more">[...]</span>' : '') }}
               ></p>
             </div>

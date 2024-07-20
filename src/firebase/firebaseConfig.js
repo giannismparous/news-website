@@ -152,15 +152,33 @@ export const attemptLogin = async (username,password) => {
       const currentId = infoDoc.data().article_id_counter + 1;
       const currentDate = getCurrentDateInGreece();
 
-      articles.push({
-        title: newArticle.title,
-        content: newArticle.content,
-        category: newArticle.category,
-        imagePath: newArticle.imagePath,
-        id: currentId,
-        date: currentDate,
-        author: newArticle.author
-      });
+      if (newArticle.category==="Απόψεις"){
+        articles.push({
+          title: newArticle.title,
+          content: newArticle.content,
+          category: newArticle.category,
+          imagePath: newArticle.imagePath,
+          id: currentId,
+          date: currentDate,
+          uid: newArticle.uid,
+          author: newArticle.author,
+          authorImagePath: newArticle.authorImagePath
+        });
+      }
+      else {
+        articles.push({
+          title: newArticle.title,
+          content: newArticle.content,
+          category: newArticle.category,
+          imagePath: newArticle.imagePath,
+          id: currentId,
+          date: currentDate,
+          uid: newArticle.uid,
+          // author: newArticle.author,
+          // authorImagePath: newArticle.authorImagePath
+        });
+      }
+      
 
       await updateDoc(infoRef, {
         article_id_counter: currentId

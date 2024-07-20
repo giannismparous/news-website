@@ -288,8 +288,8 @@ const Home = () => {
             </div>
             <div className="container">
                 <h1>ΑΠΟΨΕΙΣ</h1>
-                <div className="politismos-articles">
-                    <div className="politismos-article-large">
+                <div className="apopseis-articles">
+                    <div className="apopseis-article-large">
                         {apopseisArticles[0] && (
                             <Article
                                 key={apopseisArticles[0].id}
@@ -298,26 +298,43 @@ const Home = () => {
                                 content={apopseisArticles[0].content}
                                 category={apopseisArticles[0].category}
                                 author={apopseisArticles[0].author}
+                                authorImagePath={apopseisArticles[0].authorImagePath}
                                 date={apopseisArticles[0].date}
                                 imagePath={apopseisArticles[0].imagePath}
                                 showContent={!isMobile}
+                                maxWordsPreview={15}
                             />
                         )}
-                    </div>
-                    <div className="politismos-articles-small-columns">
-                        {apopseisArticles.slice(1, 5).map((article, index) => (
-                            <div className="small-article-column" key={article.id}>
-                                <SmallArticle
-                                    id={article.id}
-                                    title={article.title}
-                                    category={article.category}
-                                    author={article.author}
-                                    date={article.date}
-                                    imagePath={article.imagePath}
-                                    showContent={!isMobile}
-                                />
-                            </div>
-                        ))}
+                        {apopseisArticles[0] && (
+                            <Article
+                                key={apopseisArticles[0].id}
+                                id={apopseisArticles[0].id}
+                                title={apopseisArticles[0].title}
+                                content={apopseisArticles[0].content}
+                                category={apopseisArticles[0].category}
+                                author={apopseisArticles[0].author}
+                                authorImagePath={apopseisArticles[0].authorImagePath}
+                                date={apopseisArticles[0].date}
+                                imagePath={apopseisArticles[0].imagePath}
+                                showContent={!isMobile}
+                                maxWordsPreview={15}
+                            />
+                        )}
+                        {apopseisArticles[0] && (
+                            <Article
+                                key={apopseisArticles[0].id}
+                                id={apopseisArticles[0].id}
+                                title={apopseisArticles[0].title}
+                                content={apopseisArticles[0].content}
+                                category={apopseisArticles[0].category}
+                                author={apopseisArticles[0].author}
+                                authorImagePath={apopseisArticles[0].authorImagePath}
+                                date={apopseisArticles[0].date}
+                                imagePath={apopseisArticles[0].imagePath}
+                                showContent={!isMobile}
+                                maxWordsPreview={15}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="see-all">

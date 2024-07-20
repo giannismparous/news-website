@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { addNewArticle, db, editArticle, fetchArticleById, storage } from '../firebase/firebaseConfig';
+import { addNewArticle, editArticle, fetchArticleById, storage } from '../firebase/firebaseConfig';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -16,7 +16,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
   const [date, setDate] = useState('');
   const [image, setImage] = useState(null);
   const [imagePath, setImagePath] = useState('');
+  const [authorImage, setAuthorImage] = useState(null);
+  const [authorImagePath, setAuthorImagePath] = useState('');
   const [uploadOnFacebook, setUploadOnFacebook] = useState(false);
+  const [author, setAuthor] = useState('');
 
   const quillRef = useRef(null);
 
@@ -31,6 +34,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
           setCategory(fetchedArticle.category);
           setDate(fetchedArticle.date);
           setImagePath(fetchedArticle.imagePath);
+          setAuthor(fetchedArticle.author || ''); // Set author if it exists
+          setAuthorImagePath(fetchedArticle.authorImagePath || ''); // Set authorImagePath if it exists
         }
       } else {
         setId(null);
@@ -39,6 +44,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
         setCategory('');
         setDate('');
         setImagePath('');
+        setAuthor(''); // Reset author
+        setAuthorImagePath(''); // Reset authorImagePath
       }
     };
 
@@ -47,6 +54,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
+  };
+
+  const handleAuthorImageUpload = (e) => {
+    setAuthorImage(e.target.files[0]);
   };
 
   const handleQuillImageUpload = () => {
@@ -77,22 +88,34 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
     try {
       const formattedCategory = formatCategory(category);
 
-      if (!article) {
-        let imagePath = '';
+      let newArticle = {
+        title,
+        content,
+        category: formattedCategory,
+        uid, // Set author to uid
+        imagePath,
+      };
 
+      if (category === 'Απόψεις') {
+        newArticle = {
+          ...newArticle,
+          author,
+          authorImagePath,
+        };
+      }
+
+      if (!article) {
         if (image) {
           const imageRef = ref(storage, `article_images/${Date.now()}_${image.name}`);
           const snapshot = await uploadBytesResumable(imageRef, image);
-          imagePath = await getDownloadURL(snapshot.ref);
+          newArticle.imagePath = await getDownloadURL(snapshot.ref);
         }
 
-        const newArticle = {
-          title,
-          content,
-          category: formattedCategory,
-          author: uid, // Set author to uid
-          imagePath,
-        };
+        if (authorImage) {
+          const imageRef = ref(storage, `article_author_images/${Date.now()}_${authorImage.name}`);
+          const snapshot = await uploadBytesResumable(imageRef, authorImage);
+          newArticle.authorImagePath = await getDownloadURL(snapshot.ref);
+        }
 
         const docRef = await addNewArticle('articles', newArticle);
 
@@ -103,20 +126,28 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
         alert('Article added successfully');
         onArticleAdded();
       } else {
-        const updatedArticle = {
+        if (image) {
+          const imageRef = ref(storage, `article_images/${Date.now()}_${image.name}`);
+          const snapshot = await uploadBytesResumable(imageRef, image);
+          newArticle.imagePath = await getDownloadURL(snapshot.ref);
+        }
+
+        if (authorImage) {
+          const imageRef = ref(storage, `article_author_images/${Date.now()}_${authorImage.name}`);
+          const snapshot = await uploadBytesResumable(imageRef, authorImage);
+          newArticle.authorImagePath = await getDownloadURL(snapshot.ref);
+        }
+
+        newArticle = {
+          ...newArticle,
           id,
-          title,
-          content,
-          category: formattedCategory,
-          author: uid, // Set author to uid
           date,
-          imagePath,
         };
 
-        await editArticle('articles', updatedArticle);
+        await editArticle('articles', newArticle);
 
         if (uploadOnFacebook) {
-          await postOnFacebook(updatedArticle);
+          await postOnFacebook(newArticle);
         }
 
         alert('Article edited successfully');
@@ -188,6 +219,22 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
           <option value="Εργασία">Εργασία</option>
           <option value="Δικαστικά">Δικαστικά</option>
         </select>
+        {category === 'Απόψεις' && (
+          <>
+            <input
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              placeholder="Author Name"
+              required
+            />
+            <div>
+              <span>Ανεβάστε φωτογραφία συντάκτη: </span>
+              <input type="file" onChange={handleAuthorImageUpload} />
+              {authorImagePath && <img src={authorImagePath} alt="Author" />}
+            </div>
+          </>
+        )}
         <ReactQuill
           ref={quillRef}
           value={content}
@@ -197,12 +244,11 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
           placeholder="Write your article content here..."
         />
         <div className='form-last-section'>
-          {!article && (
-            <div>
-              <span>Ανεβάστε thumbnail: </span>
-              <input type="file" onChange={handleImageUpload} />
-            </div>
-          )}
+          <div>
+            <span>Ανεβάστε thumbnail: </span>
+            <input type="file" onChange={handleImageUpload} />
+            {imagePath && <img src={imagePath} alt="Thumbnail" />}
+          </div>
           <label>
             <input
               type="checkbox"
@@ -212,11 +258,11 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
             Δημοσίευση στο Facebook
           </label>
         </div>
+        <p>Εκδότης: {uid}</p> {/* Display the UID */}
         {!article && <button type="submit">Δημιουργία</button>}
         {article && <button type="submit">Επεξεργασία </button>}
       </form>
     </div>
   );
 };
-
 export default ArticleEditor;

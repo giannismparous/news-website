@@ -63,6 +63,8 @@ const ArticleView = () => {
   const shareUrl = window.location.href;
   const title = article.title;
 
+  const filteredLatestArticles = latestArticles.filter(latestArticle => latestArticle.id !== parseInt(articleId));
+
   return (
     <>
       <div className='article-view-container'>
@@ -108,7 +110,7 @@ const ArticleView = () => {
             <h1>Δείτε επίσης</h1>
             <div className="koinonia-articles">
               <div className="koinonia-article-large">
-                {latestArticles.slice(0, 3).map(article => (
+                {filteredLatestArticles.slice(0, 3).map(article => (
                   <Article
                     key={article.id}
                     id={article.id}
@@ -123,7 +125,7 @@ const ArticleView = () => {
                 ))}
               </div>
               <div className="koinonia-articles-small">
-                {latestArticles.slice(3, 6).map(article => (
+                {filteredLatestArticles.slice(3, 6).map(article => (
                   <SmallArticle
                     key={article.id}
                     id={article.id}
@@ -136,7 +138,7 @@ const ArticleView = () => {
                 ))}
               </div>
               <div className="koinonia-articles-small">
-                {latestArticles.slice(6, 9).map(article => (
+                {filteredLatestArticles.slice(6, 9).map(article => (
                   <SmallArticle
                     key={article.id}
                     id={article.id}
