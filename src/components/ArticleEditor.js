@@ -5,10 +5,37 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/ArticleEditor.css';
 import CustomClipboard from './CustomClipboard';
+const BlockEmbed = Quill.import('blots/block/embed');
+
+class TwitterBlot extends BlockEmbed {
+  static create(value) {
+    const node = super.create(value);
+    node.setAttribute('contenteditable', false);
+    console.log("TEST")
+    const innerHtml = `
+      <blockquote class="twitter-tweet">
+        <a href="${value}"></a>
+      </blockquote>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    `;
+    node.innerHTML = innerHtml;
+    return node;
+  }
+
+  static value(node) {
+    return node.querySelector('a').getAttribute('href');
+  }
+}
+
+TwitterBlot.blotName = 'twitter';
+TwitterBlot.className = 'ql-twitter';
+TwitterBlot.tagName = 'div';
+
+Quill.register(TwitterBlot);
 
 Quill.register('modules/clipboard', CustomClipboard);
 
-const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as prop
+const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const [id, setId] = useState();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -34,8 +61,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
           setCategory(fetchedArticle.category);
           setDate(fetchedArticle.date);
           setImagePath(fetchedArticle.imagePath);
-          setAuthor(fetchedArticle.author || ''); // Set author if it exists
-          setAuthorImagePath(fetchedArticle.authorImagePath || ''); // Set authorImagePath if it exists
+          setAuthor(fetchedArticle.author || '');
+          setAuthorImagePath(fetchedArticle.authorImagePath || '');
         }
       } else {
         setId(null);
@@ -44,8 +71,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
         setCategory('');
         setDate('');
         setImagePath('');
-        setAuthor(''); // Reset author
-        setAuthorImagePath(''); // Reset authorImagePath
+        setAuthor('');
+        setAuthorImagePath('');
       }
     };
 
@@ -72,10 +99,35 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
       const snapshot = await uploadBytesResumable(imageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
-      const quill = quillRef.current.getEditor(); // Use Quill's API to get the editor instance
+      const quill = quillRef.current.getEditor();
       const range = quill.getSelection(true);
       quill.insertEmbed(range.index, 'image', downloadURL);
     };
+  };
+
+  const handleQuillVideoEmbed = () => {
+    const url = prompt('Enter YouTube URL');
+    if (url) {
+      const videoId = url.split('v=')[1].split('&')[0]; // Extract YouTube video ID
+      const iframeHtml = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection();
+      quill.clipboard.dangerouslyPasteHTML(range.index, iframeHtml);
+      // Print the current content of the Quill editor
+      console.log(quill.root.innerHTML);
+    }
+  };
+
+  const handleQuillXPostEmbed = () => {
+    const url = prompt('Enter Twitter post URL');
+    if (url) {
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection();
+      quill.insertEmbed(range.index, 'twitter', url);
+
+      // Print the current content of the Quill editor
+      console.log(quill.root.innerHTML);
+    }
   };
 
   const formatCategory = (category) => {
@@ -92,7 +144,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
         title,
         content,
         category: formattedCategory,
-        uid, // Set author to uid
+        uid,
         imagePath,
       };
 
@@ -171,11 +223,13 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['bold', 'italic', 'underline', 'blockquote'],
         [{ 'align': [] }],
-        ['link', 'image', 'video'],
+        ['link', 'image', 'video', 'x-post'], // Add the x-post button here
         ['clean']
       ],
       handlers: {
-        image: handleQuillImageUpload
+        image: handleQuillImageUpload,
+        video: handleQuillVideoEmbed,
+        'x-post': handleQuillXPostEmbed // Add custom handler for X post
       }
     },
     clipboard: {
@@ -185,7 +239,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
 
   const formats = [
     'header', 'font', 'list', 'bullet', 'bold', 'italic', 'underline', 'blockquote',
-    'align', 'link', 'image', 'video'
+    'align', 'link', 'image', 'video', 'twitter'
   ];
 
   return (
@@ -249,13 +303,21 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
             <input type="file" onChange={handleImageUpload} />
             {imagePath && <img src={imagePath} alt="Thumbnail" />}
           </div>
-          <label>
+          {/* <label>
             <input
               type="checkbox"
               checked={uploadOnFacebook}
               onChange={(e) => setUploadOnFacebook(e.target.checked)}
             />
             Δημοσίευση στο Facebook
+          </label> */}
+          <label>
+            <input
+              type="checkbox"
+              // checked={trending}
+              // onChange={(e) => setUploadOnFacebook(e.target.checked)}
+            />
+            Trending
           </label>
         </div>
         <p>Εκδότης: {uid}</p> {/* Display the UID */}
@@ -265,4 +327,5 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => { // Receive uid as 
     </div>
   );
 };
+
 export default ArticleEditor;
