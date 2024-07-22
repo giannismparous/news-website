@@ -46,7 +46,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const [authorImage, setAuthorImage] = useState(null);
   const [authorImagePath, setAuthorImagePath] = useState('');
   const [uploadOnFacebook, setUploadOnFacebook] = useState(false);
-  const [author, setAuthor] = useState('');
+  const [trending, setTrending] = useState(false);
+  const [author, setAuthor] = useState(false);
 
   const quillRef = useRef(null);
 
@@ -63,6 +64,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           setImagePath(fetchedArticle.imagePath);
           setAuthor(fetchedArticle.author || '');
           setAuthorImagePath(fetchedArticle.authorImagePath || '');
+          setAuthorImagePath(fetchedArticle.trending || false);
         }
       } else {
         setId(null);
@@ -73,6 +75,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         setImagePath('');
         setAuthor('');
         setAuthorImagePath('');
+        setTrending(false);
       }
     };
 
@@ -146,6 +149,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         category: formattedCategory,
         uid,
         imagePath,
+        trending
       };
 
       if (category === 'Απόψεις') {
@@ -314,8 +318,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           <label>
             <input
               type="checkbox"
-              // checked={trending}
-              // onChange={(e) => setUploadOnFacebook(e.target.checked)}
+              checked={trending}
+              onChange={(e) => setTrending(e.target.checked)}
             />
             Trending
           </label>

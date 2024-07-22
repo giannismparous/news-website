@@ -30,7 +30,8 @@ const Home = () => {
         try {
             const fetchedArticles = await fetchArticles('articles');
             setArticles([...fetchedArticles].reverse());
-            setTrendingArticles([...fetchedArticles].reverse().slice(0, 3)); // Assuming the latest articles are at the top
+            setTrendingArticles([...fetchedArticles].reverse().filter(article => article.trending)  // Step 1: Filter articles that are trending
+            .slice(0, 3)); // Assuming the latest articles are at the top
         } catch (error) {
             console.error('Error fetching articles:', error);
         }

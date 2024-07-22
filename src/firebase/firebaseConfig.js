@@ -162,7 +162,8 @@ export const attemptLogin = async (username,password) => {
           date: currentDate,
           uid: newArticle.uid,
           author: newArticle.author,
-          authorImagePath: newArticle.authorImagePath
+          authorImagePath: newArticle.authorImagePath,
+          trending: newArticle.trending
         });
       }
       else {
@@ -174,6 +175,7 @@ export const attemptLogin = async (username,password) => {
           id: currentId,
           date: currentDate,
           uid: newArticle.uid,
+          trending: newArticle.trending
           // author: newArticle.author,
           // authorImagePath: newArticle.authorImagePath
         });
