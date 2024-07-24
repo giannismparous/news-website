@@ -299,6 +299,7 @@ const Home = () => {
                                 content={apopseisArticles[0].content}
                                 category={apopseisArticles[0].category}
                                 author={apopseisArticles[0].author}
+                                authorPrefix={apopseisArticles[0].authorPrefix}
                                 authorImagePath={apopseisArticles[0].authorImagePath}
                                 date={apopseisArticles[0].date}
                                 imagePath={apopseisArticles[0].imagePath}
@@ -306,32 +307,34 @@ const Home = () => {
                                 maxWordsPreview={15}
                             />
                         )}
-                        {apopseisArticles[0] && (
+                        {apopseisArticles[1] && (
                             <Article
-                                key={apopseisArticles[0].id}
-                                id={apopseisArticles[0].id}
-                                title={apopseisArticles[0].title}
-                                content={apopseisArticles[0].content}
-                                category={apopseisArticles[0].category}
-                                author={apopseisArticles[0].author}
-                                authorImagePath={apopseisArticles[0].authorImagePath}
-                                date={apopseisArticles[0].date}
-                                imagePath={apopseisArticles[0].imagePath}
+                                key={apopseisArticles[1].id}
+                                id={apopseisArticles[1].id}
+                                title={apopseisArticles[1].title}
+                                content={apopseisArticles[1].content}
+                                category={apopseisArticles[1].category}
+                                author={apopseisArticles[1].author}
+                                authorPrefix={apopseisArticles[1].authorPrefix}
+                                authorImagePath={apopseisArticles[1].authorImagePath}
+                                date={apopseisArticles[1].date}
+                                imagePath={apopseisArticles[1].imagePath}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
                             />
                         )}
-                        {apopseisArticles[0] && (
+                        {apopseisArticles[2] && (
                             <Article
-                                key={apopseisArticles[0].id}
-                                id={apopseisArticles[0].id}
-                                title={apopseisArticles[0].title}
-                                content={apopseisArticles[0].content}
-                                category={apopseisArticles[0].category}
-                                author={apopseisArticles[0].author}
-                                authorImagePath={apopseisArticles[0].authorImagePath}
-                                date={apopseisArticles[0].date}
-                                imagePath={apopseisArticles[0].imagePath}
+                                key={apopseisArticles[2].id}
+                                id={apopseisArticles[2].id}
+                                title={apopseisArticles[2].title}
+                                content={apopseisArticles[2].content}
+                                category={apopseisArticles[2].category}
+                                author={apopseisArticles[2].author}
+                                authorPrefix={apopseisArticles[2].authorPrefix}
+                                authorImagePath={apopseisArticles[2].authorImagePath}
+                                date={apopseisArticles[2].date}
+                                imagePath={apopseisArticles[2].imagePath}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
                             />

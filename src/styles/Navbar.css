@@ -125,13 +125,7 @@ body {
     width: 1.875rem;
     /* 30px */
     height: 1.875rem;
-    /* 30px */
-    margin-right: 3.125rem;
-    /* 50px */
-    cursor: pointer;
-    padding-left: 0.625rem;
-    /* 10px */
-    position: relative;
+    padding-left: 1.25rem;
 }
 
 .no-text-decoration {
@@ -273,7 +267,6 @@ body {
 
 .nav-bar-links.right {
     margin-left: auto;
-    margin-right: 6.25rem;
     /* 100px */
 }
 
@@ -317,9 +310,18 @@ body {
 
 .nav-bar-links.right {
     margin-left: auto;
-    margin-right: 6.25rem;
+    margin-right: 4rem;
     /* 100px */
 }
+
+@media (max-width: 1600px) {
+    .nav-bar-links.right {
+        margin-left: auto;
+        margin-right: 2rem;
+        /* 100px */
+    }
+}
+
 
 .ked_press {
     height: 6.75rem;
@@ -336,7 +338,7 @@ body {
     color: #e29403d3;
 }
 
-@media (max-width: 1490px) {
+@media (max-width: 1550px) {
 
     .nav-bar-links li a {
         text-decoration: none;
@@ -353,7 +355,7 @@ body {
 
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1440px) {
 
     .nav-bar-links li a {
         text-decoration: none;
@@ -417,7 +419,7 @@ body {
 
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
 
     .nav-bar-links {
@@ -432,10 +434,6 @@ body {
         height: 4rem;
         /* 100px */
     }
-
-}
-
-@media (max-width: 980px) {
 
     .logo {
         width: 13rem;

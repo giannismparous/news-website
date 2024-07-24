@@ -142,7 +142,6 @@ export const attemptLogin = async (username,password) => {
   const articlesRef = collection(db, collectionKey);
   const dateRef = doc(articlesRef, "24-06-2024");
   const infoRef = doc(articlesRef, "info");
-
   try {
     const dateDoc = await getDoc(dateRef);
     const infoDoc = await getDoc(infoRef);
@@ -162,6 +161,7 @@ export const attemptLogin = async (username,password) => {
           date: currentDate,
           uid: newArticle.uid,
           author: newArticle.author,
+          authorPrefix: newArticle.authorPrefix,
           authorImagePath: newArticle.authorImagePath,
           trending: newArticle.trending
         });
@@ -175,8 +175,9 @@ export const attemptLogin = async (username,password) => {
           id: currentId,
           date: currentDate,
           uid: newArticle.uid,
-          trending: newArticle.trending
-          // author: newArticle.author,
+          trending: newArticle.trending,
+          author: newArticle.author,
+          authorPrefix: newArticle.authorPrefix,
           // authorImagePath: newArticle.authorImagePath
         });
       }

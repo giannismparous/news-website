@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 
-const Article = ({ id, title, content, category, imagePath, authorImagePath, author, date, showContent = true, maxWordsPreview = 30 }) => {
+const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, showContent = true, maxWordsPreview = 30 }) => {
   // Function to format category names
   const formatCategoryName = (name) => {
     switch (name) {
@@ -44,8 +44,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
           <h2>{title}</h2>
           <p>
             <em>
-              {category === 'Απόψεις' ? author : formatCategoryName(category)} | {displayDate}
-            </em>
+            {category !== 'Απόψεις' ? `${formatCategoryName(category)} | ${displayDate}` : (author && author.trim() !== '' ? (authorPrefix ? `${authorPrefix} ${author}` : `Του ${author}`) + ` | ${displayDate}` : `News Room | ${displayDate}`)}            </em>
           </p>
           {showContent && (
             <div>

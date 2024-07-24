@@ -47,7 +47,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const [authorImagePath, setAuthorImagePath] = useState('');
   const [uploadOnFacebook, setUploadOnFacebook] = useState(false);
   const [trending, setTrending] = useState(false);
-  const [author, setAuthor] = useState(false);
+  const [author, setAuthor] = useState('');
+  const [authorPrefix, setAuthorPrefix] = useState('Του');
 
   const quillRef = useRef(null);
 
@@ -63,8 +64,9 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           setDate(fetchedArticle.date);
           setImagePath(fetchedArticle.imagePath);
           setAuthor(fetchedArticle.author || '');
+          setAuthorPrefix(fetchedArticle.authorPrefix || 'Του');
           setAuthorImagePath(fetchedArticle.authorImagePath || '');
-          setAuthorImagePath(fetchedArticle.trending || false);
+          setTrending(fetchedArticle.trending || false);
         }
       } else {
         setId(null);
@@ -74,6 +76,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         setDate('');
         setImagePath('');
         setAuthor('');
+        setAuthorPrefix('Του');
         setAuthorImagePath('');
         setTrending(false);
       }
@@ -149,16 +152,11 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         category: formattedCategory,
         uid,
         imagePath,
-        trending
+        trending,
+        author,
+        authorPrefix,
+        authorImagePath
       };
-
-      if (category === 'Απόψεις') {
-        newArticle = {
-          ...newArticle,
-          author,
-          authorImagePath,
-        };
-      }
 
       if (!article) {
         if (image) {
@@ -277,22 +275,40 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           <option value="Εργασία">Εργασία</option>
           <option value="Δικαστικά">Δικαστικά</option>
         </select>
-        {category === 'Απόψεις' && (
-          <>
-            <input
-              type="text"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="Author Name"
-              required
-            />
-            <div>
-              <span>Ανεβάστε φωτογραφία συντάκτη: </span>
-              <input type="file" onChange={handleAuthorImageUpload} />
-              {authorImagePath && <img src={authorImagePath} alt="Author" />}
-            </div>
-          </>
-        )}
+        <div className="author-section">
+          <input
+            type="text"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            placeholder="Author Name"
+          />
+          <div className="prefix-section">
+            <label>
+              <input
+                type="radio"
+                value="Του"
+                checked={authorPrefix === 'Του'}
+                onChange={(e) => setAuthorPrefix(e.target.value)}
+              />
+              Του
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Της"
+                checked={authorPrefix === 'Της'}
+                onChange={(e) => setAuthorPrefix(e.target.value)}
+              />
+              Της
+            </label>
+          </div>
+          {category==="Απόψεις" && 
+          <div>
+          <span>Ανεβάστε φωτογραφία συντάκτη: </span>
+          <input type="file" onChange={handleAuthorImageUpload} />
+          {authorImagePath && <img src={authorImagePath} alt="Author" />}
+        </div>}
+        </div>
         <ReactQuill
           ref={quillRef}
           value={content}

@@ -50,7 +50,7 @@ const Navbar = () => {
 
 
     const isMobile = useMediaQuery({ maxWidth: 768 });
-    const isMobile2 = useMediaQuery({ maxWidth: 980 });
+    const isMobile2 = useMediaQuery({ maxWidth: 1010 });
 
     useEffect(() => {
       const handleScroll = () => {
@@ -194,7 +194,6 @@ const Navbar = () => {
                           ? syntaktesBlackImgPath
                           : syntaktesWhiteImgPath
                       }
-                      
                       alt="Company Logo"
                       className="logo"
                     />
@@ -223,32 +222,7 @@ const Navbar = () => {
                   <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Πολιτική</Link></li>
                   <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>
                   <li><Link to="/category/Παρασκηνια" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
-                  <li><Link to="/category/Kedpress_ΕΣΗΕΑ" onMouseEnter={handleMouseEnterKedPress}
-                  onMouseLeave={handleMouseLeaveKedPress}><img 
-                  src={
-                    kedPressIsHovered
-                      ? kedpressOrangeImgPath
-                      : isHovered
-                      ? kedpressBlackImgPath
-                      : scrollPosition === 0
-                      ? kedpressBlackImgPath
-                      : kedpressBlackImgPath
-                  }
-                  alt="KedPress"
-                  className="ked_press"
-                  /></Link></li>
-                  <li className='eshea-text'><Link
-          to="/category/Απόψεις"
-          className={`nav-link-item ${
-            scrollPosition === 0 && !isHovered && !isMobile ? 'colored' : 'white'
-          } ${kedPressIsHovered ? 'hovered-kedpress' : ''}`}
-          onMouseEnter={handleMouseEnterKedPress}
-                  onMouseLeave={handleMouseLeaveKedPress}
-        >/EΣΗΕΑ</Link></li>
-                </ul>}
-                {!isMobile2 && !isMobile && <div className="nav-bar-vertical">
-                  <ul className='nav-bar-links right'>
-                    <li><Link to="/podcasts" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterPodcast}
+                  <li><Link to="/podcasts" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterPodcast}
                   onMouseLeave={handleMouseLeavePodcast}><span >Podcast</span><img 
                   src={
                     podcastIsHovered
@@ -259,7 +233,7 @@ const Navbar = () => {
                       ? podcastBlackImgPath
                       : podcastWhiteImgPath
                   }
-                  alt="Search"
+                  alt="Podcast"
                   className="podcast"
                   /></Link></li>
                     <li><Link to="/videotv" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterTv}
@@ -277,9 +251,7 @@ const Navbar = () => {
                   alt="Search"
                   className="tv"
                   /></Link></li>
-                  </ul>
-                  <div >
-                    <Link to="/radio" className={`search-text nav-link-item no-text-decoration ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterRadio}
+                   <li> <Link to="/radio" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterRadio}
                   onMouseLeave={handleMouseLeaveRadio}>
                     <span className='search-span' >Radio</span><img 
                   src={
@@ -295,7 +267,33 @@ const Navbar = () => {
                   className="radio"
                   />
                   </Link>
-                  </div>
+                  </li>
+                </ul>}
+                {!isMobile2 && !isMobile && <div className="nav-bar-vertical">
+                  <ul className='nav-bar-links right'>
+                  <li><Link to="/category/Kedpress_ΕΣΗΕΑ" onMouseEnter={handleMouseEnterKedPress}
+                  onMouseLeave={handleMouseLeaveKedPress}><img 
+                  src={
+                    kedPressIsHovered
+                      ? kedpressOrangeImgPath
+                      : isHovered
+                      ? kedpressBlackImgPath
+                      : scrollPosition === 0
+                      ? kedpressBlackImgPath
+                      : kedpressBlackImgPath
+                  }
+                  alt="KedPress"
+                  className="ked_press"
+                  /></Link></li>
+                    <li className='eshea-text'><Link
+          to="/category/Απόψεις"
+          className={`nav-link-item ${
+            scrollPosition === 0 && !isHovered && !isMobile ? 'colored' : 'white'
+          } ${kedPressIsHovered ? 'hovered-kedpress' : ''}`}
+          onMouseEnter={handleMouseEnterKedPress}
+                  onMouseLeave={handleMouseLeaveKedPress}
+        >/EΣΗΕΑ</Link></li>
+                  </ul>
                 </div>}
             </nav>
             <div className={sidebar ? 'sidebar active' : 'sidebar'}>

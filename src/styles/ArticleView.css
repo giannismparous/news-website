@@ -140,6 +140,11 @@
     gap: 30px;
 }
 
+.author-text {
+    text-align: left;
+    font-size: large;
+}
+
 @media (max-width: 1040px) {
 
     .article-view-container .article p {

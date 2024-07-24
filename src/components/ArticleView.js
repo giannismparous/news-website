@@ -89,6 +89,7 @@ const ArticleView = () => {
           <div className='article-content'>
             {article.imagePath && <img src={article.imagePath} alt={article.title} />}
             <h1>{article.title}</h1>
+            <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
             <div className='share-buttons'>
               <strong>Κοινοποιήστε αυτό το άρθρο:</strong>
               <FacebookShareButton url={shareUrl} quote={title} hashtag={`#${article.category}`}>
