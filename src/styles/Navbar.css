@@ -324,7 +324,10 @@ body {
 
 
 .ked_press {
-    height: 6.75rem;
+    height: 5rem;
+    bottom: 10px;
+    right: 5px;
+    position: relative;
     /* 108px */
 }
 
@@ -442,4 +445,11 @@ body {
         position: relative;
         padding-left: 4rem
     }
+}
+
+/* Add this to your CSS */
+.nav-bar-links li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }

@@ -7,6 +7,7 @@ import '../styles/ArticleView.css'; // Import the CSS file for ArticleView
 import SmallArticle from './SmallArticle'; // Import SmallArticle component
 import Article from './Article';
 import { useMediaQuery } from 'react-responsive';
+import { Helmet } from 'react-helmet-async';
 
 const ArticleView = () => {
 
@@ -67,6 +68,17 @@ const ArticleView = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{article.title}</title>
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.content} />
+        <meta property="og:image" content={article.imagePath} />
+        <meta property="og:url" content={`https://syntaktes.com/articles/${articleId}`} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content={article.title} />
+        <meta property="twitter:description" content={article.content} />
+        <meta property="twitter:image" content={article.imagePath} />
+    </Helmet>
       <div className='article-view-container'>
         {!isMobile && <div className='left-column'>
           <div className='article-view-details'>
