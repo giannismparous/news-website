@@ -78,7 +78,7 @@ const ArticleView = () => {
         <meta property="twitter:title" content={article.title} />
         <meta property="twitter:description" content={article.content} />
         <meta property="twitter:image" content={article.imagePath} />
-    </Helmet>
+      </Helmet>
       <div className='article-view-container'>
         {!isMobile && <div className='left-column'>
           <div className='article-view-details'>
