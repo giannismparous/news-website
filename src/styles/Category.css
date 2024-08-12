@@ -13,7 +13,15 @@
 .category-container h1 {
     margin-bottom: 50px;
     font-size: 2.5rem;
+    position: relative;
+    text-decoration: underline;
+    text-decoration-color: #e29403d3;
+    text-decoration-thickness: 10px;
+    text-underline-offset: 0.3em;
+    text-decoration-skip-ink: none;
 }
+
+
 
 .category-container .article {
     display: flex;
