@@ -305,6 +305,7 @@ const Home = () => {
                                 imagePath={apopseisArticles[0].imagePath}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
+                                apopsi={true}
                             />
                         )}
                         {apopseisArticles[1] && (
@@ -321,6 +322,7 @@ const Home = () => {
                                 imagePath={apopseisArticles[1].imagePath}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
+                                apopsi={true}
                             />
                         )}
                         {apopseisArticles[2] && (
@@ -337,6 +339,7 @@ const Home = () => {
                                 imagePath={apopseisArticles[2].imagePath}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
+                                apopsi={true}
                             />
                         )}
                     </div>

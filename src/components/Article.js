@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 
-const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, showContent = true, maxWordsPreview = 30 }) => {
+const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, showContent = true, maxWordsPreview = 25, apopsi=false }) => {
   // Function to format category names
   const formatCategoryName = (name) => {
     switch (name) {
@@ -33,7 +33,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
   return (
     <div className="article">
       <Link to={`/articles/${id}`} className="article-link">
-        {category === 'Απόψεις' ? (
+        {apopsi && category === 'Απόψεις' ? (
           <img src={authorImagePath} alt={author} className="article-image profile-pic" />
         ) : (
           imagePath && <img src={imagePath} alt={title} className="article-image" />
