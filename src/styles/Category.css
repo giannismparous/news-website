@@ -38,6 +38,11 @@
     height: 300px;
 }
 
+.category-container .category-apopsi .article-image {
+    width: 250px;
+    height: 250px;
+}
+
 /* Responsive Design */
 @media (max-width: 1450px) {
     .category-container {
@@ -92,6 +97,11 @@
     .category-container .article .article-image {
         width: 100%;
     }
+
+    .category-container .category-apopsi .article-image {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 /* Responsive Design */
@@ -106,6 +116,11 @@
 
     .category-container .article .article-image {
         width: 100%;
+    }
+
+    .category-container .category-apopsi .article-image {
+        width: 180px;
+        height: 180px;
     }
 }
 
@@ -122,5 +137,10 @@
     .category-container .article .article-image {
         width: 100%;
         height: auto;
+    }
+
+    .category-container .category-apopsi .article-image {
+        width: 150px;
+        height: 150px;
     }
 }

@@ -37,141 +37,162 @@ const Home = () => {
         }
     };
 
-    const fetchPolitikiArticles = async () => {
-        try {
-            const fetchedPolitikiArticles = await fetchArticlesByCategory('articles', 'Πολιτική');
-            setPolitikiArticles([...fetchedPolitikiArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
-        } catch (error) {
-            console.error('Error fetching Πολιτική articles:', error);
-        }
+    const filterArticlesByCategory = (category) => {
+        const filtered = articles.filter(article => article.category === category);
+        return filtered.slice(0, 9)
     };
 
-    const fetchApopseisArticles = async () => {
-        try {
-            const fetchedApopseisArticles = await fetchArticlesByCategory('articles', 'Απόψεις');
-            setApopseisArticles([...fetchedApopseisArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
-        } catch (error) {
-            console.error('Error fetching Απόψεις articles:', error);
-        }
-    };
+    // const fetchPolitikiArticles = async () => {
+    //     try {
+    //         const fetchedPolitikiArticles = await fetchArticlesByCategory('articles', 'Πολιτική');
+    //         setPolitikiArticles([...fetchedPolitikiArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
+    //     } catch (error) {
+    //         console.error('Error fetching Πολιτική articles:', error);
+    //     }
+    // };
 
-    const fetchParaskiniaArticles = async () => {
-        try {
-            const fetchedParaskiniaArticles = await fetchArticlesByCategory('articles', 'Παρασκήνια');
-            setParaskiniaArticles([...fetchedParaskiniaArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
-        } catch (error) {
-            console.error('Error fetching Παρασκήνια articles:', error);
-        }
-    };
+    // const fetchApopseisArticles = async () => {
+    //     try {
+    //         const fetchedApopseisArticles = await fetchArticlesByCategory('articles', 'Απόψεις');
+    //         setApopseisArticles([...fetchedApopseisArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
+    //     } catch (error) {
+    //         console.error('Error fetching Απόψεις articles:', error);
+    //     }
+    // };
 
-    const fetchKedpressEsheaArticles = async () => {
-        try {
-            const fetchedKedpressEsheaArticles = await fetchArticlesByCategory('articles', 'Kedpress_ΕΣΗΕΑ');
-            setKedpressEsheaArticles([...fetchedKedpressEsheaArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Kedpress ΕΣΗΕΑ articles:', error);
-        }
-    };
+    // const fetchParaskiniaArticles = async () => {
+    //     try {
+    //         const fetchedParaskiniaArticles = await fetchArticlesByCategory('articles', 'Παρασκήνια');
+    //         setParaskiniaArticles([...fetchedParaskiniaArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
+    //     } catch (error) {
+    //         console.error('Error fetching Παρασκήνια articles:', error);
+    //     }
+    // };
 
-    const fetchEktosSynorwnArticles = async () => {
-        try {
-            const fetchedEktosSynorwnArticles = await fetchArticlesByCategory('articles', 'Εκτός_Συνόρων');
-            setEktosSynorwnArticles([...fetchedEktosSynorwnArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Εκτός Συνόρων articles:', error);
-        }
-    };
+    // const fetchKedpressEsheaArticles = async () => {
+    //     try {
+    //         const fetchedKedpressEsheaArticles = await fetchArticlesByCategory('articles', 'Kedpress_ΕΣΗΕΑ');
+    //         setKedpressEsheaArticles([...fetchedKedpressEsheaArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Kedpress ΕΣΗΕΑ articles:', error);
+    //     }
+    // };
 
-    const fetchAgoraKatanalwtesArticles = async () => {
-        try {
-            const fetchedAgoraKatanalwtesArticles = await fetchArticlesByCategory('articles', 'Αγορά_Καταναλωτές');
-            setAgoraKatanalwtesArticles([...fetchedAgoraKatanalwtesArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Αγορά/ Καταναλωτές articles:', error);
-        }
-    };
+    // const fetchEktosSynorwnArticles = async () => {
+    //     try {
+    //         const fetchedEktosSynorwnArticles = await fetchArticlesByCategory('articles', 'Εκτός_Συνόρων');
+    //         setEktosSynorwnArticles([...fetchedEktosSynorwnArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Εκτός Συνόρων articles:', error);
+    //     }
+    // };
 
-    const fetchPlusLifeArticles = async () => {
-        try {
-            const fetchedPlusLifeArticles = await fetchArticlesByCategory('articles', 'Plus_Life');
-            setPlusLifeArticles([...fetchedPlusLifeArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Plus/ Life articles:', error);
-        }
-    };
+    // const fetchAgoraKatanalwtesArticles = async () => {
+    //     try {
+    //         const fetchedAgoraKatanalwtesArticles = await fetchArticlesByCategory('articles', 'Αγορά_Καταναλωτές');
+    //         setAgoraKatanalwtesArticles([...fetchedAgoraKatanalwtesArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Αγορά/ Καταναλωτές articles:', error);
+    //     }
+    // };
 
-    const fetchSporArticles = async () => {
-        try {
-            const fetchedSporArticles = await fetchArticlesByCategory('articles', 'Σπορ');
-            setSporArticles([...fetchedSporArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Σπορ articles:', error);
-        }
-    };
+    // const fetchPlusLifeArticles = async () => {
+    //     try {
+    //         const fetchedPlusLifeArticles = await fetchArticlesByCategory('articles', 'Plus_Life');
+    //         setPlusLifeArticles([...fetchedPlusLifeArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Plus/ Life articles:', error);
+    //     }
+    // };
 
-    const fetchArtArticles = async () => {
-        try {
-            const fetchedArtArticles = await fetchArticlesByCategory('articles', 'Art');
-            setArtArticles([...fetchedArtArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Art articles:', error);
-        }
-    };
+    // const fetchSporArticles = async () => {
+    //     try {
+    //         const fetchedSporArticles = await fetchArticlesByCategory('articles', 'Σπορ');
+    //         setSporArticles([...fetchedSporArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Σπορ articles:', error);
+    //     }
+    // };
 
-    const fetchPetArticles = async () => {
-        try {
-            const fetchedPetArticles = await fetchArticlesByCategory('articles', 'Pet');
-            setPetArticles([...fetchedPetArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Pet articles:', error);
-        }
-    };
+    // const fetchArtArticles = async () => {
+    //     try {
+    //         const fetchedArtArticles = await fetchArticlesByCategory('articles', 'Art');
+    //         setArtArticles([...fetchedArtArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Art articles:', error);
+    //     }
+    // };
 
-    const fetchYgeiaSyntaxeisArticles = async () => {
-        try {
-            const fetchedYgeiaSyntaxeisArticles = await fetchArticlesByCategory('articles', 'Υγεία_Συντάξεις');
-            setYgeiaSyntaxeisArticles([...fetchedYgeiaSyntaxeisArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Υγεία/ Συντάξεις articles:', error);
-        }
-    };
+    // const fetchPetArticles = async () => {
+    //     try {
+    //         const fetchedPetArticles = await fetchArticlesByCategory('articles', 'Pet');
+    //         setPetArticles([...fetchedPetArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Pet articles:', error);
+    //     }
+    // };
+
+    // const fetchYgeiaSyntaxeisArticles = async () => {
+    //     try {
+    //         const fetchedYgeiaSyntaxeisArticles = await fetchArticlesByCategory('articles', 'Υγεία_Συντάξεις');
+    //         setYgeiaSyntaxeisArticles([...fetchedYgeiaSyntaxeisArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Υγεία/ Συντάξεις articles:', error);
+    //     }
+    // };
 
 
-    const fetchErgasiaArticles = async () => {
-        try {
-            const fetchedErgasiaArticles = await fetchArticlesByCategory('articles', 'Εργασία');
-            setErgasiaArticles([...fetchedErgasiaArticles].reverse().slice(0, 5));
-        } catch (error) {
-            console.error('Error fetching Εργασία articles:', error);
-        }
-    };
+    // const fetchErgasiaArticles = async () => {
+    //     try {
+    //         const fetchedErgasiaArticles = await fetchArticlesByCategory('articles', 'Εργασία');
+    //         setErgasiaArticles([...fetchedErgasiaArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Εργασία articles:', error);
+    //     }
+    // };
 
-    const fetchDikastikaArticles = async () => {
-        try {
-            const fetchedDikastikaArticles = await fetchArticlesByCategory('articles', 'Δικαστικά');
-            setDikastikaArticles([...fetchedDikastikaArticles].reverse().slice(0, 5)); // Fetching top 5 articles for Οικονομία
-        } catch (error) {
-            console.error('Error fetching Δικαστικά articles:', error);
-        }
-    };
+    // const fetchDikastikaArticles = async () => {
+    //     try {
+    //         const fetchedDikastikaArticles = await fetchArticlesByCategory('articles', 'Δικαστικά');
+    //         setDikastikaArticles([...fetchedDikastikaArticles].reverse().slice(0, 5)); // Fetching top 5 articles for Οικονομία
+    //     } catch (error) {
+    //         console.error('Error fetching Δικαστικά articles:', error);
+    //     }
+    // };
 
 
     useEffect(() => {
         fetchArticlesFromServer();
-        fetchPolitikiArticles();
-        fetchApopseisArticles();
-        fetchParaskiniaArticles();
-        fetchKedpressEsheaArticles();
-        fetchEktosSynorwnArticles();
-        fetchAgoraKatanalwtesArticles();
-        fetchPlusLifeArticles();
-        fetchSporArticles();
-        fetchArtArticles();
-        fetchPetArticles();
-        fetchYgeiaSyntaxeisArticles();
-        fetchErgasiaArticles();
-        fetchDikastikaArticles();
+        // fetchPolitikiArticles();
+        // fetchApopseisArticles();
+        // fetchParaskiniaArticles();
+        // fetchKedpressEsheaArticles();
+        // fetchEktosSynorwnArticles();
+        // fetchAgoraKatanalwtesArticles();
+        // fetchPlusLifeArticles();
+        // fetchSporArticles();
+        // fetchArtArticles();
+        // fetchPetArticles();
+        // fetchYgeiaSyntaxeisArticles();
+        // fetchErgasiaArticles();
+        // fetchDikastikaArticles();
     }, []);
+
+    useEffect(() => {
+        setPolitikiArticles(filterArticlesByCategory("Πολιτική"));
+        setApopseisArticles(filterArticlesByCategory("Απόψεις"));
+        setParaskiniaArticles(filterArticlesByCategory("Παρασκήνια"));
+        setKedpressEsheaArticles(filterArticlesByCategory("Kedpress_ΕΣΗΕΑ"));
+        setEktosSynorwnArticles(filterArticlesByCategory("Εκτός_Συνόρων"));
+        setAgoraKatanalwtesArticles(filterArticlesByCategory("Αγορά_Καταναλωτές"));
+        setPlusLifeArticles(filterArticlesByCategory("Plus_Life"));
+        setSporArticles(filterArticlesByCategory("Σπορ"));
+        setArtArticles(filterArticlesByCategory("Art"));
+        setPetArticles(filterArticlesByCategory("Pet"));
+        setYgeiaSyntaxeisArticles(filterArticlesByCategory("Υγεία_Συντάξεις"));
+        setErgasiaArticles(filterArticlesByCategory("Εργασία"));
+        setDikastikaArticles(filterArticlesByCategory("Δικαστικά"));
+    }, [articles]);
 
     const latestArticles = articles.slice(0, 4);
 

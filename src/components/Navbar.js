@@ -221,7 +221,7 @@ const Navbar = () => {
                 {!isMobile && <ul className='nav-bar-links'>
                   <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Πολιτική</Link></li>
                   <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>
-                  <li><Link to="/category/Παρασκηνια" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
+                  <li><Link to="/category/Παρασκήνια" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
                   <li><Link to="/podcasts" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterPodcast}
                   onMouseLeave={handleMouseLeavePodcast}><span >Podcast</span><img 
                   src={
@@ -286,7 +286,7 @@ const Navbar = () => {
                   className="ked_press"
                   /></Link></li>
                     <li className='eshea-text'><Link
-          to="/category/Απόψεις"
+          to="/category/Kedpress_ΕΣΗΕΑ"
           className={`nav-link-item ${
             scrollPosition === 0 && !isHovered && !isMobile ? 'colored' : 'white'
           } ${kedPressIsHovered ? 'hovered-kedpress' : ''}`}

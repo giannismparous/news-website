@@ -102,22 +102,54 @@ export const attemptLogin = async (username,password) => {
     return [];
   };
 
-  export const fetchArticlesByTitle = async (collectionKey, query) => {
-    const articlesRef = collection(db, collectionKey);
-    const dateRef = doc(articlesRef, "24-06-2024"); // Adjust the date accordingly
-    const dateDoc = await getDoc(dateRef);
-    if (dateDoc.exists()) {
-      const articlesData = dateDoc.data().articles;
-      const articles = articlesData.filter(article => !article.deleted);
-      const filteredArticles = articles.filter(article => article.title.toLowerCase().includes(query.toLowerCase()));
-      console.log("Fetched articles by title:", filteredArticles);
-      return filteredArticles;
-    }
-  
-    console.log("Date doc does not exist or no articles found.");
-    return [];
-  };
-  
+// export const fetchLastArticlesByCategory = async (collectionKey, category, num) => {
+//     const articlesRef = collection(db, collectionKey); // Assuming collectionKey is the name of your collection
+
+//     const articlesQuery = query(
+//         articlesRef,
+//         where("category", "==", category),
+//         orderBy("id", "desc"),
+//         limit(num)
+//     );
+
+//     try {
+//         const querySnapshot = await getDocs(articlesQuery);
+//         const articles = querySnapshot.docs.map(doc => doc.data());
+//         const filteredArticles = articles.filter(article => !article.deleted);
+
+//         console.log("Fetched articles:", filteredArticles);
+//         return filteredArticles;
+//     } catch (error) {
+//         console.error("Error fetching articles:", error);
+//         return [];
+//     }
+// };
+
+export const fetchArticlesByTitle = async (collectionKey, query) => {
+  const articlesRef = collection(db, collectionKey);
+  const dateRef = doc(articlesRef, "24-06-2024"); // Adjust the date accordingly
+  const dateDoc = await getDoc(dateRef);
+
+  if (dateDoc.exists()) {
+    const articlesData = dateDoc.data().articles;
+    const articles = articlesData.filter(article => !article.deleted);
+
+    // Normalize the query
+    const normalizedQuery = query.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+    // Filter articles by normalized title
+    const filteredArticles = articles.filter(article => {
+      const normalizedTitle = article.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      return normalizedTitle.includes(normalizedQuery);
+    });
+
+    console.log("Fetched articles by title:", filteredArticles);
+    return filteredArticles;
+  }
+
+  console.log("Date doc does not exist or no articles found.");
+  return [];
+};
 
   export const fetchArticleById = async (collectionKey, article_id) => {
 

@@ -20,10 +20,9 @@ const Search = () => {
   };
 
   useEffect(() => {
-    console.log("query")
     console.log(query)
     fetchArticlesFromServer();
-  }, []);
+  }, [query]);
 
   return (
     <div className='search-container'>

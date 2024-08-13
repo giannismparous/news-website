@@ -46,10 +46,13 @@ const Category = () => {
     }
   };
 
+  const className = formatCategoryName(categoryName) === "Απόψεις" ? 'category-apopsi' : '';
+
   return (
     <>
       <div className='category-container'>
         <h1>{formatCategoryName(categoryName)}</h1>
+        <div className={className}>
         {articles.map(article => (
             <Article
               key={article.id}
@@ -60,9 +63,12 @@ const Category = () => {
               author={article.author}
               date={article.date}
               imagePath={article.imagePath}
+              authorImagePath={article.authorImagePath}
               showContent={!isMobile}
+              apopsi={true}
             />
         ))}
+        </div>
       </div>
       <div className="container">
         <h1>Δείτε επίσης</h1>
