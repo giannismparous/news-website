@@ -86,9 +86,11 @@ const Admin = () => {
                     content={article.content}
                     category={article.category}
                     imagePath={article.imagePath}
+                    authorImagePath={article.authorImagePath}
                     date={article.date}
                     author={article.author}
                     authorPrefix={article.authorPrefix}
+                    apopsi={true}
                   />
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
