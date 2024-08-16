@@ -5,12 +5,15 @@ import Article from './Article';
 import '../styles/Category.css'; // Import the new CSS file for the category page
 import SmallArticle from './SmallArticle';
 import { useMediaQuery } from 'react-responsive';
+import { ClockLoader } from 'react-spinners';
 
 const Category = () => {
   const { categoryName } = useParams();
 
   const [articles, setArticles] = useState([]);
   const [latestArticles, setLatestArticles] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const isMobile = useMediaQuery({ maxWidth: 550 });
 
@@ -20,8 +23,10 @@ const Category = () => {
       const fetchedLatestArticles = await fetchArticles('articles');
       setArticles([...fetchedArticles].reverse());
       setLatestArticles([...fetchedLatestArticles].reverse());
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching articles:', error);
+      setLoading(false);
     }
   };
 
@@ -47,6 +52,14 @@ const Category = () => {
   };
 
   const className = formatCategoryName(categoryName) === "Απόψεις" ? 'category-apopsi' : '';
+
+  if (loading) {
+    return (
+        <div className="spinner-container">
+            <ClockLoader color="#e29403d3" loading={loading} size={150} />
+        </div>
+    );
+}
 
   return (
     <>

@@ -38,13 +38,13 @@ body {
     width: 2.1875rem;
     /* 35px */
     height: 2.1875rem;
+    padding-bottom: 0.25rem;
     /* 35px */
-    padding-left: 0.9375rem;
     /* 15px */
 }
 
 .tv {
-    padding-left: 1.25rem;
+    padding-left: 0.25rem;
     /* 20px */
 }
 
@@ -125,7 +125,6 @@ body {
     width: 1.875rem;
     /* 30px */
     height: 1.875rem;
-    padding-left: 1.25rem;
 }
 
 .no-text-decoration {
@@ -397,6 +396,16 @@ body {
 
     .eshea-text {
         right: 2rem;
+    }
+
+    .podcast,
+    .tv,
+    .radio {
+        width: 1.8rem;
+        /* 35px */
+        height: 1.8rem;
+        /* 35px */
+        /* 15px */
     }
 
 }

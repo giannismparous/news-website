@@ -236,21 +236,6 @@ const Navbar = () => {
                   alt="Podcast"
                   className="podcast"
                   /></Link></li>
-                    <li><Link to="/videotv" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterTv}
-                  onMouseLeave={handleMouseLeaveTv}><span>VideoTV</span><img 
-                  src={
-                    tvIsHovered
-                      ? tvOrangeImgPath
-                      : isHovered
-                      ? tvWhiteImgPath
-                      : scrollPosition === 0
-                      ? tvBlackImgPath
-                      : tvWhiteImgPath
-                  }
-                  
-                  alt="Search"
-                  className="tv"
-                  /></Link></li>
                    <li> <Link to="/radio" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterRadio}
                   onMouseLeave={handleMouseLeaveRadio}>
                     <span className='search-span' >Radio</span><img 
@@ -268,6 +253,21 @@ const Navbar = () => {
                   />
                   </Link>
                   </li>
+                  <li><Link to="/videotv" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`} onMouseEnter={handleMouseEnterTv}
+                  onMouseLeave={handleMouseLeaveTv}><span>VideoTV</span><img 
+                  src={
+                    tvIsHovered
+                      ? tvOrangeImgPath
+                      : isHovered
+                      ? tvWhiteImgPath
+                      : scrollPosition === 0
+                      ? tvBlackImgPath
+                      : tvWhiteImgPath
+                  }
+                  
+                  alt="Search"
+                  className="tv"
+                  /></Link></li>
                 </ul>}
                 {!isMobile2 && !isMobile && <div className="nav-bar-vertical">
                   <ul className='nav-bar-links right'>

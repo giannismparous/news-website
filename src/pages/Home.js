@@ -7,6 +7,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { ClockLoader } from 'react-spinners';
 
 const Home = () => {
 
@@ -26,14 +27,18 @@ const Home = () => {
     const [ergasiaArticles, setErgasiaArticles] = useState([]);
     const [dikastikaArticles, setDikastikaArticles] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     const fetchArticlesFromServer = async () => {
         try {
             const fetchedArticles = await fetchArticles('articles');
             setArticles([...fetchedArticles].reverse());
             setTrendingArticles([...fetchedArticles].reverse().filter(article => article.trending)  // Step 1: Filter articles that are trending
             .slice(0, 5)); // Assuming the latest articles are at the top
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching articles:', error);
+            setLoading(false);
         }
     };
 
@@ -215,8 +220,16 @@ const Home = () => {
         }
       };
 
+    if (loading) {
+        return (
+            <div className="spinner-container">
+                <ClockLoader color="#e29403d3" loading={loading} size={150} />
+            </div>
+        );
+    }
+
     return (
-        <>
+        <div className='home-container'>
             <div className="trending-container">
                 <Carousel showThumbs={false} autoPlay infiniteLoop>
                     {trendingArticles.map(article => (
@@ -820,7 +833,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
