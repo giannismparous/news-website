@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import '../styles/VideoTV.css';
 import React from 'react';
 
@@ -12,8 +13,13 @@ const VideoTV = () => {
 
   return (
     <div className="videotv-container">
+      <Helmet>
+          <title>Podcasts</title>  
+          <meta name="description" content={`Τα τελευταία podcasts του syntaktes.gr`}/>
+          <link rel="canonical" href={`/podcasts`}/>
+      </Helmet>
       <h2 className="videotv-header">Δείτε τις τελευταίες μας εκπομπές</h2>
-      {videoUrls.map((url) => (
+      {/* {videoUrls.map((url) => (
         <div className="video-container" key={url}>
           <iframe
             width="560"
@@ -37,7 +43,7 @@ const VideoTV = () => {
             allowFullScreen
           ></iframe>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

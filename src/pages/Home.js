@@ -8,6 +8,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { ClockLoader } from 'react-spinners';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
 
@@ -230,6 +231,11 @@ const Home = () => {
 
     return (
         <div className='home-container'>
+            <Helmet>
+                <title>Syntaktes</title>  
+                <meta name="description" content="Στην ιστοσελίδα syntaktes.gr δημοσιογράφοι και ειδικοί συνεργάτες αποκαλύπτουν, καταγράφουν και αναλύουν τα γεγονότα, χωρίς δεσμεύσεις. Η άλλη όψη του νομίσματος είναι εδώ."/>
+                <link rel="canonical" href="/"/>
+            </Helmet>
             <div className="trending-container">
                 <Carousel showThumbs={false} autoPlay infiniteLoop>
                     {trendingArticles.map(article => (

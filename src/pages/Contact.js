@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Contact.css'; // Import the Contact CSS
+import { Helmet } from 'react-helmet-async';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -30,6 +31,11 @@ const Contact = () => {
 
     return (
         <div className="contact-container">
+            <Helmet>
+                <title>Επικοινωνία</title>  
+                <meta name="description" content="Επικοινωνία με τα μέλη του Syntaktes.gr"/>
+                <link rel="canonical" href="/contact"/>
+            </Helmet>
             <h1>Επικοινωνήστε</h1>
             <form className="contact-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Όνομα</label>

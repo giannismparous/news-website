@@ -14,6 +14,7 @@ import Podcasts from './pages/Podcasts';
 import About from './pages/About';
 import VideoTV from './pages/VideoTV';
 import Radio from './pages/Radio';
+import Terms from './pages/Terms';
 
 const App = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -63,6 +64,7 @@ const App = () => {
         <Route path="/admin" element={<Admin />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/terms" element={<Terms />} />
         <Route path="/articles/:articleId" element={<ArticleView />} />
         <Route path="/:articleId" element={<ArticleView />} />
         <Route path="/search/:query" element={<Search />} />

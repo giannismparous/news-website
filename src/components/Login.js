@@ -19,11 +19,11 @@ const Login = ({ onLogin }) => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Login</h2>
+        <h2>Σύνδεση</h2>
         <form onSubmit={handleLogin}>
           <input type="text" name="username" placeholder="Username" required />
           <input type="password" name="password" placeholder="Password" required />
-          <button type="submit">Login</button>
+          <button type="submit">Σύνδεση</button>
         </form>
       </div>
     </div>

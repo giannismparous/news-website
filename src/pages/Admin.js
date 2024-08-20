@@ -77,7 +77,7 @@ const Admin = () => {
             <ArticleEditor article={selectedArticle} onArticleAdded={fetchArticlesFromServer} uid={uid} />
           ) : (
             <div>
-              <h1 className="admin-header">All Articles</h1>
+              <h1 className="admin-header">Όλες οι δημοσιεύσεις</h1>
               {articles.map((article) => (
                 <div key={article.id} className="article-container">
                   <Article
@@ -106,9 +106,9 @@ const Admin = () => {
         <>
           <div className="backdrop" />
           <div className="confirmation-dialog">
-            <p>Are you sure you want to delete this article?</p>
-            <button className="confirm-button" onClick={handleDelete}>Yes</button>
-            <button className="cancel-button" onClick={cancelDelete}>No</button>
+            <p>Είστε σίγουροι ότι θέλετε να διαγράψετε το άρθρο?</p>
+            <button className="confirm-button" onClick={handleDelete}>Ναι</button>
+            <button className="cancel-button" onClick={cancelDelete}>Όχι</button>
           </div>
         </>
       )}

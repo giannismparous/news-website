@@ -6,6 +6,7 @@ import '../styles/Category.css'; // Import the new CSS file for the category pag
 import SmallArticle from './SmallArticle';
 import { useMediaQuery } from 'react-responsive';
 import { ClockLoader } from 'react-spinners';
+import { Helmet } from 'react-helmet-async';
 
 const Category = () => {
   const { categoryName } = useParams();
@@ -63,6 +64,11 @@ const Category = () => {
 
   return (
     <>
+      <Helmet>
+          <title>{categoryName}</title>  
+          <meta name="description" content={`Τα άρθρα που ανοίκουν στην κατηγορία ${categoryName} στην ιστοσελίδα "Syntaktes"`}/>
+          <link rel="canonical" href={`/category/${categoryName}`}/>
+      </Helmet>
       <div className='category-container'>
         <h1>{formatCategoryName(categoryName)}</h1>
         <div className={className}>

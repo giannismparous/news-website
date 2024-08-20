@@ -1,18 +1,16 @@
-.about-container {
+.terms-container {
     padding-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 200px;
-    margin-bottom: 120px;
 }
 
-.about-container h1 {
+.terms-container h1 {
     font-size: 3.5rem;
 }
 
-.about-container p {
+.terms-container p {
     font-size: 1.6rem;
     padding-left: 100px;
     padding-right: 100px;
