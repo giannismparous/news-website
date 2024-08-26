@@ -3,7 +3,7 @@ import '../styles/ArticleEditor.css';
 import ArticleEditor from '../components/ArticleEditor';
 import Article from '../components/Article';
 import Login from '../components/Login';
-import { fetchArticles, deleteArticle } from '../firebase/firebaseConfig';
+import { fetchArticles, deleteArticle, sendNewsletterAndUpdate } from '../firebase/firebaseConfig';
 import '../styles/Admin.css'; // Import the Admin CSS
 
 const Admin = () => {
@@ -61,6 +61,21 @@ const Admin = () => {
     setArticleToDelete(null);
   };
 
+  const handleSendNewsletter = async (article) => {
+    try {
+      // Assuming you have a function in your firebaseConfig to send a newsletter and update the article's mailSent field.
+      // Example: sendNewsletterAndUpdate(article) sends the newsletter and updates the article in the database.
+      
+      // Call a function that sends the newsletter and updates the article's mailSent status in the database
+      await sendNewsletterAndUpdate("articles",article.id); // You need to implement this function in your firebaseConfig
+      
+      // Refetch articles to update the UI with the latest data, especially to show "Έχει αποσταλεί ως newsletter ✔️" instead of the button.
+      fetchArticlesFromServer(); 
+    } catch (error) {
+      console.error('Error sending newsletter:', error);
+    }
+  };
+
   return (
     <div className="admin-container">
       {isLoggedIn && (
@@ -94,6 +109,11 @@ const Admin = () => {
                   />
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
+                  {article.mailSent ? (
+                    <p className='newsletter'>Έχει αποσταλεί ως newsletter ✔️</p>
+                  ) : (
+                    <button className="newsletter-button newsletter" onClick={() => handleSendNewsletter(article)}>Αποστολή ως Newsletter</button>
+                  )}
                 </div>
               ))}
             </div>

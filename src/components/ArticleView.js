@@ -104,16 +104,16 @@ const ArticleView = () => {
             <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
             <div className='share-buttons'>
               <strong>Κοινοποιήστε αυτό το άρθρο:</strong>
-              <FacebookShareButton url={shareUrl} quote={title} hashtag={`#${article.category}`}>
+              <FacebookShareButton url={`www.syntaktes.gr/articles/${articleId}`} quote={title} hashtag={`#${article.category}`}>
                 <FacebookIcon size={32} round />
               </FacebookShareButton>
-              <TwitterShareButton url={shareUrl} title={title}>
+              <TwitterShareButton url={`www.syntaktes.gr/articles/${articleId}`} title={title}>
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
-              <LinkedinShareButton url={shareUrl} title={title} summary={article.content} source={shareUrl}>
+              <LinkedinShareButton url={`www.syntaktes.gr/articles/${articleId}`} title={title} summary={article.content} source={shareUrl}>
                 <LinkedinIcon size={32} round />
               </LinkedinShareButton>
-              <EmailShareButton url={shareUrl} subject={title} body={article.content}>
+              <EmailShareButton url={`www.syntaktes.gr/articles/${articleId}`} subject={title} body={article.content}>
                 <EmailIcon size={32} round />
               </EmailShareButton>
             </div>

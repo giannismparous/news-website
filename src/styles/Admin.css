@@ -39,12 +39,12 @@
     margin: 20px 0;
 }
 
-.article-container {
+.admin-container .article-container {
     position: relative;
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.562);
 }
 
 .edit-button {
@@ -144,4 +144,8 @@
     border-radius: 5px;
     font-size: 1.2rem;
     z-index: 10;
+}
+
+.newsletter {
+    font-size: 20px;
 }

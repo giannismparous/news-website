@@ -12,6 +12,7 @@ import {
   getFirestore,
   updateDoc,
 } from 'firebase/firestore';
+import axios from 'axios';
 
 
 const firebaseConfig = {
@@ -169,6 +170,71 @@ export const fetchArticlesByTitle = async (collectionKey, query) => {
     }
   
   };
+
+// Your sendNewsletterAndUpdate function
+export const sendNewsletterAndUpdate = async (collectionKey, article_id) => {
+  try {
+    // Fetch the article by ID
+    const article = await fetchArticleById(collectionKey, article_id);
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    try {
+      const response = await fetch('/.netlify/functions/sendNewsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          articleId: article.id,
+          title: article.title,
+          content: article.content,
+          imagePath: article.imagePath,
+        }),
+      });
+
+      console.log(2)
+  
+      const data = await response.json();
+      console.log(3)
+      if (response.ok) {
+        console.log('Newsletter sent successfully:', data);
+        console.log(3)
+        // Update the mailSent status in your Firebase as needed
+        const articlesRef = collection(db, collectionKey);
+        const dateRef = doc(articlesRef, "24-06-2024");
+        const dateDoc = await getDoc(dateRef);
+    
+        if (dateDoc.exists()) {
+          console.log(3)
+          const articles = dateDoc.data().articles;
+          const updatedArticles = articles.map(art => 
+            art.id === article_id ? { ...art, mailSent: true } : art
+          );
+          console.log(4)
+          // Update the document with the updated articles array
+          await updateDoc(dateRef, { articles: updatedArticles });
+
+          console.log(5)
+        }
+
+        console.log('mailSent updated');
+      } else {
+        console.error('Failed to send newsletter:', data);
+      }
+
+    } catch (error) {
+      console.error('Error while sending the newsletter:', error);
+      throw error;
+    }
+
+  } catch (error) {
+    console.error('Error in sendNewsletterAndUpdate:', error);
+    throw error;
+  }
+};
+
 
   export const addNewArticle = async (collectionKey, newArticle) => {
   const articlesRef = collection(db, collectionKey);
