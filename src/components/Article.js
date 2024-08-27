@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 import { Helmet } from 'react-helmet-async';
 
-const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, showContent = true, maxWordsPreview = 25, apopsi=false }) => {
+const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, caption, showContent = true, maxWordsPreview = 25, apopsi=false }) => {
   // Function to format category names
   const formatCategoryName = (name) => {
     switch (name) {
@@ -47,6 +47,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
       </Link>
       <div className='article-info'>
         <Link to={`/articles/${id}`} className="article-link">
+        {caption && <p className='article-caption'>{caption}</p>}
           <h2>{title}</h2>
           <p>
             <em>

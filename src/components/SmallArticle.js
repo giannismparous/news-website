@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/Article.css'; // Import your CSS file
 import { Link } from 'react-router-dom';
 
-const SmallArticle = ({ id, title, category, date, imagePath }) => {
+const SmallArticle = ({ id, title, category, date, imagePath, caption }) => {
 
   const formatCategoryName = (name) => {
     switch (name) {
@@ -28,6 +28,7 @@ const displayDate = date ? date : "24/6/2024 | 13:00";
     <div className="small-article-container">
       <Link to={`/articles/${id}`} className="article-link">
       {imagePath && <img src={imagePath} alt={title} className="article-image" />}
+      {caption && <p className='article-caption'>{caption}</p>}
       </Link>
       <div className="article-details">
       <Link to={`/articles/${id}`} className="article-link">

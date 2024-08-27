@@ -100,6 +100,7 @@ const ArticleView = () => {
         <div className='column-vertical'>
           <div className='article-content'>
             {article.imagePath && <img src={article.imagePath} alt={article.title} />}
+            {article.caption && <p className='article-caption'>{article.caption}</p>}
             <h1>{article.title}</h1>
             <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
             <div className='share-buttons'>

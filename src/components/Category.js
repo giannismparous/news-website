@@ -20,8 +20,14 @@ const Category = () => {
 
   const fetchArticlesFromServer = async () => {
     try {
-      const fetchedArticles = await fetchArticlesByCategory('articles', categoryName); // Pass your collection key here
+      var fetchedArticles;
       const fetchedLatestArticles = await fetchArticles('articles');
+      if (categoryName!=="all"){
+        fetchedArticles = await fetchArticlesByCategory('articles', categoryName); // Pass your collection key here
+      }
+      else {
+        fetchedArticles = fetchedLatestArticles
+      }
       setArticles([...fetchedArticles].reverse());
       setLatestArticles([...fetchedLatestArticles].reverse());
       setLoading(false);
@@ -47,6 +53,8 @@ const Category = () => {
         return 'Εκτός Συνόρων';
       case 'Αγορά_Καταναλωτές':
         return 'Αγορά/ Καταναλωτές';
+      case 'all':
+      return 'Όλα τα δημοσιεύματα';
       default:
         return name;
     }

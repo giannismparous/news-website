@@ -5,13 +5,13 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/ArticleEditor.css';
 import CustomClipboard from './CustomClipboard';
+import { ClockLoader } from 'react-spinners';
 const BlockEmbed = Quill.import('blots/block/embed');
 
 class TwitterBlot extends BlockEmbed {
   static create(value) {
     const node = super.create(value);
     node.setAttribute('contenteditable', false);
-    console.log("TEST")
     const innerHtml = `
       <blockquote class="twitter-tweet">
         <a href="${value}"></a>
@@ -49,8 +49,17 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const [trending, setTrending] = useState(false);
   const [author, setAuthor] = useState('');
   const [authorPrefix, setAuthorPrefix] = useState('Του');
+  const [caption, setCaption] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [imageVerticalPositionInTrending, setImageVerticalPositionInTrending] = useState('50%');
 
   const quillRef = useRef(null);
+
+  const handleImageVerticalPositionInTrendingChange = (event) => {
+    const value = event.target.value;
+    setImageVerticalPositionInTrending(value);
+  };
+
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -66,6 +75,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           setAuthor(fetchedArticle.author || '');
           setAuthorPrefix(fetchedArticle.authorPrefix || 'Του');
           setAuthorImagePath(fetchedArticle.authorImagePath || '');
+          setCaption(fetchedArticle.caption || '');
+          setImageVerticalPositionInTrending(fetchedArticle.imageVerticalPositionInTrending || '50%');
           setTrending(fetchedArticle.trending || false);
         }
       } else {
@@ -78,6 +89,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         setAuthor('');
         setAuthorPrefix('Του');
         setAuthorImagePath('');
+        setCaption('');
+        setImageVerticalPositionInTrending('50%');
         setTrending(false);
       }
     };
@@ -87,6 +100,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
+    const imageUrl = URL.createObjectURL(e.target.files[0]);
+    setImagePath(imageUrl);
   };
 
   const handleAuthorImageUpload = (e) => {
@@ -143,6 +158,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const formattedCategory = formatCategory(category);
 
@@ -155,7 +172,9 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         trending,
         author,
         authorPrefix,
-        authorImagePath
+        authorImagePath,
+        imageVerticalPositionInTrending,
+        caption
       };
 
       if (!article) {
@@ -177,6 +196,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           await postOnFacebook(newArticle, docRef.id);
         }
 
+        setLoading(false);
         alert('Article added successfully');
         onArticleAdded();
       } else {
@@ -204,11 +224,13 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           await postOnFacebook(newArticle);
         }
 
+        setLoading(false);
         alert('Article edited successfully');
         onArticleAdded();
       }
     } catch (error) {
       console.error('Error adding article:', error);
+      setLoading(false);
       alert('Error adding article');
     }
   };
@@ -246,13 +268,18 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
 
   return (
     <div className="editor-container">
+      {loading &&
+        <div className='article-editor-loader'>
+          <ClockLoader color="#e29403d3" loading={loading} size={150} />
+        </div>
+        }
       <h1>{article ? 'Edit Article' : 'Add New Article'}</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
+          placeholder="Τίτλος"
           required
         />
         <select
@@ -260,7 +287,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           onChange={(e) => setCategory(e.target.value)}
           required
         >
-          <option value="">Select Category</option>
+          <option value="">Διαλέξτε κατηγορία</option>
           <option value="Πολιτική">Πολιτική</option>
           <option value="Απόψεις">Απόψεις</option>
           <option value="Παρασκήνια">Παρασκήνια</option>
@@ -275,12 +302,18 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           <option value="Εργασία">Εργασία</option>
           <option value="Δικαστικά">Δικαστικά</option>
         </select>
+        <input
+            type="text"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            placeholder="Λεζάντα (προαιρετικό)"
+          />
         <div className="author-section">
           <input
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Author Name"
+            placeholder="Όνομα συγγραφέα/ συντάκτη"
           />
           <div className="prefix-section">
             <label>
@@ -315,13 +348,65 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           onChange={setContent}
           modules={modules}
           formats={formats}
-          placeholder="Write your article content here..."
+          placeholder="Γράψτε κείμενο εδώ..."
         />
         <div className='form-last-section'>
           <div>
-            <span>Ανεβάστε thumbnail: </span>
-            <input type="file" onChange={handleImageUpload} />
-            {imagePath && <img src={imagePath} alt="Thumbnail" />}
+          <fieldset className='image-fieldset'>
+                    <legend>Eικόνα:</legend>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={trending}
+                        onChange={(e) => setTrending(e.target.checked)}
+                      />
+                      Trending
+                    </label>
+                    {trending &&
+                      <div style ={{   
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        justifyContent: 'center', // Centers horizontally
+                        paddingLeft: '200px',
+                        paddingRight: '200px'
+                      }}>
+                        Κατακόρυφη τοποθέτηση εικόνας (trending):
+                        <input 
+                            type="range" 
+                            min="0" 
+                            max="100" 
+                            value={parseInt(imageVerticalPositionInTrending)} 
+                            onChange={handleImageVerticalPositionInTrendingChange} 
+                            className="slider"
+                            required 
+                        />
+                        {imagePath && (
+                          <div style={{ 
+                            width: '400px', 
+                            height: '133px', 
+                            overflow: 'hidden', 
+                            display: 'flex', 
+                            justifyContent: 'center' // Centers horizontally
+                          }}>
+                            <img
+                              src={imagePath}
+                              alt="Thumbnail"
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                objectPosition: `100% ${imageVerticalPositionInTrending}%`,
+                              }}
+                            />
+                          </div>
+                        )}
+                    </div>}
+                  <div>
+                    <span>Ανεβάστε φωτογραφία δημοσιεύματος: </span>
+                    <input type="file" onChange={handleImageUpload} />
+                    {imagePath && <img src={imagePath} alt="Thumbnail" style={{ width: '400px', height: '100%', }}/>}
+                  </div>
+                </fieldset>
           </div>
           {/* <label>
             <input
@@ -331,16 +416,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
             />
             Δημοσίευση στο Facebook
           </label> */}
-          <label>
-            <input
-              type="checkbox"
-              checked={trending}
-              onChange={(e) => setTrending(e.target.checked)}
-            />
-            Trending
-          </label>
         </div>
-        <p>Εκδότης: {uid}</p> {/* Display the UID */}
+        <p>Αναγνωριστικό εκδότη: {uid}</p> {/* Display the UID */}
         {!article && <button type="submit">Δημιουργία</button>}
         {article && <button type="submit">Επεξεργασία </button>}
       </form>

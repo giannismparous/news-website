@@ -140,3 +140,27 @@
     }
 
 }
+
+.article .article-info .article-caption {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    bottom: 10px;
+    left: 5px;
+    position: relative;
+}
+
+.small-article-container .article-caption {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    bottom: 10px;
+    left: 5px;
+    position: relative;
+}
+
+.article-content .article-caption {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 0;
+}

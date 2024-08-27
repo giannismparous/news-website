@@ -239,7 +239,7 @@ const Home = () => {
             <div className="trending-container">
                 <Carousel showThumbs={false} autoPlay infiniteLoop>
                     {trendingArticles.map(article => (
-                        <div key={article.id} className="carousel-article" style={{ backgroundImage: `url(${article.imagePath})` }}>
+                        <div key={article.id} className="carousel-article" style={{ backgroundImage: `url(${article.imagePath})`, backgroundPosition: `100% ${article.imageVerticalPositionInTrending || 50}%`, backgroundSize: 'cover' }}>
                             <Link to={`/articles/${article.id}`} className="article-link">
                             <div className="carousel-caption">
                                 {/* <p>{article.category}</p> */}
@@ -265,6 +265,7 @@ const Home = () => {
                                 author={latestArticles[0].author}
                                 date={latestArticles[0].date}
                                 imagePath={latestArticles[0].imagePath}
+                                caption={latestArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -280,6 +281,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
@@ -289,6 +291,9 @@ const Home = () => {
                         </div> */}
                     </div>
                 </div>
+                <div className="see-all">
+                    <a href="/category/all">Δείτε όλα τα δημοσιεύματα →</a>
+                </div>  
             </div>
             <div className="container">
                 <h1>ΠΟΛΙΤΙΚΗ</h1>
@@ -303,6 +308,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                         ))}
@@ -318,6 +324,7 @@ const Home = () => {
                                 author={politikiArticles[3].author}
                                 date={politikiArticles[3].date}
                                 imagePath={politikiArticles[3].imagePath}
+                                caption={politikiArticles[3].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -344,6 +351,7 @@ const Home = () => {
                                 date={apopseisArticles[0].date}
                                 imagePath={apopseisArticles[0].imagePath}
                                 showContent={!isMobile}
+                                caption={apopseisArticles[0].caption}
                                 maxWordsPreview={15}
                                 apopsi={true}
                             />
@@ -360,6 +368,7 @@ const Home = () => {
                                 authorImagePath={apopseisArticles[1].authorImagePath}
                                 date={apopseisArticles[1].date}
                                 imagePath={apopseisArticles[1].imagePath}
+                                caption={apopseisArticles[1].caption}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
                                 apopsi={true}
@@ -377,6 +386,7 @@ const Home = () => {
                                 authorImagePath={apopseisArticles[2].authorImagePath}
                                 date={apopseisArticles[2].date}
                                 imagePath={apopseisArticles[2].imagePath}
+                                caption={apopseisArticles[2].caption}
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
                                 apopsi={true}
@@ -401,6 +411,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    caption={article.caption}
                                     showContent={!isMobile}
                                 />
                             </div>
@@ -417,6 +428,7 @@ const Home = () => {
                                 author={paraskiniaArticles[4].author}
                                 date={paraskiniaArticles[4].date}
                                 imagePath={paraskiniaArticles[4].imagePath}
+                                caption={paraskiniaArticles[4].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -440,6 +452,7 @@ const Home = () => {
                                 author={kedpressEsheaArticles[0].author}
                                 date={kedpressEsheaArticles[0].date}
                                 imagePath={kedpressEsheaArticles[0].imagePath}
+                                caption={kedpressEsheaArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -455,6 +468,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
@@ -479,6 +493,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                         ))}
@@ -493,6 +508,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                         ))}
@@ -507,6 +523,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                         ))}
@@ -529,6 +546,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    caption={article.caption}
                                     showContent={!isMobile}
                                 />
                             </div>
@@ -545,6 +563,7 @@ const Home = () => {
                                 author={agoraKanalwtesArticles[4].author}
                                 date={agoraKanalwtesArticles[4].date}
                                 imagePath={agoraKanalwtesArticles[4].imagePath}
+                                caption={agoraKanalwtesArticles[4].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -568,6 +587,7 @@ const Home = () => {
                                 author={plusLifeArticles[0].author}
                                 date={plusLifeArticles[0].date}
                                 imagePath={plusLifeArticles[0].imagePath}
+                                caption={plusLifeArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -583,6 +603,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
@@ -607,6 +628,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                         ))}
@@ -622,6 +644,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
@@ -638,6 +661,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
@@ -662,6 +686,7 @@ const Home = () => {
                                 author={artArticles[0].author}
                                 date={artArticles[0].date}
                                 imagePath={artArticles[0].imagePath}
+                                caption={artArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -677,6 +702,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
@@ -700,6 +726,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                         ))}
@@ -715,6 +742,7 @@ const Home = () => {
                                 author={petArticles[3].author}
                                 date={petArticles[3].date}
                                 imagePath={petArticles[3].imagePath}
+                                caption={petArticles[3].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -738,6 +766,7 @@ const Home = () => {
                                 author={ygeiaSyntaxeisArticles[0].author}
                                 date={ygeiaSyntaxeisArticles[0].date}
                                 imagePath={ygeiaSyntaxeisArticles[0].imagePath}
+                                caption={ygeiaSyntaxeisArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -752,6 +781,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    caption={article.caption}
                                     showContent={!isMobile}
                                 />
                             </div>
@@ -775,6 +805,7 @@ const Home = () => {
                                     author={article.author}
                                     date={article.date}
                                     imagePath={article.imagePath}
+                                    caption={article.caption}
                                     showContent={!isMobile}
                                 />
                             </div>
@@ -791,6 +822,7 @@ const Home = () => {
                                 author={ergasiaArticles[4].author}
                                 date={ergasiaArticles[4].date}
                                 imagePath={ergasiaArticles[4].imagePath}
+                                caption={ergasiaArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -814,6 +846,7 @@ const Home = () => {
                                 author={dikastikaArticles[0].author}
                                 date={dikastikaArticles[0].date}
                                 imagePath={dikastikaArticles[0].imagePath}
+                                caption={dikastikaArticles[0].caption}
                                 showContent={!isMobile}
                             />
                         )}
@@ -829,6 +862,7 @@ const Home = () => {
                                 author={article.author}
                                 date={article.date}
                                 imagePath={article.imagePath}
+                                caption={article.caption}
                                 showContent={!isMobile}
                             />
                             </div>
