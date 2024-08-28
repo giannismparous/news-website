@@ -203,12 +203,14 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
     const words = strippedContent.split(' ');
     const displayContent = words.slice(0, 50).join(' ')+"...";
 
+    console.log(1111)
     try {
       const response = await fetch('/.netlify/functions/sendNewsletter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Headers': 'Content-Type',
+          'Authorization': `Bearer nfp_3Pyg2D92Bwsxk2zfCFfQ34mJEVURpkRrb1ce`
         },
         body: JSON.stringify({
           id: article.id,
@@ -223,8 +225,9 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
           groupIds: groupIds
         }),
       });
-  
+      console.log(2222)
       const data = await response;
+      console.log(33333)
       if (response.ok) {
         console.log('Newsletter sent successfully:', data);
         // Update the mailSent status in your Firebase as needed
@@ -243,12 +246,12 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
 
           return true;
         }
-
+        console.log(44444)
       } else {
         console.error('Failed to send newsletter:', data);
         return false;
       }
-
+      console.log(5555)
       return false;
 
     } catch (error) {
