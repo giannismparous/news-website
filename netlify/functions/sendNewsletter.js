@@ -65,6 +65,7 @@ exports.handler = async function(event, context) {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${mailerLiteApiKey}`,
+        'Access-Control-Allow-Headers': 'Content-Type',
       }
     });
 
@@ -80,7 +81,8 @@ exports.handler = async function(event, context) {
   const scheduleResponse = await axios.post(scheduleCampaignUrl, schedulePayload, {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${mailerLiteApiKey}`
+      'Authorization': `Bearer ${mailerLiteApiKey}`,
+      'Access-Control-Allow-Headers': 'Content-Type',
     }
   });
 

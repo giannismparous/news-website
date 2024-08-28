@@ -208,6 +208,7 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers': 'Content-Type',
         },
         body: JSON.stringify({
           id: article.id,
