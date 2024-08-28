@@ -49,6 +49,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const [trending, setTrending] = useState(false);
   const [author, setAuthor] = useState('');
   const [authorPrefix, setAuthorPrefix] = useState('Του');
+  const [mailSent, setMailSent] = useState();
   const [caption, setCaption] = useState('');
   const [loading, setLoading] = useState(false);
   const [imageVerticalPositionInTrending, setImageVerticalPositionInTrending] = useState('50%');
@@ -62,6 +63,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchArticle = async () => {
       if (article) {
         const fetchedArticle = await fetchArticleById('articles', article.id);
@@ -75,6 +77,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           setAuthor(fetchedArticle.author || '');
           setAuthorPrefix(fetchedArticle.authorPrefix || 'Του');
           setAuthorImagePath(fetchedArticle.authorImagePath || '');
+          setMailSent(fetchedArticle.mailSent || false);
           setCaption(fetchedArticle.caption || '');
           setImageVerticalPositionInTrending(fetchedArticle.imageVerticalPositionInTrending || '50%');
           setTrending(fetchedArticle.trending || false);
@@ -90,6 +93,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         setAuthorPrefix('Του');
         setAuthorImagePath('');
         setCaption('');
+        setMailSent(false);
         setImageVerticalPositionInTrending('50%');
         setTrending(false);
       }
@@ -174,6 +178,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         authorPrefix,
         authorImagePath,
         imageVerticalPositionInTrending,
+        mailSent,
         caption
       };
 
@@ -272,7 +277,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         <div className='article-editor-loader'>
           <ClockLoader color="#e29403d3" loading={loading} size={150} />
         </div>
-        }
+      }
       <h1>{article ? 'Edit Article' : 'Add New Article'}</h1>
       <form onSubmit={handleSubmit}>
         <input

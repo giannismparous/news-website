@@ -57,6 +57,25 @@ const getCurrentDateInGreece = () => {
   return `${day}/${month}/${year} | ${time}`;
 };
 
+const formatCategoryName = (name) => {
+  switch (name) {
+    case 'Kedpress_ΕΣΗΕΑ':
+      return 'Kedpress/ ΕΣΗΕΑ';
+    case 'Υγεία_Συντάξεις':
+      return 'Υγεία/ Συντάξεις';
+    case 'Plus_Life':
+      return 'Plus/ Life';
+    case 'Εκτός Συνόρων':
+      return 'Εκτός Συνόρων';
+    case 'Αγορά_Καταναλωτές':
+      return 'Αγορά/ Καταναλωτές';
+    case 'all':
+    return 'Όλα τα δημοσιεύματα';
+    default:
+      return name;
+  }
+};
+
 export const attemptLogin = async (username,password) => {
     try {
       await signInWithEmailAndPassword(auth,username, password);
@@ -172,13 +191,17 @@ export const fetchArticlesByTitle = async (collectionKey, query) => {
   };
 
 // Your sendNewsletterAndUpdate function
-export const sendNewsletterAndUpdate = async (collectionKey, article_id) => {
+export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupIds) => {
   try {
     // Fetch the article by ID
     const article = await fetchArticleById(collectionKey, article_id);
     if (!article) {
       throw new Error('Article not found');
     }
+
+    const strippedContent = article.content.replace(/<[^>]*>?/gm, '');
+    const words = strippedContent.split(' ');
+    const displayContent = words.slice(0, 50).join(' ')+"...";
 
     try {
       const response = await fetch('/.netlify/functions/sendNewsletter', {
@@ -189,45 +212,43 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id) => {
         body: JSON.stringify({
           id: article.id,
           title: article.title,
-          category: article.category,
+          category: formatCategoryName(article.category),
           date: article.date,
-          content: article.content,
+          content: displayContent,
           authorPrefix: article.authorPrefix,
           author: article.author,
           authorImagePath: article.authorImagePath,
           imagePath: article.imagePath,
+          groupIds: groupIds
         }),
       });
-
-      console.log(2)
   
-      const data = await response.json();
-      console.log(3)
+      const data = await response;
       if (response.ok) {
         console.log('Newsletter sent successfully:', data);
-        console.log(3)
         // Update the mailSent status in your Firebase as needed
         const articlesRef = collection(db, collectionKey);
         const dateRef = doc(articlesRef, "24-06-2024");
         const dateDoc = await getDoc(dateRef);
     
         if (dateDoc.exists()) {
-          console.log(3)
           const articles = dateDoc.data().articles;
           const updatedArticles = articles.map(art => 
             art.id === article_id ? { ...art, mailSent: true } : art
           );
-          console.log(4)
           // Update the document with the updated articles array
           await updateDoc(dateRef, { articles: updatedArticles });
+          console.log('mailSent variable updated');
 
-          console.log(5)
+          return true;
         }
 
-        console.log('mailSent updated');
       } else {
         console.error('Failed to send newsletter:', data);
+        return false;
       }
+
+      return false;
 
     } catch (error) {
       console.error('Error while sending the newsletter:', error);

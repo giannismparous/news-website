@@ -40,12 +40,12 @@ const App = () => {
     };
 
     // Attach event listener for scroll
-    window.addEventListener('scroll', handleScroll);
+    // window.addEventListener('scroll', handleScroll);
 
     // Clean up function to remove event listener
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    // return () => {
+    //   window.removeEventListener('scroll', handleScroll);
+    // };
   }, [showPopup]);
 
   const handleClosePopup = () => {
@@ -56,7 +56,7 @@ const App = () => {
 
   return (
     <div className="App">
-      {showPopup && <SubscribePopup onClose={handleClosePopup} />}
+      {/* {showPopup && <SubscribePopup onClose={handleClosePopup} />} */}
       <Navbar />
       <Routes>
         <Route path="/" exact element={<Home />} />

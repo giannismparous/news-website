@@ -9,6 +9,7 @@ import { ClockLoader } from 'react-spinners';
 import { Helmet } from 'react-helmet-async';
 
 const Category = () => {
+
   const { categoryName } = useParams();
 
   const [articles, setArticles] = useState([]);
@@ -38,6 +39,8 @@ const Category = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    setLoading(true);
     fetchArticlesFromServer();
   }, [categoryName]);
 

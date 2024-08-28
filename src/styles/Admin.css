@@ -149,3 +149,65 @@
 .newsletter {
     font-size: 20px;
 }
+
+.newsletter-popup-background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletter-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* fixed is inherited, but relative ensures shadow positioning works correctly */
+    width: 50%;
+    height: 50%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 2px solid #000000;
+    /* Added a visible border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Added a shadow for better visibility */
+}
+
+.newsletter-popup .group-options {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.newsletter-popup .popup-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.newsletter-popup .popup-actions .send-button {
+    background-color: #1bb13b;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+    font-size: 15px;
+    border: 0 solid #000000;
+}
+
+.newsletter-popup .popup-actions .close-button {
+    background-color: #ff0000;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+    font-size: 15px;
+    border: 0 solid #000000;
+}

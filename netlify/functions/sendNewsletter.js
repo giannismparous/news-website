@@ -4,18 +4,14 @@ exports.handler = async function(event, context) {
   const mailerLiteApiKey = process.env.REACT_APP_MAILERLITE_API_KEY;
 
   // Extract data from the request body
-  const { id, title, category, date, content, authorPrefix, author, authorImagePath, imagePath } = JSON.parse(event.body);
-
-  const strippedContent = content.replace(/<[^>]*>?/gm, '');
-  const words = strippedContent.split(' ');
-  const displayContent = words.slice(0, 25).join(' ');
+  const { id, title, category, date, content, authorPrefix, author, authorImagePath, imagePath, groupIds } = JSON.parse(event.body);
 
   try {
     // Step 1: Create a Campaign
     const createCampaignUrl = 'https://connect.mailerlite.com/api/campaigns';
     
     const campaignPayload = {
-      name: "Test API Newsletter Campaign", // Change to a dynamic name if needed
+      name: "Αυτόματη καμπάνια - "+title, // Change to a dynamic name if needed
       type: "regular", // or "ab" or "resend" depending on your needs
       emails: [{
         subject: title, // Use provided subject or default
@@ -30,16 +26,16 @@ exports.handler = async function(event, context) {
                     <div style="font-size: 14px; color: #555; margin-bottom: 20px;">${category}</div>
 
                     <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                        <img src="${authorImagePath}" alt="Circular Image" style="border-radius: 50%; width: 50px; height: 50px; margin-right: 15px;" />
-                        <div style="">
-                        <div style="font-size: 16px; font-weight: bold;">${author ? `${authorPrefix ? authorPrefix : 'Του'} ${author}` : 'News Room'}</div>
-                        <div style="font-size: 12px; color: #777;">${date}</div>
-                        </div>
+                      ${authorImagePath ? `<img src="${authorImagePath}" alt="Circular Image" style="border-radius: 50%; width: 50px; height: 50px; margin-right: 15px;" />` : ''}
+                      <div style="">
+                      <div style="font-size: 16px; font-weight: bold;">${author ? `${authorPrefix ? authorPrefix : 'Του'} ${author}` : 'News Room'}</div>
+                      <div style="font-size: 12px; color: #777;">${date}</div>
+                      </div>
                     </div>
 
                     <img src="${imagePath}" alt="Big Picture" style="width: 100%; max-width: 600px; height: auto; margin-bottom: 20px;" />
                     <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-                        ${displayContent}
+                        ${content}
                     </p>
                     <div style="font-size: 14px;">
                         <a href="https://syntaktes.gr/articles/${id}" style="text-decoration: none; color: rgb(9,194,105);">
@@ -47,11 +43,11 @@ exports.handler = async function(event, context) {
                         </a>
                     </div>
                     <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
-                    <div style="font-size: 14px; display: flex; justify-content: center; gap: 10px;">
+                    <div style="font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 15px; text-align: center">
                         <a href="https://syntaktes.gr" style="text-decoration: none; color: #000;">Αρχική</a> |
                         <a href="https://syntaktes.gr/about" style="text-decoration: none; color: #000;">Ποιοί είμαστε</a> |
                         <a href="https://syntaktes.gr/contact" style="text-decoration: none; color: #000;">Επικοινωνία</a> |
-                        <a href="https://facebook.com/syntaktes" style="text-decoration: none; color: #000; display: flex; align-items: center;">
+                        <a href="https://facebook.com/syntaktes" style="text-decoration: none; color: #000; display: flex; flex-direction: row; align-items: center; justify-content: center">
                             Facebook 
                             <img src="https://firebasestorage.googleapis.com/v0/b/news-website-a1a1d.appspot.com/o/syntaktes_images%2FFacebook_Logo_2023.png?alt=media&token=16794d55-9910-4d16-a5a7-8d6574f931e8" 
                             alt="Facebook Icon" style="width: 14px; height: 14px; margin-left: 5px;" />
@@ -62,7 +58,7 @@ exports.handler = async function(event, context) {
         `,
         // language_id: 24,
       }],
-      groups: [process.env.REACT_APP_MAILERLITE_API_TEST_GROUP_ID] // Include groupId if provided
+      groups: groupIds // Include groupId if provided
     };
 
     const createResponse = await axios.post(createCampaignUrl, campaignPayload, {

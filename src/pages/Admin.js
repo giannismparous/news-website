@@ -4,9 +4,13 @@ import ArticleEditor from '../components/ArticleEditor';
 import Article from '../components/Article';
 import Login from '../components/Login';
 import { fetchArticles, deleteArticle, sendNewsletterAndUpdate } from '../firebase/firebaseConfig';
+import { ClockLoader } from 'react-spinners';
+import { FacebookShareButton} from 'react-share';
+import { FacebookIcon} from 'react-share';
 import '../styles/Admin.css'; // Import the Admin CSS
 
 const Admin = () => {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [uid, setUid] = useState(null); // Add uid state
   const [articles, setArticles] = useState([]);
@@ -14,7 +18,13 @@ const Admin = () => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [articleToDelete, setArticleToDelete] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
+  const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
+  const [selectedGroups, setSelectedGroups] = useState([]);
+
   const reset = () => {
+    window.scrollTo(0, 0);
     if (showEditor) setSelectedArticle(null);
     setShowEditor(!showEditor);
   };
@@ -23,13 +33,17 @@ const Admin = () => {
     try {
       const fetchedArticles = await fetchArticles('articles'); // Pass your collection key here
       setArticles([...fetchedArticles].reverse());
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching articles:', error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (isLoggedIn) {
+      window.scrollTo(0, 0);
+      setLoading(true);
       fetchArticlesFromServer();
     }
   }, [isLoggedIn]);
@@ -61,23 +75,65 @@ const Admin = () => {
     setArticleToDelete(null);
   };
 
-  const handleSendNewsletter = async (article) => {
+  const handleSendNewsletter = async (article, groupIds) => {
     try {
-      // Assuming you have a function in your firebaseConfig to send a newsletter and update the article's mailSent field.
-      // Example: sendNewsletterAndUpdate(article) sends the newsletter and updates the article in the database.
-      
-      // Call a function that sends the newsletter and updates the article's mailSent status in the database
-      await sendNewsletterAndUpdate("articles",article.id); // You need to implement this function in your firebaseConfig
-      
-      // Refetch articles to update the UI with the latest data, especially to show "Έχει αποσταλεί ως newsletter ✔️" instead of the button.
-      fetchArticlesFromServer(); 
+      setShowNewsletterPopup(false);
+      setLoading(true);
+      const result=await sendNewsletterAndUpdate('articles', article.id, groupIds); // Update with selected group IDs
+      if (result){
+        alert('Το newsletter στάλθηκε επιτυχώς!');
+      }
+      else {
+        alert('Σφάλμα. Η αποστολή newsletter απέτυχε!');
+      }
+      fetchArticlesFromServer();
+      setShowNewsletterPopup(false); // Close the popup after sending
+      setLoading(true);
     } catch (error) {
+      alert('Σφάλμα. Η αποστολή newsletter απέτυχε!');
       console.error('Error sending newsletter:', error);
     }
   };
 
+  const openNewsletterPopup = (article) => {
+    setShowNewsletterPopup(true);
+    setSelectedArticle(article)
+  };
+
+  const closeNewsletterPopup = () => {
+    setSelectedArticle();
+    setSelectedGroups([]);
+    setShowNewsletterPopup(false);
+  };
+
+  const toggleGroupSelection = (groupId) => {
+    setSelectedGroups((prevSelectedGroups) => {
+      if (prevSelectedGroups.includes(groupId)) {
+        return prevSelectedGroups.filter((id) => id !== groupId);
+      } else {
+        return [...prevSelectedGroups, groupId];
+      }
+    });
+  };
+
+  const newsletterGroups = [
+    {
+      id: process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID,
+      name: process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_NAME
+    },
+    {
+      id: process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID,
+      name: process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_NAME
+    }
+  ];
+
   return (
     <div className="admin-container">
+      {loading &&
+        <div className='article-editor-loader'>
+          <ClockLoader color="#e29403d3" loading={loading} size={150} />
+        </div>
+      }
       {isLoggedIn && (
         <div className="uid-display">Συνδεδεμένος Χρήστης: {uid}</div> // Display the UID on the top right
       )}
@@ -109,11 +165,14 @@ const Admin = () => {
                   />
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
-                  {article.mailSent ? (
+                  {article.mailSent===true ? (
                     <p className='newsletter'>Έχει αποσταλεί ως newsletter ✔️</p>
                   ) : (
-                    <button className="newsletter-button newsletter" onClick={() => handleSendNewsletter(article)}>Αποστολή ως Newsletter</button>
+                    <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
                   )}
+                  <FacebookShareButton url={`www.syntaktes.gr/articles/${article.id}`} quote={article.title} hashtag={`#${article.category}`}>
+                    <FacebookIcon size={32} round />
+                  </FacebookShareButton>
                 </div>
               ))}
             </div>
@@ -131,6 +190,35 @@ const Admin = () => {
             <button className="cancel-button" onClick={cancelDelete}>Όχι</button>
           </div>
         </>
+      )}
+      {showNewsletterPopup && (
+        <div className='newsletter-popup-background'>
+          <div className="newsletter-popup">
+            <h2>Επιλέξτε ομάδες για αποστολή Newsletter:</h2>
+            <div className="group-options">
+              {newsletterGroups.map((group) => (
+                <label key={group.id}>
+                  <input
+                    type="checkbox"
+                    checked={selectedGroups.includes(group.id)}
+                    onChange={() => toggleGroupSelection(group.id)}
+                  />
+                  {group.name}
+                </label>
+              ))}
+            </div>
+            <div className="popup-actions">
+              <button
+                className="send-button"
+                onClick={() => handleSendNewsletter(selectedArticle, selectedGroups)}
+                disabled={selectedGroups.length === 0} // Disable button if no groups are selected
+              >
+                Αποστολή
+              </button>
+              <button className="close-button" onClick={closeNewsletterPopup}>Ακύρωση</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
