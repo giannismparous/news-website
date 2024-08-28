@@ -4,11 +4,7 @@ exports.handler = async function(event, context) {
   const mailerLiteApiKey = process.env.REACT_APP_MAILERLITE_API_KEY;
 
   // Extract data from the request body
-  const { id, title, category, date, content, authorPrefix, author, authorImagePath, imagePath } = JSON.parse(event.body);
-
-  const strippedContent = content.replace(/<[^>]*>?/gm, '');
-  const words = strippedContent.split(' ');
-  const displayContent = words.slice(0, 25).join(' ');
+//   const { subject, content, fromName, fromEmail, groupId } = JSON.parse(event.body);
 
   try {
     // Step 1: Create a Campaign
@@ -18,7 +14,7 @@ exports.handler = async function(event, context) {
       name: "Test API Newsletter Campaign", // Change to a dynamic name if needed
       type: "regular", // or "ab" or "resend" depending on your needs
       emails: [{
-        subject: title, // Use provided subject or default
+        subject: 'Test', // Use provided subject or default
         from_name: 'Syntaktes', // Use provided sender name or default
         from: 'syntaktes@syntaktes.gr', // Use provided sender email or default
         // content: '<p>Test Content</p>', // Use provided content or default HTML
@@ -26,23 +22,23 @@ exports.handler = async function(event, context) {
             <div style="padding: 0 29%; box-sizing: border-box;">
                 <div style="">
                     <img src="https://firebasestorage.googleapis.com/v0/b/news-website-a1a1d.appspot.com/o/syntaktes_images%2Fsyntaktes-orange-black.png?alt=media&token=4e8c08da-c6f3-47ac-b4d5-52165db34869" alt="Syntaktes Logo" style="width: 100%; max-width: 600px; height: auto; margin-bottom: 20px;" />
-                    <h1 style="margin-bottom: 10px;">${title}</h1>
-                    <div style="font-size: 14px; color: #555; margin-bottom: 20px;">${category}</div>
+                    <h1 style="margin-bottom: 10px;">Άχρηστη βγάζει το ΚΕΠΕ την πλαταφόρμα e-Καταναλωτής</h1>
+                    <div style="font-size: 14px; color: #555; margin-bottom: 20px;">Category Name</div>
 
                     <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                        <img src="${authorImagePath}" alt="Circular Image" style="border-radius: 50%; width: 50px; height: 50px; margin-right: 15px;" />
+                        <img src="https://via.placeholder.com/50" alt="Circular Image" style="border-radius: 50%; width: 50px; height: 50px; margin-right: 15px;" />
                         <div style="">
-                        <div style="font-size: 16px; font-weight: bold;">${author ? `${authorPrefix ? authorPrefix : 'Του'} ${author}` : 'News Room'}</div>
-                        <div style="font-size: 12px; color: #777;">${date}</div>
+                        <div style="font-size: 16px; font-weight: bold;">News Room</div>
+                        <div style="font-size: 12px; color: #777;">25/08/2024 | 22:16</div>
                         </div>
                     </div>
 
-                    <img src="${imagePath}" alt="Big Picture" style="width: 100%; max-width: 600px; height: auto; margin-bottom: 20px;" />
+                    <img src="https://via.placeholder.com/600x300" alt="Big Picture" style="width: 100%; max-width: 600px; height: auto; margin-bottom: 20px;" />
                     <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-                        ${displayContent}
+                        Ειδική αναφορά στις αδυναμίες της πολυδιαφημισμένης από την Κυβέρνηση πλατφόρμας e-Καταναλωτής, στην οποία στηρίζεται το κυβερνητικό αφήγημα αντιμετώπισης της ακρίβειας, κάνει το ΚΕΠΕ (Κέντρο Προγραμματισμού και Οικονομικών ερευνών) σε πρόσφατη ανάλυση επικαιρότητας.
                     </p>
                     <div style="font-size: 14px;">
-                        <a href="https://syntaktes.gr/articles/${id}" style="text-decoration: none; color: rgb(9,194,105);">
+                        <a href="https://syntaktes.gr/articles/138" style="text-decoration: none; color: rgb(9,194,105);">
                         Διαβάστε όλο το άρθρο <strong>εδώ</strong>
                         </a>
                     </div>
@@ -62,15 +58,29 @@ exports.handler = async function(event, context) {
         `,
         // language_id: 24,
       }],
-      groups: [process.env.REACT_APP_MAILERLITE_API_TEST_GROUP_ID] // Include groupId if provided
+      groups: ['130651553632618051'] // Include groupId if provided
     };
 
     const createResponse = await axios.post(createCampaignUrl, campaignPayload, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${mailerLiteApiKey}`,
+        // 'X-MailerLite-ApiKey': mailerLiteApiKey
       }
     });
+
+    // if (createResponse.status === 200) {
+    //   return {
+    //     statusCode: 200,
+    //     body: JSON.stringify({ message: 'Campaign created successfully!', campaignId: createResponse.data.data.id }),
+    //   };
+    // } else {
+    //   return {
+    //     statusCode: createResponse.status,
+    //     body: JSON.stringify({ message: 'Failed to create campaign.', details: createResponse.data }),
+    //   };
+    // }
+    
 
     const campaignId = createResponse.data.data.id;
 

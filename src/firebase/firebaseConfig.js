@@ -187,9 +187,14 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          articleId: article.id,
+          id: article.id,
           title: article.title,
+          category: article.category,
+          date: article.date,
           content: article.content,
+          authorPrefix: article.authorPrefix,
+          author: article.author,
+          authorImagePath: article.authorImagePath,
           imagePath: article.imagePath,
         }),
       });
