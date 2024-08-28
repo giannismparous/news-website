@@ -202,7 +202,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         }
 
         setLoading(false);
-        alert('Article added successfully');
+        alert('Επιτυχής δημιουργία!');
         onArticleAdded();
       } else {
         if (image) {
@@ -230,13 +230,13 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         }
 
         setLoading(false);
-        alert('Article edited successfully');
+        alert('Επιτυχής τροποποίηση!');
         onArticleAdded();
       }
     } catch (error) {
       console.error('Error adding article:', error);
       setLoading(false);
-      alert('Error adding article');
+      alert('Σφάλμα!');
     }
   };
 
