@@ -165,14 +165,16 @@ const Admin = () => {
                   />
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
-                  {article.mailSent===true ? (
-                    <p className='newsletter'>Έχει αποσταλεί ως newsletter ✔️</p>
-                  ) : (
-                    <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
-                  )}
-                  <FacebookShareButton url={`www.syntaktes.gr/articles/${article.id}`} quote={article.title} hashtag={`#${article.category}`}>
-                    <FacebookIcon size={32} round />
-                  </FacebookShareButton>
+                  <div className='send-article-section'>
+                    {article.mailSent===true ? (
+                      <p className='newsletter'>Έχει αποσταλεί ως newsletter ✔️</p>
+                    ) : (
+                      <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
+                    )}
+                    <FacebookShareButton url={`www.syntaktes.gr/articles/${article.id}`} quote={article.title} hashtag={`#${article.category}`}>
+                      <FacebookIcon size={32} round />
+                    </FacebookShareButton>
+                  </div>
                 </div>
               ))}
             </div>
