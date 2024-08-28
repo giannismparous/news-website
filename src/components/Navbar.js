@@ -399,7 +399,7 @@ const Navbar = () => {
                 </Link>
               </li>
                 <li><Link to="/contact" onClick={toggleMenu} className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Επικοινωνία</Link> </li>
-                <li> <a href="https://www.facebook.com/kedpress.esiea" target="_blank" rel="noopener noreferrer" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>
+                <li> <a href="https://www.facebook.com/profile.php?id=61564528245792" target="_blank" rel="noopener noreferrer" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>
                     <FontAwesomeIcon icon={faFacebookF} />
                 </a></li>
               </ul>

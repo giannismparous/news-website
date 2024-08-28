@@ -47,7 +47,7 @@ exports.handler = async function(event, context) {
                         <a href="https://syntaktes.gr" style="text-decoration: none; color: #000;">Αρχική</a> |
                         <a href="https://syntaktes.gr/about" style="text-decoration: none; color: #000;">Ποιοί είμαστε</a> |
                         <a href="https://syntaktes.gr/contact" style="text-decoration: none; color: #000;">Επικοινωνία</a> |
-                        <a href="https://facebook.com/syntaktes" style="text-decoration: none; color: #000; display: flex; flex-direction: row; align-items: center; justify-content: center">
+                        <a href="https://www.facebook.com/profile.php?id=61564528245792" style="text-decoration: none; color: #000; display: flex; flex-direction: row; align-items: center; justify-content: center">
                             Facebook 
                             <img src="https://firebasestorage.googleapis.com/v0/b/news-website-a1a1d.appspot.com/o/syntaktes_images%2FFacebook_Logo_2023.png?alt=media&token=16794d55-9910-4d16-a5a7-8d6574f931e8" 
                             alt="Facebook Icon" style="width: 14px; height: 14px; margin-left: 5px;" />
