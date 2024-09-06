@@ -219,3 +219,12 @@
     flex-direction: column;
     gap: 20px;
 }
+
+.send-article-section .sent-to {
+    display: flex;
+    flex-direction: column;
+}
+
+.send-article-section .sent-to .newsletter {
+    margin: 0;
+}

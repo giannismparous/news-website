@@ -237,10 +237,24 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
     
         if (dateDoc.exists()) {
           const articles = dateDoc.data().articles;
-          const updatedArticles = articles.map(art => 
-            art.id === article_id ? { ...art, mailSent: true } : art
-          );
-          // Update the document with the updated articles array
+
+          // Determine which mailSentTest variable(s) to update
+          const updatedArticles = articles.map(art => {
+            if (art.id === article_id) {
+              let updatedArticle = { ...art };
+              
+              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID)) {
+                updatedArticle.mailSentTest1 = true;
+              }
+              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID)) {
+                updatedArticle.mailSentTest2 = true;
+              }
+
+              return updatedArticle;
+            }
+            return art;
+          });
+          
           await updateDoc(dateRef, { articles: updatedArticles });
           console.log('mailSent variable updated');
 

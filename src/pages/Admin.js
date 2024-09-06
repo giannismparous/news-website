@@ -89,7 +89,9 @@ const Admin = () => {
       fetchArticlesFromServer();
       setShowNewsletterPopup(false); // Close the popup after sending
       setLoading(true);
+      setSelectedGroups([]);
     } catch (error) {
+      setSelectedGroups([]);
       alert('Σφάλμα. Η αποστολή newsletter απέτυχε!');
       console.error('Error sending newsletter:', error);
     }
@@ -166,11 +168,17 @@ const Admin = () => {
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
                   <div className='send-article-section'>
-                    {article.mailSent===true ? (
-                      <p className='newsletter'>Έχει αποσταλεί ως newsletter ✔️</p>
-                    ) : (
-                      <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
-                    )}
+                    <div className='sent-to'>
+                      {article.mailSentTest1===true && (
+                        <p className='newsletter'>Έχει αποσταλεί ως newsletter στο Test1✔️</p>
+                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
+                      )}
+                      {article.mailSentTest2===true && (
+                        <p className='newsletter'>Έχει αποσταλεί ως newsletter στο Test2✔️</p>
+                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
+                      ) }
+                    </div>
+                    {!(article.mailSentTest1===true && article.mailSentTest2===true) && <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>}
                     <FacebookShareButton url={`www.syntaktes.gr/articles/${article.id}`} quote={article.title} hashtag={`#${article.category}`}>
                       <FacebookIcon size={32} round />
                     </FacebookShareButton>
@@ -194,20 +202,27 @@ const Admin = () => {
         </>
       )}
       {showNewsletterPopup && (
-        <div className='newsletter-popup-background'>
+        <div className="newsletter-popup-background">
           <div className="newsletter-popup">
             <h2>Επιλέξτε ομάδες για αποστολή Newsletter:</h2>
             <div className="group-options">
-              {newsletterGroups.map((group) => (
-                <label key={group.id}>
-                  <input
-                    type="checkbox"
-                    checked={selectedGroups.includes(group.id)}
-                    onChange={() => toggleGroupSelection(group.id)}
-                  />
-                  {group.name}
-                </label>
-              ))}
+              {newsletterGroups.map((group) => {
+                const isMailSent =
+                  (group.id === process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID && selectedArticle.mailSentTest1) ||
+                  (group.id === process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID && selectedArticle.mailSentTest2);
+
+                return (
+                  <label key={group.id}>
+                    <input
+                      type="checkbox"
+                      checked={selectedGroups.includes(group.id)}
+                      onChange={() => toggleGroupSelection(group.id)}
+                      disabled={isMailSent}  // Disable if mail has been sent
+                    />
+                    {group.name} {isMailSent && '✔️'}
+                  </label>
+                );
+              })}
             </div>
             <div className="popup-actions">
               <button

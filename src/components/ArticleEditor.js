@@ -49,7 +49,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const [trending, setTrending] = useState(false);
   const [author, setAuthor] = useState('');
   const [authorPrefix, setAuthorPrefix] = useState('Του');
-  const [mailSent, setMailSent] = useState();
+  const [mailSentTest1, setMailSentTest1] = useState();
+  const [mailSentTest2, setMailSentTest2] = useState();
   const [caption, setCaption] = useState('');
   const [loading, setLoading] = useState(false);
   const [imageVerticalPositionInTrending, setImageVerticalPositionInTrending] = useState('50%');
@@ -77,7 +78,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           setAuthor(fetchedArticle.author || '');
           setAuthorPrefix(fetchedArticle.authorPrefix || 'Του');
           setAuthorImagePath(fetchedArticle.authorImagePath || '');
-          setMailSent(fetchedArticle.mailSent || false);
+          setMailSentTest1(fetchedArticle.mailSentTest1 || false);
+          setMailSentTest2(fetchedArticle.mailSentTest2 || false);
           setCaption(fetchedArticle.caption || '');
           setImageVerticalPositionInTrending(fetchedArticle.imageVerticalPositionInTrending || '50%');
           setTrending(fetchedArticle.trending || false);
@@ -93,7 +95,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         setAuthorPrefix('Του');
         setAuthorImagePath('');
         setCaption('');
-        setMailSent(false);
+        setMailSentTest1(false);
+        setMailSentTest2(false);
         setImageVerticalPositionInTrending('50%');
         setTrending(false);
       }
@@ -178,7 +181,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         authorPrefix,
         authorImagePath,
         imageVerticalPositionInTrending,
-        mailSent,
+        mailSentTest1,
+        mailSentTest2,
         caption
       };
 
