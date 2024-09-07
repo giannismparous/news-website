@@ -28,7 +28,7 @@ exports.handler = async function(event, context) {
       <h1 style="margin-bottom: 10px; font-size: 2em;">${title}</h1>
       <div style="font-size: 1em; color: #555; margin-bottom: 20px;">${category}</div>
 
-      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+      <div style="display: flex; margin-bottom: 20px;">
         ${authorImagePath ? `<img src="${authorImagePath}" alt="Circular Image" 
               style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover; margin-right: 15px;" />` : ''}
         <div style="text-align: left;">

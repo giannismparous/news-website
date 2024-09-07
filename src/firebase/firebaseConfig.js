@@ -250,6 +250,16 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
                 updatedArticle.mailSentTest2 = true;
               }
 
+              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP1_ID)) {
+                updatedArticle.mailSentGroup1 = true;
+              }
+              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP2_ID)) {
+                updatedArticle.mailSentGroup2 = true;
+              }
+              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP3_ID)) {
+                updatedArticle.mailSentGroup3 = true;
+              }
+
               return updatedArticle;
             }
             return art;
