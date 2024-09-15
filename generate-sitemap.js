@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { SitemapStream, streamToPromise } = require('sitemap');
 const path = require('path');
-const { fetchInfo } = require('./src/firebase/firebaseConfig');
+// const { fetchInfo } = require('./src/firebase/firebaseConfig');
 
 // Function to generate the sitemap
 const generateSitemap = async () => {
@@ -30,13 +30,14 @@ const generateSitemap = async () => {
     ];
 
     try {
-        const info = await fetchInfo('articles'); // Adjust the collection key
-        if (info) {
-            const { article_id_counter, removed_ids } = info;
-
+        // const info = await fetchInfo('articles'); // Adjust the collection key
+        // if (info) {
+            const article_id_counter=160;
+            const removed_ids=[10,12,14,16,17,25,27,32,39,41,42,45,46,47,49,50,51,52,53,60,61,63,64,65,66,67,68,69,70,72,74,79,80,81,87,90,92,107,117,118,119,120,131,133,134,137];
+            const removed_ids_as_strings = removed_ids.map(id => id.toString());
             // Add dynamic article URLs
             for (let i = 1; i <= article_id_counter; i++) {
-                if (!removed_ids.includes(i.toString())) {
+                if (!removed_ids_as_strings.includes(i.toString())) {
                     links.push({ url: `/articles/${i}`, changefreq: 'daily', priority: 0.8 });
                 }
             }
@@ -62,9 +63,9 @@ const generateSitemap = async () => {
             writeStream.on('error', err => {
                 console.error('Error writing sitemap:', err);
             });
-        } else {
-            console.log('No info document found.');
-        }
+        // } else {
+        //     console.log('No info document found.');
+        // }
     } catch (error) {
         console.error('Error generating sitemap:', error);
     }
