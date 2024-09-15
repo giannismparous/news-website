@@ -93,6 +93,7 @@ const ArticleView = () => {
                 title={relatedArticle.title}
                 category={relatedArticle.category}
                 imagePath={relatedArticle.imagePath}
+                showHelmet = {false}
               />
             ))}
           </div>
@@ -135,6 +136,7 @@ const ArticleView = () => {
                     date={article.date}
                     imagePath={article.imagePath}
                     maxWordsPreview={25}
+                    showHelmet = {false}
                   />
                 ))}
               </div>
@@ -148,6 +150,7 @@ const ArticleView = () => {
                     author={article.author}
                     date={article.date}
                     imagePath={article.imagePath}
+                    showHelmet = {false}
                   />
                 ))}
               </div>
@@ -161,6 +164,7 @@ const ArticleView = () => {
                     author={article.author}
                     date={article.date}
                     imagePath={article.imagePath}
+                    showHelmet = {false}
                   />
                 ))}
               </div>

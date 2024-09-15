@@ -36,6 +36,7 @@ const Search = () => {
             content={article.content}
             category={article.category}
             imagePath={article.imagePath}
+            showHelmet = {false}
           />
         ))
       ) : (

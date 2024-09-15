@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/Article.css'; // Import your CSS file
 import { Link } from 'react-router-dom';
 
-const SmallArticle = ({ id, title, category, date, imagePath, caption }) => {
+const SmallArticle = ({ id, title, category, date, imagePath, caption, showHelmet = true }) => {
 
   const formatCategoryName = (name) => {
     switch (name) {

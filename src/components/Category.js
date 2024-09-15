@@ -96,6 +96,7 @@ const Category = () => {
               authorImagePath={article.authorImagePath}
               showContent={!isMobile}
               apopsi={true}
+              showHelmet = {false}
             />
         ))}
         </div>
@@ -115,6 +116,7 @@ const Category = () => {
                         date={article.date}
                         imagePath={article.imagePath}
                         showContent={!isMobile}
+                        showHelmet = {false}
                     />
                 ))}
             </div>
@@ -129,6 +131,7 @@ const Category = () => {
                         date={article.date}
                         imagePath={article.imagePath}
                         showContent={!isMobile}
+                        showHelmet = {false}
                     />
                 ))}
             </div>
@@ -143,6 +146,7 @@ const Category = () => {
                         date={article.date}
                         imagePath={article.imagePath}
                         showContent={!isMobile}
+                        showHelmet = {false}
                     />
                 ))}
             </div>

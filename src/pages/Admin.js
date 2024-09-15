@@ -178,6 +178,7 @@ const Admin = () => {
                     author={article.author}
                     authorPrefix={article.authorPrefix}
                     apopsi={true}
+                    showHelmet = {false}
                   />
                   <button className="edit-button" onClick={() => handleEdit(article)}>Επεξεργασία</button>
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>

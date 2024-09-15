@@ -268,6 +268,7 @@ const Home = () => {
                                 imagePath={latestArticles[0].imagePath}
                                 caption={latestArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -284,6 +285,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
@@ -311,6 +313,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         ))}
                     </div>
@@ -327,6 +330,7 @@ const Home = () => {
                                 imagePath={politikiArticles[3].imagePath}
                                 caption={politikiArticles[3].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                         <div className="see-all">
@@ -355,6 +359,7 @@ const Home = () => {
                                 caption={apopseisArticles[0].caption}
                                 maxWordsPreview={15}
                                 apopsi={true}
+                                showHelmet = {false}
                             />
                         )}
                         {apopseisArticles[1] && (
@@ -373,6 +378,7 @@ const Home = () => {
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
                                 apopsi={true}
+                                showHelmet = {false}
                             />
                         )}
                         {apopseisArticles[2] && (
@@ -391,6 +397,7 @@ const Home = () => {
                                 showContent={!isMobile}
                                 maxWordsPreview={15}
                                 apopsi={true}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -414,6 +421,7 @@ const Home = () => {
                                     imagePath={article.imagePath}
                                     caption={article.caption}
                                     showContent={!isMobile}
+                                    showHelmet = {false}
                                 />
                             </div>
                         ))}
@@ -431,6 +439,7 @@ const Home = () => {
                                 imagePath={paraskiniaArticles[4].imagePath}
                                 caption={paraskiniaArticles[4].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -455,6 +464,7 @@ const Home = () => {
                                 imagePath={kedpressEsheaArticles[0].imagePath}
                                 caption={kedpressEsheaArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -471,6 +481,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
@@ -496,6 +507,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         ))}
                     </div>
@@ -511,6 +523,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         ))}
                     </div>
@@ -526,6 +539,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         ))}
                     </div>
@@ -549,6 +563,7 @@ const Home = () => {
                                     imagePath={article.imagePath}
                                     caption={article.caption}
                                     showContent={!isMobile}
+                                    showHelmet = {false}
                                 />
                             </div>
                         ))}
@@ -566,6 +581,7 @@ const Home = () => {
                                 imagePath={agoraKanalwtesArticles[4].imagePath}
                                 caption={agoraKanalwtesArticles[4].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -590,6 +606,7 @@ const Home = () => {
                                 imagePath={plusLifeArticles[0].imagePath}
                                 caption={plusLifeArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -606,6 +623,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
@@ -631,6 +649,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         ))}
                     </div>
@@ -647,6 +666,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
@@ -664,6 +684,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
@@ -689,6 +710,7 @@ const Home = () => {
                                 imagePath={artArticles[0].imagePath}
                                 caption={artArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -705,6 +727,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
@@ -729,6 +752,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         ))}
                     </div>
@@ -745,6 +769,7 @@ const Home = () => {
                                 imagePath={petArticles[3].imagePath}
                                 caption={petArticles[3].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                         <div className="see-all">
@@ -769,6 +794,7 @@ const Home = () => {
                                 imagePath={ygeiaSyntaxeisArticles[0].imagePath}
                                 caption={ygeiaSyntaxeisArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -784,6 +810,7 @@ const Home = () => {
                                     imagePath={article.imagePath}
                                     caption={article.caption}
                                     showContent={!isMobile}
+                                    showHelmet = {false}
                                 />
                             </div>
                         ))}
@@ -808,6 +835,7 @@ const Home = () => {
                                     imagePath={article.imagePath}
                                     caption={article.caption}
                                     showContent={!isMobile}
+                                    showHelmet = {false}
                                 />
                             </div>
                         ))}
@@ -825,6 +853,7 @@ const Home = () => {
                                 imagePath={ergasiaArticles[4].imagePath}
                                 caption={ergasiaArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -849,6 +878,7 @@ const Home = () => {
                                 imagePath={dikastikaArticles[0].imagePath}
                                 caption={dikastikaArticles[0].caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                         )}
                     </div>
@@ -865,6 +895,7 @@ const Home = () => {
                                 imagePath={article.imagePath}
                                 caption={article.caption}
                                 showContent={!isMobile}
+                                showHelmet = {false}
                             />
                             </div>
                         ))}
