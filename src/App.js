@@ -15,8 +15,12 @@ import About from './pages/About';
 import VideoTV from './pages/VideoTV';
 import Radio from './pages/Radio';
 import Terms from './pages/Terms';
+import TagManager from 'react-gtm-module';
 
 const App = () => {
+
+  TagManager.initialize({ gtmId: 'GTM-KDRHXVW7' });
+
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
