@@ -5,6 +5,10 @@
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://www.syntaktes.gr/category/all/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://www.syntaktes.gr/category/Πολιτική/</loc>
         <priority>0.8</priority>
     </url>
@@ -17,27 +21,67 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.syntaktes.gr/category/podcasts/</loc>
+        <loc>https://www.syntaktes.gr/category/Kedpress_ΕΣΗΕΑ/</loc>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.syntaktes.gr/category/radio/</loc>
+        <loc>https://www.syntaktes.gr/category/Εκτός_Συνόρων/</loc>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.syntaktes.gr/category/videotv/</loc>
+        <loc>https://www.syntaktes.gr/category/Αγορά_Καταναλωτές/</loc>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.syntaktes.gr/about</loc>
+        <loc>https://www.syntaktes.gr/category/Plus_Life/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/category/Σπορ/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/category/Art/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/category/Pet/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/category/Υγεία_Συντάξεις/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/category/Εργασία/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/category/Δικαστικά/</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/podcasts/</loc>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/radio/</loc>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/videotv/</loc>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.syntaktes.gr/about/</loc>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://www.syntaktes.gr/contact</loc>
+        <loc>https://www.syntaktes.gr/contact/</loc>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://www.syntaktes.gr/terms</loc>
+        <loc>https://www.syntaktes.gr/terms/</loc>
         <priority>0.6</priority>
     </url>
 </urlset>
