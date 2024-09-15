@@ -56,8 +56,26 @@ const generateSitemap = async () => {
 
             sitemapStream.end();
 
+            // Once the sitemap is written, prepend the XML declaration
             writeStream.on('finish', () => {
-                console.log('Sitemap generated and saved to sitemap.xml');
+                fs.readFile(path.resolve(__dirname, 'public', 'sitemap.xml'), 'utf8', (err, data) => {
+                    if (err) {
+                        console.error('Error reading sitemap file:', err);
+                        return;
+                    }
+
+                    // Add XML declaration
+                    const xmlWithDeclaration = `<?xml version="1.0" encoding="UTF-8"?>\n${data}`;
+
+                    // Write the new XML content with declaration
+                    fs.writeFile(path.resolve(__dirname, 'public', 'sitemap.xml'), xmlWithDeclaration, 'utf8', err => {
+                        if (err) {
+                            console.error('Error writing XML declaration to sitemap file:', err);
+                            return;
+                        }
+                        console.log('Sitemap generated and saved to sitemap.xml with XML declaration');
+                    });
+                });
             });
 
             writeStream.on('error', err => {
