@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Category from './components/Category';
 import Admin from './pages/Admin';
-import './styles/global.css'; // Import your CSS file
+import './styles/global.css';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import ArticleView from './components/ArticleView';
@@ -15,11 +15,22 @@ import About from './pages/About';
 import VideoTV from './pages/VideoTV';
 import Radio from './pages/Radio';
 import Terms from './pages/Terms';
-import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga4';
+
+ReactGA.initialize('G-G-DPPGVTD3EL');
+
+const Tracking = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
+  }, [location]);
+
+  return null;
+};
 
 const App = () => {
 
-  TagManager.initialize({ gtmId: 'GTM-KDRHXVW7' });
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -61,6 +72,7 @@ const App = () => {
   return (
     <div className="App">
       {/* {showPopup && <SubscribePopup onClose={handleClosePopup} />} */}
+      <Tracking />
       <Navbar />
       <Routes>
         <Route path="/" exact element={<Home />} />
