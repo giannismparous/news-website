@@ -290,6 +290,7 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
 };
 
 
+
   export const addNewArticle = async (collectionKey, newArticle) => {
   const articlesRef = collection(db, collectionKey);
   const dateRef = doc(articlesRef, "24-06-2024");
@@ -347,6 +348,23 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
     } else {
       console.log(`Date or info doc does not exist.`);
     }
+  } catch (error) {
+    console.error("Error current date or data", error);
+  }
+};
+
+export const fetchInfo = async (collectionKey) => {
+  const articlesRef = collection(db, collectionKey);
+  const infoRef = doc(articlesRef, "info");
+  try {
+    const infoDoc = await getDoc(infoRef);
+
+    if (infoDoc.exists()) {
+      return infoDoc.data();
+    } else {
+      console.log(`Info doc does not exist.`);
+    }
+
   } catch (error) {
     console.error("Error current date or data", error);
   }
