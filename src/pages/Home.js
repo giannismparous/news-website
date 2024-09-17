@@ -18,6 +18,7 @@ const Home = () => {
     const [apopseisArticles, setApopseisArticles] = useState([]);
     const [paraskiniaArticles, setParaskiniaArticles] = useState([]);
     const [kedpressEsheaArticles, setKedpressEsheaArticles] = useState([]);
+    const [oikonomiaArticles, setOikonomiaArticles] = useState([]);
     const [ektosSynorwnArticles, setEktosSynorwnArticles] = useState([]);
     const [agoraKanalwtesArticles, setAgoraKatanalwtesArticles] = useState([]);
     const [plusLifeArticles, setPlusLifeArticles] = useState([]);
@@ -190,6 +191,7 @@ const Home = () => {
         setApopseisArticles(filterArticlesByCategory("Απόψεις"));
         setParaskiniaArticles(filterArticlesByCategory("Παρασκήνια"));
         setKedpressEsheaArticles(filterArticlesByCategory("Kedpress_ΕΣΗΕΑ"));
+        setOikonomiaArticles(filterArticlesByCategory("Οικονομία"));
         setEktosSynorwnArticles(filterArticlesByCategory("Εκτός_Συνόρων"));
         setAgoraKatanalwtesArticles(filterArticlesByCategory("Αγορά_Καταναλωτές"));
         setPlusLifeArticles(filterArticlesByCategory("Plus_Life"));
@@ -490,6 +492,48 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="container">
+                <h1>ΟΙΚΟΝΟΜΙΑ</h1>
+                <div className="oikonomia-articles">
+                    <div className="oikonomia-articles-small-columns">
+                        {oikonomiaArticles.slice(0, 4).map((article, index) => (
+                            <div className="small-article-column" key={article.id}>
+                                <SmallArticle
+                                    id={article.id}
+                                    title={article.title}
+                                    category={article.category}
+                                    author={article.author}
+                                    date={article.date}
+                                    imagePath={article.imagePath}
+                                    caption={article.caption}
+                                    showContent={!isMobile}
+                                    showHelmet = {false}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="oikonomia-article-large">
+                        {oikonomiaArticles[4] && (
+                            <Article
+                                key={oikonomiaArticles[4].id}
+                                id={oikonomiaArticles[4].id}
+                                title={oikonomiaArticles[4].title}
+                                content={oikonomiaArticles[4].content}
+                                category={oikonomiaArticles[4].category}
+                                author={oikonomiaArticles[4].author}
+                                date={oikonomiaArticles[4].date}
+                                imagePath={oikonomiaArticles[4].imagePath}
+                                caption={oikonomiaArticles[4].caption}
+                                showContent={!isMobile}
+                                showHelmet = {false}
+                            />
+                        )}
+                    </div>
+                </div>
+                <div className="see-all">
+                    <a href="/category/Οικονομία">Δείτε περισσότερα →</a>
+                </div>  
             </div>
             <div className="container">
                 <h1>ΕΚΤΟΣ ΣΥΝΟΡΩΝ</h1>

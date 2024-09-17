@@ -323,6 +323,7 @@ const Navbar = () => {
                 <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>
                 <li><Link to="/category/Παρασκήνια" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Παρασκήνια</Link></li>
                 <li><Link to="/category/Kedpress_ΕΣΗΕΑ" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Kedpress/ ΕΣΗΕΑ</Link></li>
+                <li><Link to="/category/Οικονομία" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Οικονομία</Link></li>
                 <li><Link to="/category/Εκτός_Συνόρων" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Εκτός Συνόρων</Link></li>
                 <li><Link to="/category/Αγορά_Καταναλωτές" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Αγορά/ Καταναλωτές</Link></li>
                 <li><Link to="/category/Plus_Life" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Plus/ Life</Link></li>

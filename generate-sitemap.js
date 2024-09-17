@@ -12,6 +12,7 @@ const generateSitemap = async () => {
         { url: '/category/Απόψεις/', changefreq: 'weekly', priority: 0.8 },
         { url: '/category/Παρασκήνια/', changefreq: 'weekly', priority: 0.8 },
         { url: '/category/Kedpress_ΕΣΗΕΑ/', changefreq: 'weekly', priority: 0.8 },
+        { url: '/category/Οικονομία/', changefreq: 'weekly', priority: 0.8 },
         { url: '/category/Εκτός_Συνόρων/', changefreq: 'weekly', priority: 0.8 },
         { url: '/category/Αγορά_Καταναλωτές/', changefreq: 'weekly', priority: 0.8 },
         { url: '/category/Plus_Life/', changefreq: 'weekly', priority: 0.8 },
