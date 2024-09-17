@@ -13,7 +13,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
         return 'Υγεία/ Συντάξεις';
       case 'Plus_Life':
         return 'Plus/ Life';
-      case 'Εκτός Συνόρων':
+      case 'Εκτός_Συνόρων':
         return 'Εκτός Συνόρων';
       case 'Αγορά_Καταναλωτές':
         return 'Αγορά/ Καταναλωτές';
@@ -35,7 +35,8 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
     <div className="article">
       {showHelmet && (<Helmet>
           <title>{title}</title>  
-          <meta name="description" content={`Άρθρο στην κατηγορία ${category} στo syntaktes.gr`}/>
+          <meta name="description" content={displayContent}/>
+          {/* <meta name="description" content={`Άρθρο στην κατηγορία ${category} στo syntaktes.gr`}/> */}
           <link rel="canonical" href={`/articles/${id}`}/>
       </Helmet>)}
       <Link to={`/articles/${id}`} className="article-link">

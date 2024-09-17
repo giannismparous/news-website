@@ -77,7 +77,7 @@ const Category = () => {
     <>
       <Helmet>
           <title>{categoryName}</title>  
-          <meta name="description" content={`Τα άρθρα που ανοίκουν στην κατηγορία ${categoryName} στην ιστοσελίδα "Syntaktes"`}/>
+          <meta name="description" content={`Τα άρθρα που ανήκουν στην κατηγορία ${categoryName} στην ιστοσελίδα "Syntaktes"`}/>
           <link rel="canonical" href={`/category/${categoryName}`}/>
       </Helmet>
       <div className='category-container'>

@@ -33,6 +33,7 @@
     display: flex;
     align-items: center;
     margin: 20px 0;
+    text-align: left;
 }
 
 .article-content .share-buttons strong {

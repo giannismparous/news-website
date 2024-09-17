@@ -736,3 +736,10 @@ h2 {
     height: 100vh;
     /* Full viewport height */
 }
+
+
+@media (max-width: 980px) {
+    .container h1 {
+        left: 10px;
+    }
+}
