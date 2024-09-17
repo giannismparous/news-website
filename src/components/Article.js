@@ -26,6 +26,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
   const strippedContent = content.replace(/<[^>]*>?/gm, '');
   const words = strippedContent.split(' ');
   const displayContent = words.slice(0, maxWordsPreview).join(' ');
+  const displayContent2 = words.slice(0, 20).join(' ')+"...";
   const hasMore = words.length > maxWordsPreview;
 
   // Default date value if date is undefined
@@ -35,7 +36,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
     <div className="article">
       {showHelmet && (<Helmet>
           <title>{title}</title>  
-          <meta name="description" content={displayContent}/>
+          <meta name="description" content={displayContent2}/>
           {/* <meta name="description" content={`Άρθρο στην κατηγορία ${category} στo syntaktes.gr`}/> */}
           <link rel="canonical" href={`/articles/${id}`}/>
       </Helmet>)}
