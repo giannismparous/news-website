@@ -88,7 +88,7 @@ const Admin = () => {
       }
       fetchArticlesFromServer();
       setShowNewsletterPopup(false); // Close the popup after sending
-      setLoading(true);
+      setLoading(false);
       setSelectedGroups([]);
     } catch (error) {
       setSelectedGroups([]);

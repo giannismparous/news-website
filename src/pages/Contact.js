@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Contact.css'; // Import the Contact CSS
 import { Helmet } from 'react-helmet-async';
 
 const Contact = () => {
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -28,6 +29,62 @@ const Contact = () => {
             message: ''
         });
     };
+
+    const groups = [
+        {
+          id: process.env.REACT_APP_MAILERLITE_API_CONTACT_ID,
+          name: process.env.REACT_APP_MAILERLITE_API_CONTACT_NAME
+        },
+    ]
+
+    const [selectedGroups, setSelectedGroups] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    
+
+    useEffect(() => {
+        const groupIds = groups.map(group => group.id);
+        setSelectedGroups(groupIds);
+      }, []);
+
+      const handleSendContactEmail = async (formData, groupIds) => {
+        try {
+
+          setLoading(true);
+          
+          const response = await fetch('/.netlify/functions/sendContactEmail', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Headers': 'Content-Type',
+              'Authorization': `Bearer nfp_3Pyg2D92Bwsxk2zfCFfQ34mJEVURpkRrb1ce`
+            },
+            body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              message: formData.message,
+              groupIds: groupIds
+            }),
+          });
+
+          console.log(2222)
+          const data = await response;
+          console.log(33333)
+
+        if (response.ok) {
+        console.log('Το email στάλθηκε επιτυχώς:', data);
+        } else {
+        console.error('Αποτυχία:', data);
+        return false;
+        }
+
+          setLoading(false);
+
+        } catch (error) {
+          alert('Σφάλμα. Η αποστολή newsletter απέτυχε!');
+          console.error('Error sending newsletter:', error);
+        }
+      };
 
     return (
         <div className="contact-container">
@@ -66,7 +123,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                 ></textarea>
-                <button type="submit">Υποβολή</button>
+                <button type="submit" onClick={() => handleSendContactEmail(formData, selectedGroups)}>Υποβολή</button>
             </form>
         </div>
     );
