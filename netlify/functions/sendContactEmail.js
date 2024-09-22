@@ -17,9 +17,8 @@ exports.handler = async function(event, context) {
         subject: "Μύνημα από - "+name, // Use provided subject or default
         from_name: 'Syntaktes', // Use provided sender name or default
         from: 'syntaktes@syntaktes.gr', // Use provided sender email or default
-        // content: '<p>Test Content</p>', // Use provided content or default HTML
         content: `
-  <div class="newsletter-container" style="box-sizing: border-box; display: flex; justify-content: center; padding: 0 5%; max-width: 650px; margin: auto;">
+  <div style="box-sizing: border-box; display: flex; justify-content: center; padding: 0 5%; max-width: 650px; margin: auto;">
     <div style="width: 100%;">
       <h1 style="margin-bottom: 10px; font-size: 2em;">Ο χρήστης ${name} έγραψε:</h1>
       <p style="font-size: 1em; line-height: 1.6; margin-bottom: 20px;">
@@ -29,26 +28,8 @@ exports.handler = async function(event, context) {
         Email Επικοινωνίας: ${email}
       </p>
 
-      <div style="font-size: 1em; margin-bottom: 20px;">
-        <a href="https://syntaktes.gr/articles/${id}" style="text-decoration: none; color: rgb(9,194,105);">
-          Διαβάστε όλο το άρθρο <strong>εδώ</strong>
-        </a>
-      </div>
-
       <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
 
-      <div style="font-size: 1em; display: flex; align-items: center; justify-content: center; gap: 15px; text-align: center; flex-wrap: wrap;">
-        <a href="https://syntaktes.gr" style="text-decoration: none; color: #000;">Αρχική</a> |
-        <a href="https://syntaktes.gr/about" style="text-decoration: none; color: #000;">Ποιοί είμαστε</a> |
-        <a href="https://syntaktes.gr/contact" style="text-decoration: none; color: #000;">Επικοινωνία</a> |
-        <a href="https://www.facebook.com/profile.php?id=61564528245792" 
-          style="text-decoration: none; color: #000; display: flex; align-items: center; justify-content: center">
-          Facebook 
-          <img src="https://firebasestorage.googleapis.com/v0/b/news-website-a1a1d.appspot.com/o/syntaktes_images%2FFacebook_Logo_2023.png?alt=media&token=16794d55-9910-4d16-a5a7-8d6574f931e8" 
-              alt="Facebook Icon" 
-              style="width: 14px; height: 14px; margin-left: 5px;" />
-        </a>
-      </div>
     </div>
   </div>
 `,

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Contact.css'; // Import the Contact CSS
 import { Helmet } from 'react-helmet-async';
+import { ClockLoader } from 'react-spinners';
 
 const Contact = () => {
 
@@ -48,6 +49,9 @@ const Contact = () => {
       }, []);
 
       const handleSendContactEmail = async (formData, groupIds) => {
+
+        console.log(formData)
+        console.log(groupIds)
         try {
 
           setLoading(true);
@@ -72,8 +76,9 @@ const Contact = () => {
           console.log(33333)
 
         if (response.ok) {
-        console.log('Το email στάλθηκε επιτυχώς:', data);
+          alert('Το email στάλθηκε επιτυχώς!');
         } else {
+          alert('Αποτυχία!');
         console.error('Αποτυχία:', data);
         return false;
         }
@@ -93,6 +98,11 @@ const Contact = () => {
                 <meta name="description" content="Επικοινωνία με τα μέλη του Syntaktes.gr"/>
                 <link rel="canonical" href="/contact"/>
             </Helmet>
+            {loading &&
+              <div className='article-editor-loader'>
+                <ClockLoader color="#e29403d3" loading={loading} size={150} />
+              </div>
+            }
             <h1>Επικοινωνήστε</h1>
             <form className="contact-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Όνομα</label>
