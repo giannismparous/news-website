@@ -76,7 +76,7 @@ const Contact = () => {
           console.log(33333)
 
         if (response.ok) {
-          alert('Το email στάλθηκε επιτυχώς!');
+          alert('Η φόρμα καταχωρήθηκε επιτυχώς!');
         } else {
           alert('Αποτυχία!');
         console.error('Αποτυχία:', data);
@@ -98,11 +98,6 @@ const Contact = () => {
                 <meta name="description" content="Επικοινωνία με τα μέλη του Syntaktes.gr"/>
                 <link rel="canonical" href="/contact"/>
             </Helmet>
-            {loading &&
-              <div className='article-editor-loader'>
-                <ClockLoader color="#e29403d3" loading={loading} size={150} />
-              </div>
-            }
             <h1>Επικοινωνήστε</h1>
             <form className="contact-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Όνομα</label>
