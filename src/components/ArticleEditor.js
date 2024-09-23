@@ -300,6 +300,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           <option value="Πολιτική">Πολιτική</option>
           <option value="Απόψεις">Απόψεις</option>
           <option value="Παρασκήνια">Παρασκήνια</option>
+          <option value="Οικονομία">Οικονομία</option>
           <option value="Kedpress/ ΕΣΗΕΑ">Kedpress/ ΕΣΗΕΑ</option>
           <option value="Εκτός Συνόρων">Εκτός Συνόρων</option>
           <option value="Αγορά/ Καταναλωτές">Αγορά/ Καταναλωτές</option>
