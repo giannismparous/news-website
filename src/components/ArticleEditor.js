@@ -106,13 +106,62 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   }, [article]);
 
   const handleImageUpload = (e) => {
-    setImage(e.target.files[0]);
-    const imageUrl = URL.createObjectURL(e.target.files[0]);
-    setImagePath(imageUrl);
+
+    const file = e.target.files[0];
+    if (file && file.type === 'image/webp') {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob((blob) => {
+            const jpegFile = new File([blob], file.name.replace('.webp', '.jpeg'), { type: 'image/jpeg' });
+            setImage(jpegFile); // Store the new JPEG file
+            const imageUrl = URL.createObjectURL(jpegFile);
+            setImagePath(imageUrl); // Set preview image path
+          }, 'image/jpeg', 1.0); // 1.0 for high-quality JPEG
+        };
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImagePath(imageUrl);
+    }
+
   };
 
   const handleAuthorImageUpload = (e) => {
-    setAuthorImage(e.target.files[0]);
+
+    const file = e.target.files[0];
+
+    if (file && file.type === 'image/webp') {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob((blob) => {
+            const jpegFile = new File([blob], file.name.replace('.webp', '.jpeg'), { type: 'image/jpeg' });
+            setAuthorImage(jpegFile); 
+          }, 'image/jpeg', 1.0);
+        };
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setAuthorImage(file);
+    }
+
   };
 
   const handleQuillImageUpload = () => {
