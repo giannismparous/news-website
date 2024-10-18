@@ -100,7 +100,19 @@ const ArticleView = () => {
         </div>}
         <div className='column-vertical'>
           <div className='article-content'>
-            {article.imagePath && <img src={article.imagePath} alt={article.title} />}
+          {article.videoPath ? (
+              <div className='video-container'>
+              <iframe
+                  src={`https://www.youtube.com/embed/${article.videoPath.split('v=')[1].split('&')[0]}`}
+                  title={article.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+              />
+          </div>
+          ) : (
+              article.imagePath && <img src={article.imagePath} alt={article.title} />
+          )}
             {article.caption && <p className='article-caption'>{article.caption}</p>}
             <h1>{article.title}</h1>
             <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
