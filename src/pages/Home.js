@@ -372,6 +372,7 @@ const Home = () => {
                                 showHelmet = {false}
                             />
                         )}
+                        {/*
                         {apopseisArticles[1] && (
                             <Article
                                 key={apopseisArticles[1].id}
@@ -410,6 +411,7 @@ const Home = () => {
                                 showHelmet = {false}
                             />
                         )}
+                        */}
                     </div>
                 </div>
                 <div className="see-all">
