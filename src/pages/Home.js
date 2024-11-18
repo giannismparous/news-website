@@ -12,6 +12,14 @@ import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
 
+    useEffect(() => {
+        // Scroll to the top of the page with smooth behavior when the page is loaded
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }, []); // Empty dependency array ensures it runs only once, when the component mounts
+
     const [articles, setArticles] = useState([]);
     const [trendingArticles, setTrendingArticles] = useState([]);
     const [politikiArticles, setPolitikiArticles] = useState([]);

@@ -5,6 +5,14 @@ import { ClockLoader } from 'react-spinners';
 
 const Contact = () => {
 
+  useEffect(() => {
+    // Scroll to the top of the page with smooth behavior when the page is loaded
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []); // Empty dependency array ensures it runs only once, when the component mounts
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',

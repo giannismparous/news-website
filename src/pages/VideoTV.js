@@ -1,8 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import '../styles/VideoTV.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const VideoTV = () => {
+
+  useEffect(() => {
+    // Scroll to the top of the page with smooth behavior when the page is loaded
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []); // Empty dependency array ensures it runs only once, when the component mounts
   // List of YouTube video URLs
   const videoUrls = [
     'https://www.youtube.com/embed/urOtaJpfl-I?si=8bUvKQimcN9lSyX2',

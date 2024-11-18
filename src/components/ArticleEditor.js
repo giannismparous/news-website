@@ -105,10 +105,20 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
     fetchArticle();
   }, [article]);
 
+  const generateRandomString = (length = 10) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+    for (let i = 0; i < length; i++) {
+      randomString += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return randomString;
+  };
+  
   const handleImageUpload = (e) => {
-
     const file = e.target.files[0];
-    if (file && file.type === 'image/webp') {
+    const fileName = generateRandomString(); // Generate random filename
+  
+    if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const img = new Image();
@@ -119,12 +129,14 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
+  
+          // Always convert to jpeg regardless of the original file type
           canvas.toBlob((blob) => {
-            const jpegFile = new File([blob], file.name.replace('.webp', '.jpeg'), { type: 'image/jpeg' });
-            setImage(jpegFile); // Store the new JPEG file
-            const imageUrl = URL.createObjectURL(jpegFile);
+            const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' }); // Always save as jpeg
+            setImage(newFile); // Store the new JPEG file
+            const imageUrl = URL.createObjectURL(newFile);
             setImagePath(imageUrl); // Set preview image path
-          }, 'image/jpeg', 1.0); // 1.0 for high-quality JPEG
+          }, 'image/jpeg', 1.0); // Always convert to JPEG for consistency
         };
       };
       reader.readAsDataURL(file);
@@ -133,14 +145,13 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
       const imageUrl = URL.createObjectURL(file);
       setImagePath(imageUrl);
     }
-
   };
-
+  
   const handleAuthorImageUpload = (e) => {
-
     const file = e.target.files[0];
-
-    if (file && file.type === 'image/webp') {
+    const fileName = generateRandomString(); // Generate random filename
+  
+    if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const img = new Image();
@@ -151,18 +162,20 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
+  
+          // Always convert to jpeg regardless of the original file type
           canvas.toBlob((blob) => {
-            const jpegFile = new File([blob], file.name.replace('.webp', '.jpeg'), { type: 'image/jpeg' });
-            setAuthorImage(jpegFile); 
-          }, 'image/jpeg', 1.0);
+            const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' }); // Always save as jpeg
+            setAuthorImage(newFile); 
+          }, 'image/jpeg', 1.0); // Always convert to JPEG for consistency
         };
       };
       reader.readAsDataURL(file);
     } else {
       setAuthorImage(file);
     }
-
   };
+  
 
   const handleQuillImageUpload = () => {
     const input = document.createElement('input');
