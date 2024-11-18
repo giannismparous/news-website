@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/Terms.css'; // Import the Contact CSS
 import { Helmet } from 'react-helmet-async';
 
 const Terms = () => {
 
+    useEffect(() => {
+        // Scroll to the top of the page with smooth behavior when the page is loaded
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }, []); // Empty dependency array ensures it runs only once, when the component mounts
 
     return (
         <div className="terms-container">

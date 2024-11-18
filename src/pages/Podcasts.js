@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/Podcasts.css';
 import { Helmet } from 'react-helmet-async';
 
 const Podcasts = () => {
+
+  useEffect(() => {
+    // Scroll to the top of the page with smooth behavior when the page is loaded
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []); // Empty dependency array ensures it runs only once, when the component mounts
   // List of Spotify podcast URLs
   const podcastUrls = [
     'https://open.spotify.com/embed/episode/0YrftJbot66wj3TzklkPBF/video?utm_source=generator',
