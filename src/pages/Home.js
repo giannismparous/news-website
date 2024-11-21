@@ -41,7 +41,9 @@ const Home = () => {
 
     const fetchArticlesFromServer = async () => {
         try {
-            const fetchedArticles = await fetchArticles('articles');
+            var fetchedArticles;
+            fetchedArticles = await fetchArticles('articles');
+            fetchedArticles = fetchedArticles.filter(article => article.category !== "Test");
             setArticles([...fetchedArticles].reverse());
             setTrendingArticles([...fetchedArticles].reverse().filter(article => article.trending)  // Step 1: Filter articles that are trending
             .slice(0, 5)); // Assuming the latest articles are at the top

@@ -25,6 +25,7 @@ const Category = () => {
       const fetchedLatestArticles = await fetchArticles('articles');
       if (categoryName!=="all"){
         fetchedArticles = await fetchArticlesByCategory('articles', categoryName); // Pass your collection key here
+        fetchedArticles = fetchedArticles.filter(article => article.category !== "Test");
       }
       else {
         fetchedArticles = fetchedLatestArticles

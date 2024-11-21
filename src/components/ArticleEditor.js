@@ -245,7 +245,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         imageVerticalPositionInTrending,
         mailSentTest1,
         mailSentTest2,
-        caption
+        caption,
       };
 
       if (!article) {
@@ -373,6 +373,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           <option value="Υγεία/ Συντάξεις">Υγεία/ Συντάξεις</option>
           <option value="Εργασία">Εργασία</option>
           <option value="Δικαστικά">Δικαστικά</option>
+          <option value="Test">Test</option>
         </select>
         <input
             type="text"
