@@ -22,10 +22,10 @@ const Category = () => {
   const fetchArticlesFromServer = async () => {
     try {
       var fetchedArticles;
-      const fetchedLatestArticles = await fetchArticles('articles');
+      var fetchedLatestArticles = await fetchArticles('articles');
+      fetchedLatestArticles = fetchedLatestArticles.filter(article => article.category !== "Test");
       if (categoryName!=="all"){
         fetchedArticles = await fetchArticlesByCategory('articles', categoryName); // Pass your collection key here
-        fetchedArticles = fetchedArticles.filter(article => article.category !== "Test");
       }
       else {
         fetchedArticles = fetchedLatestArticles
