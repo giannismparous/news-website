@@ -46,7 +46,8 @@ const ArticleView = () => {
           const related = await fetchArticlesByCategory('articles', fetchedArticle.category);
           setRelatedArticles(related.filter(item => item.id !== fetchedArticle.id).slice(0, 3));
 
-          const fetchedLatestArticles = await fetchArticles('articles');
+          var fetchedLatestArticles = await fetchArticles('articles');
+          fetchedLatestArticles = fetchedLatestArticles.filter(article => article.category !== "Test");
           setLatestArticles([...fetchedLatestArticles].reverse());
         }
       } catch (error) {
