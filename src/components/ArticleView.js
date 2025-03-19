@@ -28,6 +28,21 @@ const ArticleView = () => {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if the user has scrolled to the bottom of the page
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const { articleId } = useParams(); // Assuming your route provides articleId as a param
 
   const [article, setArticle] = useState(null);

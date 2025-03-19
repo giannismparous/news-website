@@ -40,6 +40,21 @@ const Category = () => {
   };
 
   useEffect(() => {
+    const handleScroll = () => {
+      // Check if the user has scrolled to the bottom of the page
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
     fetchArticlesFromServer();

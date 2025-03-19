@@ -20,6 +20,21 @@ const Home = () => {
         });
       }, []); // Empty dependency array ensures it runs only once, when the component mounts
 
+    useEffect(() => {
+    const handleScroll = () => {
+        // Check if the user has scrolled to the bottom of the page
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const [articles, setArticles] = useState([]);
     const [trendingArticles, setTrendingArticles] = useState([]);
     const [politikiArticles, setPolitikiArticles] = useState([]);
