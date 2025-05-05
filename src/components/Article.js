@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Article.css'; // Import your CSS file
 import { Helmet } from 'react-helmet-async';
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 
 const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, caption, showContent = true, maxWordsPreview = 25, apopsi=false, showHelmet = true}) => {
   // Function to format category names
