@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react';
-import '../styles/Podcasts.css';
 import { Helmet } from 'react-helmet-async';
+
+import '../styles/Podcasts.css';
 
 const Podcasts = () => {
 
   useEffect(() => {
-    // Scroll to the top of the page with smooth behavior when the page is loaded
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  }, []); // Empty dependency array ensures it runs only once, when the component mounts
-  // List of Spotify podcast URLs
-  const podcastUrls = [
-    'https://open.spotify.com/embed/episode/0YrftJbot66wj3TzklkPBF/video?utm_source=generator',
-    'https://open.spotify.com/show/your-podcast-id-2',
-    // Add more podcast URLs as needed
-  ];
+  }, []); 
+  
+  // const podcastUrls = [
+  //   'https://open.spotify.com/embed/episode/0YrftJbot66wj3TzklkPBF/video?utm_source=generator',
+  //   'https://open.spotify.com/show/your-podcast-id-2',
+  // ];
 
   return (
     <div className="podcasts-container">
@@ -31,10 +30,9 @@ const Podcasts = () => {
   );
 };
 
-// Function to extract Spotify podcast ID from URL
-function getPodcastId(url) {
-  const parts = url.split('/');
-  return parts[parts.length - 1]; // Assuming the last part of URL is the podcast ID
-}
+// function getPodcastId(url) {
+//   const parts = url.split('/');
+//   return parts[parts.length - 1];
+// }
 
 export default Podcasts;

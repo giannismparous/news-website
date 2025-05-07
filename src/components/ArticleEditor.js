@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { addNewArticle, editArticle, fetchArticleById, storage } from '../firebase/firebaseConfig';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import '../styles/ArticleEditor.css';
-import CustomClipboard from './CustomClipboard';
 import { ClockLoader } from 'react-spinners';
+import ReactQuill, { Quill } from 'react-quill';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+
+import { addArticle, editArticle, fetchArticleById, storage } from '../firebase/firebaseConfig';
+
+import CustomClipboard from './CustomClipboard';
+
+import '../styles/ArticleEditor.css';
+
 const BlockEmbed = Quill.import('blots/block/embed');
+
+
 
 class TwitterBlot extends BlockEmbed {
   static create(value) {
@@ -64,8 +69,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
 
 
   useEffect(() => {
+
     window.scrollTo(0, 0);
     const fetchArticle = async () => {
+      
       if (article) {
         const fetchedArticle = await fetchArticleById('articles', article.id);
         if (fetchedArticle) {
@@ -102,6 +109,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
       }
     };
 
+    setUploadOnFacebook(false);
     fetchArticle();
   }, [article]);
 
@@ -261,7 +269,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           newArticle.authorImagePath = await getDownloadURL(snapshot.ref);
         }
 
-        const docRef = await addNewArticle('articles', newArticle);
+        const docRef = await addArticle('articles', newArticle);
 
         if (uploadOnFacebook) {
           await postOnFacebook(newArticle, docRef.id);

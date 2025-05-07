@@ -1,23 +1,23 @@
-import { Helmet } from 'react-helmet-async';
-import '../styles/VideoTV.css';
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+
+import '../styles/VideoTV.css';
 
 const VideoTV = () => {
 
   useEffect(() => {
-    // Scroll to the top of the page with smooth behavior when the page is loaded
+    
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  }, []); // Empty dependency array ensures it runs only once, when the component mounts
-  // List of YouTube video URLs
-  const videoUrls = [
-    'https://www.youtube.com/embed/urOtaJpfl-I?si=8bUvKQimcN9lSyX2',
-    'https://www.youtube.com/embed/IyqDueEf7vM?si=1uK3GsQ2n_xOcfEG',
-    'https://www.youtube.com/embed/Jr2hgkey6X0?si=1ARBZk4NWfgWRLlL',
-    // Add more video URLs as needed
-  ];
+  }, []);
+
+  // const videoUrls = [
+  //   'https://www.youtube.com/embed/urOtaJpfl-I?si=8bUvKQimcN9lSyX2',
+  //   'https://www.youtube.com/embed/IyqDueEf7vM?si=1uK3GsQ2n_xOcfEG',
+  //   'https://www.youtube.com/embed/Jr2hgkey6X0?si=1ARBZk4NWfgWRLlL',
+  // ];
 
   return (
     <div className="videotv-container">

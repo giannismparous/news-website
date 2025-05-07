@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { useMediaQuery } from 'react-responsive'; // Import media query hook
-import '../styles/Navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Hamburger from 'hamburger-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
+
+import '../styles/Navbar.css';
 
 const Navbar = () => {
 
@@ -12,7 +13,7 @@ const Navbar = () => {
 
     const toggleSidebar = () => {
       setSidebar(!sidebar);
-      setMenuOpen(!sidebar); // Ensure menuOpen state is synced with sidebar state
+      setMenuOpen(!sidebar);
   };
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -23,7 +24,6 @@ const Navbar = () => {
     const syntaktesOrangeImgPath = process.env.PUBLIC_URL +'/syntaktes-orange.png';
     const kedpressBlackImgPath = process.env.PUBLIC_URL +'/icons/ked_press.png';
     const kedpressOrangeImgPath = process.env.PUBLIC_URL +'/icons/ked_press-orange.png';
-    const searchBlackImgPath = process.env.PUBLIC_URL +'/icons/search-black.png';
     const searchWhiteImgPath = process.env.PUBLIC_URL +'/icons/search-white.png';
     const searchOrangeImgPath = process.env.PUBLIC_URL +'/icons/search-orange.png';
     const podcastBlackImgPath = process.env.PUBLIC_URL +'/icons/podcast-black.png';
@@ -199,25 +199,6 @@ const Navbar = () => {
                     />
                   </Link>
                 </div>
-                {/* <div className="podcast-container">
-                  <Link to="/podcasts" className="podcast-container" onClick={toggleMenu}>
-                    <img
-                      src={
-                        podcastIsHovered
-                          ? podcastGreenImgPath
-                          : isHovered
-                          ? podcastWhiteImgPath
-                          : scrollPosition === 0
-                          ? podcastBlackImgPath
-                          : podcastWhiteImgPath
-                      }
-                      onMouseEnter={handleMouseEnterPodcast}
-                      onMouseLeave={handleMouseLeavePodcast}
-                      alt="Podcast Icon"
-                      className="podcast"
-                    />
-                  </Link>
-                </div> */}
                 {!isMobile && <ul className='nav-bar-links'>
                   <li><Link to="/category/Πολιτική" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Πολιτική</Link></li>
                   <li><Link to="/category/Απόψεις" className={`nav-link-item ${(scrollPosition === 0 && !isHovered && !isMobile) ? 'colored' : 'white'}`}>Απόψεις</Link></li>

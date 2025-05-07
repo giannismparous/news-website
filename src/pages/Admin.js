@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/ArticleEditor.css';
-import ArticleEditor from '../components/ArticleEditor';
-import Article from '../components/Article';
-import Login from '../components/Login';
-import { fetchArticles, deleteArticle, sendNewsletterAndUpdate } from '../firebase/firebaseConfig';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ClockLoader } from 'react-spinners';
 import { FacebookShareButton} from 'react-share';
 import { FacebookIcon} from 'react-share';
-import '../styles/Admin.css'; // Import the Admin CSS
+
+import ArticleEditor from '../components/ArticleEditor';
+import Article from '../components/Article';
+import Login from '../components/Login';
+
+import { fetchAdminPage, fetchAdminPageAfter, deleteArticle, sendNewsletterAndUpdate } from '../firebase/firebaseConfig';
+
+import '../styles/Admin.css';
+
+const PAGE_SIZE = 5;
 
 const Admin = () => {
 
   useEffect(() => {
-    // Scroll to the top of the page with smooth behavior when the page is loaded
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  }, []); // Empty dependency array ensures it runs only once, when the component mounts
+  }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [uid, setUid] = useState(null); // Add uid state
+  const [uid, setUid] = useState(null);
   const [articles, setArticles] = useState([]);
+  const [lastDoc, setLastDoc]           = useState(null);
+  const [hasMore, setHasMore]           = useState(true)
   const [showEditor, setShowEditor] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [articleToDelete, setArticleToDelete] = useState(null);
@@ -31,34 +36,67 @@ const Admin = () => {
   const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
   const [selectedGroups, setSelectedGroups] = useState([]);
 
+  const loaderRef = useRef(null)
+
   const reset = () => {
     window.scrollTo(0, 0);
     if (showEditor) setSelectedArticle(null);
     setShowEditor(!showEditor);
   };
-
-  const fetchArticlesFromServer = async () => {
+  
+  const loadFirstPage = useCallback(async () => {
+    setLoading(true);
     try {
-      const fetchedArticles = await fetchArticles('articles'); // Pass your collection key here
-      setArticles([...fetchedArticles].reverse());
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching articles:', error);
+      const { docs, last } = await fetchAdminPage('articles', PAGE_SIZE);
+      setArticles(docs);
+      setLastDoc(last);
+      setHasMore(docs.length === PAGE_SIZE);
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
       window.scrollTo(0, 0);
-      setLoading(true);
-      fetchArticlesFromServer();
+      loadFirstPage();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, loadFirstPage]);
+
+   
+   useEffect(() => {
+    if (!loaderRef.current || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && !loading) {
+          setLoading(true);
+          fetchAdminPageAfter('articles', 'all', lastDoc, PAGE_SIZE)
+            .then(({ docs, last }) => {
+              setArticles(prev => [...prev, ...docs]);
+              setLastDoc(last);
+              setHasMore(docs.length === PAGE_SIZE);
+            })
+            .catch(console.error)
+            .finally(() => setLoading(false));
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px 800px 0px',
+        threshold: 0.5,
+      }
+    );
+
+    observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [lastDoc, hasMore, loading]);
 
   const handleLogin = (uid) => {
     setIsLoggedIn(true);
-    setUid(uid); // Set uid on login
+    setUid(uid);
   };
 
   const handleEdit = (article) => {
@@ -69,8 +107,8 @@ const Admin = () => {
   const handleDelete = async () => {
     try {
       await deleteArticle('articles', articleToDelete);
-      fetchArticlesFromServer();
-      setArticleToDelete(null); // Close the confirmation dialog
+      loadFirstPage();
+      setArticleToDelete(null);
     } catch (error) {
       console.error('Error deleting article:', error);
     }
@@ -87,15 +125,15 @@ const Admin = () => {
     try {
       setShowNewsletterPopup(false);
       setLoading(true);
-      const result=await sendNewsletterAndUpdate('articles', article.id, groupIds); // Update with selected group IDs
+      const result=await sendNewsletterAndUpdate('articles', article.id, groupIds);
       if (result){
         alert('Το newsletter στάλθηκε επιτυχώς!');
       }
       else {
         alert('Σφάλμα. Η αποστολή newsletter απέτυχε!');
       }
-      fetchArticlesFromServer();
-      setShowNewsletterPopup(false); // Close the popup after sending
+      loadFirstPage();
+      setShowNewsletterPopup(false);
       setLoading(false);
       setSelectedGroups([]);
     } catch (error) {
@@ -173,7 +211,7 @@ const Admin = () => {
             </button>
           </div>
           {showEditor ? (
-            <ArticleEditor article={selectedArticle} onArticleAdded={fetchArticlesFromServer} uid={uid} />
+            <ArticleEditor article={selectedArticle} onArticleAdded={() => { loadFirstPage() }} uid={uid} />
           ) : (
             <div>
               <h1 className="admin-header">Όλες οι δημοσιεύσεις</h1>
@@ -196,29 +234,17 @@ const Admin = () => {
                   <button className="delete-button" onClick={() => confirmDelete(article)}>Διαγραφή</button>
                   <div className='send-article-section'>
                     <div className='sent-to'>
-                      {/* {article.mailSentTest1===true && (
-                        <p className='newsletter'>Έχει αποσταλεί ως newsletter στο Test1✔️</p>
-                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
-                      )}
-                      {article.mailSentTest2===true && (
-                        <p className='newsletter'>Έχει αποσταλεί ως newsletter στο Test2✔️</p>
-                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
-                      ) } */}
                       {article.mailSentGroup1===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο MELH(124)✔️</p>
-                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
                       )}
                       {article.mailSentGroup2===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο AUGOUSTOS_XWRIS_SYNENAISI(451)✔️</p>
-                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
                       ) }
                       {article.mailSentGroup3===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο AUGOUSTOS_ME_SYNENAISI(270)✔️</p>
-                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
                       ) }
                       {article.mailSentGroup4===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο NEA_LISTA(1123)✔️</p>
-                        // <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>
                       ) }
                     </div>
                     {!(article.mailSentGroup1===true && article.mailSentGroup2===true && article.mailSentGroup3===true && article.mailSentGroup4===true) && <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>}
@@ -228,6 +254,12 @@ const Admin = () => {
                   </div>
                 </div>
               ))}
+              <div ref={loaderRef} style={{ height: '1px' }} />
+              {!hasMore && (
+                <p style={{ textAlign: 'center', margin: '1rem 0' }}>
+                  — Δεν υπάρχουν άλλα άρθρα —
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -264,7 +296,7 @@ const Admin = () => {
                       type="checkbox"
                       checked={selectedGroups.includes(group.id)}
                       onChange={() => toggleGroupSelection(group.id)}
-                      disabled={isMailSent}  // Disable if mail has been sent
+                      disabled={isMailSent}  
                     />
                     {group.name} {isMailSent && '✔️'}
                   </label>
@@ -275,7 +307,7 @@ const Admin = () => {
               <button
                 className="send-button"
                 onClick={() => handleSendNewsletter(selectedArticle, selectedGroups)}
-                disabled={selectedGroups.length === 0} // Disable button if no groups are selected
+                disabled={selectedGroups.length === 0} 
               >
                 Αποστολή
               </button>

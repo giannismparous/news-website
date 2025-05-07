@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { attemptLogin } from '../firebase/firebaseConfig';
+
 import '../styles/Login.css';
 
 const Login = ({ onLogin }) => {
@@ -10,7 +12,7 @@ const Login = ({ onLogin }) => {
 
     const uid = await attemptLogin(username, password);
     if (uid) {
-      onLogin(uid); // Pass uid to onLogin
+      onLogin(uid);
     } else {
       alert('Login failed. Please check your credentials.');
     }

@@ -1,18 +1,25 @@
-import { getAnalytics } from 'firebase/analytics';
 import { getStorage } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
+// import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import {
     collection,
-  doc,
-  getDoc,
-  getFirestore,
-  updateDoc,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    where,
+    orderBy,
+    limit,
+    updateDoc,
+    getFirestore,
+    serverTimestamp,
+    runTransaction,
+    startAfter,
 } from 'firebase/firestore';
-import axios from 'axios';
 
 
 const firebaseConfig = {
@@ -29,13 +36,13 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 export const db = getFirestore();
-const analytics = getAnalytics(firebaseApp);
+// const analytics = getAnalytics(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
 const getCurrentDateInGreece = () => {
+
   const date = new Date();
 
-  // Options for the date formatting
   const options = {
     timeZone: 'Europe/Athens',
     year: 'numeric',
@@ -46,15 +53,14 @@ const getCurrentDateInGreece = () => {
     hour12: false,
   };
 
-  // Format the date
   const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(date);
 
-  // Split the formatted date to get separate date and time
   const [day, month, yearAndTime] = formattedDate.split('/');
   const [year, time] = yearAndTime.split(', ');
 
-  // Return the formatted date as "dd/mm/yyyy | hh:mm"
+  // "dd/mm/yyyy | hh:mm"
   return `${day}/${month}/${year} | ${time}`;
+  
 };
 
 const formatCategoryName = (name) => {
@@ -76,6 +82,24 @@ const formatCategoryName = (name) => {
   }
 };
 
+export function normalize(str = '') {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+export function makeNgrams(s = '') {
+  const words = s.split(/\s+/);
+  const set = new Set();
+  for (const w of words) {
+    for (let len = 2; len <= w.length; len++) {
+      set.add(w.substr(0, len));
+    }
+  }
+  return Array.from(set);
+}
+
 export const attemptLogin = async (username,password) => {
     try {
       await signInWithEmailAndPassword(auth,username, password);
@@ -89,121 +113,301 @@ export const attemptLogin = async (username,password) => {
       console.error('Error logging in:', error.message);
       return false;
     }
-  };
-
-  export const fetchArticles = async (collectionKey) => {
-    const articlesRef = collection(db, collectionKey); // Assuming collectionKey is the name of your collection
-    const dateRef = doc(articlesRef, "24-06-2024"); // Example document ID, adjust according to your structure
-    const dateDoc = await getDoc(dateRef);
-    if (dateDoc.exists()) {
-      const articlesData = dateDoc.data().articles;
-      const articles = articlesData.filter(article => !article.deleted);
-      console.log("Fetched articles:", articles);
-      return articles;
-    }
-  
-    console.log("Date doc does not exist or no articles found.");
-    return [];
-  };
-
-  export const fetchArticlesByCategory = async (collectionKey,category) => {
-    const articlesRef = collection(db, collectionKey); // Assuming collectionKey is the name of your collection
-    const dateRef = doc(articlesRef, "24-06-2024"); // Example document ID, adjust according to your structure
-    const dateDoc = await getDoc(dateRef);
-    if (dateDoc.exists()) {
-      const articlesData = dateDoc.data().articles;
-      const articles = articlesData.filter(article => !article.deleted);
-      const filteredArticles = articles.filter(article => article.category === category);
-      console.log("Fetched articles:", filteredArticles);
-    return filteredArticles;
-    }
-  
-    console.log("Date doc does not exist or no articles found.");
-    return [];
-  };
-
-// export const fetchLastArticlesByCategory = async (collectionKey, category, num) => {
-//     const articlesRef = collection(db, collectionKey); // Assuming collectionKey is the name of your collection
-
-//     const articlesQuery = query(
-//         articlesRef,
-//         where("category", "==", category),
-//         orderBy("id", "desc"),
-//         limit(num)
-//     );
-
-//     try {
-//         const querySnapshot = await getDocs(articlesQuery);
-//         const articles = querySnapshot.docs.map(doc => doc.data());
-//         const filteredArticles = articles.filter(article => !article.deleted);
-
-//         console.log("Fetched articles:", filteredArticles);
-//         return filteredArticles;
-//     } catch (error) {
-//         console.error("Error fetching articles:", error);
-//         return [];
-//     }
-// };
-
-export const fetchArticlesByTitle = async (collectionKey, query) => {
-  const articlesRef = collection(db, collectionKey);
-  const dateRef = doc(articlesRef, "24-06-2024"); // Adjust the date accordingly
-  const dateDoc = await getDoc(dateRef);
-
-  if (dateDoc.exists()) {
-    const articlesData = dateDoc.data().articles;
-    const articles = articlesData.filter(article => !article.deleted);
-
-    // Normalize the query
-    const normalizedQuery = query.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-    // Filter articles by normalized title
-    const filteredArticles = articles.filter(article => {
-      const normalizedTitle = article.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      return normalizedTitle.includes(normalizedQuery);
-    });
-
-    console.log("Fetched articles by title:", filteredArticles);
-    return filteredArticles;
-  }
-
-  console.log("Date doc does not exist or no articles found.");
-  return [];
 };
 
-  export const fetchArticleById = async (collectionKey, article_id) => {
+export async function addArticle(collectionKey, newArticle) {
+  const colRef  = collection(db, collectionKey);
+  const infoRef = doc(db, collectionKey, 'info');
+  const newDocRef = doc(colRef);
 
-    const articlesRef = collection(db, collectionKey);
-    const dateRef = doc(articlesRef, "24-06-2024");
-    const dateDoc = await getDoc(dateRef);
-    
-    if (dateDoc.exists()) {
-  
-      const articles = dateDoc.data().articles;
-      const article = articles.find(art => art.id === article_id);
-      return article; // Return the found order or null if not found
-  
-    } else {
-      console.log(`Error while fetching date doc`);
-      return null; // Return null or handle the error case appropriately
+  await runTransaction(db, async (tx) => {
+    const infoSnap = await tx.get(infoRef);
+    let counter = 0;
+    if (!infoSnap.exists()) {
+      throw new Error('Missing info doc');
     }
-  
+    counter = infoSnap.data().article_id_counter + 1;
+    tx.update(infoRef, { article_id_counter: counter });
+
+    const normTitle = normalize(newArticle.title);
+    const ngrams    = makeNgrams(normTitle);
+    const date      = getCurrentDateInGreece();
+
+    const payload = {
+      id:               counter,
+      title:            newArticle.title,
+      normalizedTitle:  normTitle,
+      ngrams,
+      content:          newArticle.content,
+      category:         newArticle.category,
+      imagePath:        newArticle.imagePath,
+      author:           newArticle.author,
+      authorPrefix:     newArticle.authorPrefix,
+      authorImagePath:  newArticle.authorImagePath,
+      uid:              newArticle.uid,
+      trending:         !!newArticle.trending,
+      deleted:          false,
+      date,  
+      dateTimestamp:    serverTimestamp(),
+    };
+
+    tx.set(newDocRef, payload);
+  });
+
+  return newDocRef.id;
+}
+
+export async function editArticle(collectionKey, updated) {
+
+  const col = collection(db, collectionKey);
+  const q = query(col, where('id', '==', updated.id), limit(1));
+  const snap = await getDocs(q);
+  if (snap.empty) throw new Error(`No article found with id ${updated.id}`);
+  const docRef = snap.docs[0].ref;
+
+  const normTitle = normalize(updated.title);
+  const ngrams    = makeNgrams(normTitle);
+
+  const payload = {
+    title:           updated.title,
+    normalizedTitle: normTitle,
+    ngrams,
+    content:         updated.content,
+    category:        updated.category,
+    imagePath:       updated.imagePath,
+    author:          updated.author,
+    authorPrefix:    updated.authorPrefix,
+    authorImagePath:    updated.authorImagePath,
+    trending:        !!updated.trending,
+    date:            updated.date,
   };
 
-// Your sendNewsletterAndUpdate function
-export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupIds) => {
+  await updateDoc(docRef, payload);
+
+  return true;
+}
+
+export const deleteArticle = async (collectionKey, article) => {
+
+  const q = query(
+    collection(db, collectionKey),
+    where('id', '==', article.id),
+    limit(1)
+  );
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    throw new Error(`No document found with id = ${article.id}`);
+  }
+
+  const realRef = snap.docs[0].ref;
+  await updateDoc(realRef, { deleted: true });
+
+  return `Article ${article.id} marked deleted`;
+
+};
+
+export const fetchInfo = async (collectionKey) => {
   try {
-    // Fetch the article by ID
+    const infoRef = doc(db, collectionKey, 'info');
+    const snap = await getDoc(infoRef);
+    return snap.exists() ? snap.data() : {};
+  } catch (e) {
+    console.error('Error fetching info doc:', e);
+    return {};
+  }
+};
+
+export const fetchArticleById = async (collectionKey, id) => {
+  const q = query(
+    collection(db, collectionKey),
+    where("id", "==", id),
+    where("deleted", "==", false),
+    limit(1)
+  );
+  const snap = await getDocs(q);
+  if (snap.empty) return null;
+  return { id: snap.docs[0].id, ...snap.docs[0].data() };
+};
+
+export const fetchArticles = async (collectionKey) => {
+  const articlesQuery = query(
+    collection(db, collectionKey),
+    orderBy("dateTimestamp", "asc")
+  );
+
+  const snapshot = await getDocs(articlesQuery);
+  return snapshot.docs
+    .map(docSnap => ({ id: docSnap.id, ...docSnap.data() }))
+    .filter(article => !article.deleted);
+};
+
+export async function fetchAllArticles(collectionKey) {
+  const col = collection(db, collectionKey);
+  const q   = query(
+    col,
+    where('deleted', '==', false),
+    orderBy('dateTimestamp', 'desc')
+  );
+  const snap = await getDocs(q);
+  return snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .filter(article => typeof article.content === 'string');
+}
+  
+export async function fetchAdminPage(collectionKey, pageSize = 5) {
+const col = collection(db, collectionKey);
+const q = query(
+  col,
+  where('deleted','==',false),
+  orderBy('dateTimestamp','desc'),
+  limit(pageSize)
+);
+const snap = await getDocs(q);
+return {
+  docs: snap.docs.map(d=>({ id:d.id, ...d.data() })),
+  last: snap.docs[snap.docs.length-1] || null
+};
+}
+
+export const fetchAdminPageAfter = async (
+collectionKey,
+categoryName = "all",
+lastDoc,
+pageSize = 5
+) => {
+const col = collection(db, collectionKey);
+const constraints = [
+  where("deleted", "==", false),
+  orderBy("dateTimestamp", "desc"),
+  limit(pageSize),
+  startAfter(lastDoc)
+];
+if (categoryName !== "all") {
+  constraints.unshift(where("category", "==", categoryName));
+}
+const q = query(col, ...constraints);
+const snap = await getDocs(q);
+return {
+  docs: snap.docs.map(d => ({ id: d.id, ...d.data() })),
+  last: snap.docs[snap.docs.length - 1] || null
+};
+};
+
+export const fetchTrendingArticles = async (collectionKey, num = 5) => {
+  const q = query(
+    collection(db, collectionKey),
+    where("deleted", "==", false),
+    where("trending", "==", true),
+    orderBy("dateTimestamp", "desc"),
+    limit(num)
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+};
+
+export const fetchLatestArticles = async (collectionKey, num = 4) => {
+  const q = query(
+    collection(db, collectionKey),
+    where("deleted", "==", false),
+    orderBy("dateTimestamp", "desc"),
+    limit(num)
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+};
+
+export const fetchArticlesByCategory = async (
+  collectionKey,
+  category,
+  num = 9
+) => {
+  const q = query(
+    collection(db, collectionKey),
+    where("category", "==", category),
+    where("deleted", "==", false),
+    orderBy("dateTimestamp", "desc"),
+    limit(num)
+  );
+
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+};
+
+export async function fetchCategoryPage(collectionKey, categoryName, pageSize=15) {
+  const constraints = [
+    where("deleted","==", false),
+    orderBy("dateTimestamp","desc"),
+    limit(pageSize)
+  ];
+  if (categoryName !== "all") {
+    constraints.unshift(where("category","==", categoryName));
+  }
+  const q = query(collection(db, collectionKey), ...constraints);
+  const snap = await getDocs(q);
+  return {
+    docs: snap.docs.map(d=>({ id:d.id, ...d.data() })),
+    last: snap.docs[snap.docs.length-1] || null
+  };
+}
+
+export const fetchCategoryPageAfter = async (
+  collectionKey,
+  categoryName,
+  lastDoc,
+  pageSize = 15
+) => {
+  const col = collection(db, collectionKey);
+
+  const constraints = [
+    where("deleted", "==", false),
+    orderBy("dateTimestamp", "desc"),
+    limit(pageSize),
+    startAfter(lastDoc)
+  ];
+
+  if (categoryName !== "all") {
+    constraints.unshift(where("category", "==", categoryName));
+  }
+
+  const q = query(col, ...constraints);
+  const snap = await getDocs(q);
+
+  return {
+    docs: snap.docs.map(d => ({ id: d.id, ...d.data() })),
+    last: snap.docs[snap.docs.length - 1] || null
+  };
+};
+
+export async function searchArticlesByTitleSingleWord(
+  collectionKey,
+  rawSubstr,
+  num = 50
+) {
+  const sub = normalize(rawSubstr);
+  const q = query(
+    collection(db, collectionKey),
+    where('deleted', '==', false),
+    where('ngrams', 'array-contains', sub),
+    limit(num)
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupIds) => {
+
+  try {
+
     const article = await fetchArticleById(collectionKey, article_id);
-    if (!article) {
-      throw new Error('Article not found');
-    }
+    if (!article) throw new Error("Article not found");
 
     const strippedContent = article.content.replace(/<[^>]*>?/gm, '');
     const words = strippedContent.split(' ');
     const displayContent = words.slice(0, 50).join(' ')+"...";
 
-    console.log(1111)
+    console.log("Starting newsletter process")
+
     try {
       const response = await fetch('/.netlify/functions/sendNewsletter', {
         method: 'POST',
@@ -225,60 +429,54 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
           groupIds: groupIds
         }),
       });
-      console.log(2222)
+
+      console.log("Sending request")
+
       const data = await response;
-      console.log(33333)
+
+      console.log("Request done")
+
       if (response.ok) {
+
         console.log('Newsletter sent successfully:', data);
-        // Update the mailSent status in your Firebase as needed
-        const articlesRef = collection(db, collectionKey);
-        const dateRef = doc(articlesRef, "24-06-2024");
-        const dateDoc = await getDoc(dateRef);
-    
-        if (dateDoc.exists()) {
-          const articles = dateDoc.data().articles;
 
-          // Determine which mailSentTest variable(s) to update
-          const updatedArticles = articles.map(art => {
-            if (art.id === article_id) {
-              let updatedArticle = { ...art };
-              
-              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID)) {
-                updatedArticle.mailSentTest1 = true;
-              }
-              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID)) {
-                updatedArticle.mailSentTest2 = true;
-              }
-
-              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP1_ID)) {
-                updatedArticle.mailSentGroup1 = true;
-              }
-              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP2_ID)) {
-                updatedArticle.mailSentGroup2 = true;
-              }
-              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP3_ID)) {
-                updatedArticle.mailSentGroup3 = true;
-              }
-              if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP4_ID)) {
-                updatedArticle.mailSentGroup4 = true;
-              }
-
-              return updatedArticle;
-            }
-            return art;
-          });
-          
-          await updateDoc(dateRef, { articles: updatedArticles });
-          console.log('mailSent variable updated');
-
-          return true;
+        const col = collection(db, collectionKey);
+        const q2 = query(col, where("id", "==", article_id), limit(1));
+        const snap2 = await getDocs(q2);
+        if (snap2.empty) {
+          console.warn("Could not find doc to update mailSent flags");
+          return true; 
         }
-        console.log(44444)
+          
+        const docRef = snap2.docs[0].ref;
+        
+        const patch = {};
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID))
+          patch.mailSentTest1 = true;
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID))
+          patch.mailSentTest2 = true;
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP1_ID))
+          patch.mailSentGroup1 = true;
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP2_ID))
+          patch.mailSentGroup2 = true;
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP3_ID))
+          patch.mailSentGroup3 = true;
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP4_ID))
+          patch.mailSentGroup4 = true;
+
+        if (Object.keys(patch).length > 0) {
+          await updateDoc(docRef, patch);
+          console.log("mailSent flags updated on doc", docRef.id);
+        }
+              
       } else {
+
         console.error('Failed to send newsletter:', data);
+
         return false;
+
       }
-      console.log(5555)
+      
       return false;
 
     } catch (error) {
@@ -290,144 +488,5 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
     console.error('Error in sendNewsletterAndUpdate:', error);
     throw error;
   }
+
 };
-
-
-
-  export const addNewArticle = async (collectionKey, newArticle) => {
-  const articlesRef = collection(db, collectionKey);
-  const dateRef = doc(articlesRef, "24-06-2024");
-  const infoRef = doc(articlesRef, "info");
-  try {
-    const dateDoc = await getDoc(dateRef);
-    const infoDoc = await getDoc(infoRef);
-
-    if (dateDoc.exists() && infoDoc.exists()) {
-      const articles = dateDoc.data().articles;
-      const currentId = infoDoc.data().article_id_counter + 1;
-      const currentDate = getCurrentDateInGreece();
-
-      if (newArticle.category==="Απόψεις"){
-        articles.push({
-          title: newArticle.title,
-          content: newArticle.content,
-          category: newArticle.category,
-          imagePath: newArticle.imagePath,
-          id: currentId,
-          date: currentDate,
-          uid: newArticle.uid,
-          author: newArticle.author,
-          authorPrefix: newArticle.authorPrefix,
-          authorImagePath: newArticle.authorImagePath,
-          trending: newArticle.trending
-        });
-      }
-      else {
-        articles.push({
-          title: newArticle.title,
-          content: newArticle.content,
-          category: newArticle.category,
-          imagePath: newArticle.imagePath,
-          id: currentId,
-          date: currentDate,
-          uid: newArticle.uid,
-          trending: newArticle.trending,
-          author: newArticle.author,
-          authorPrefix: newArticle.authorPrefix,
-          // authorImagePath: newArticle.authorImagePath
-        });
-      }
-      
-
-      await updateDoc(infoRef, {
-        article_id_counter: currentId
-      });
-
-      await updateDoc(dateRef, {
-        articles: articles
-      });
-
-      console.log(`Added new article with id ${currentId}`);
-    } else {
-      console.log(`Date or info doc does not exist.`);
-    }
-  } catch (error) {
-    console.error("Error current date or data", error);
-  }
-};
-
-export const fetchInfo = async (collectionKey) => {
-  const articlesRef = collection(db, collectionKey);
-  const infoRef = doc(articlesRef, "info");
-  try {
-    const infoDoc = await getDoc(infoRef);
-
-    if (infoDoc.exists()) {
-      return infoDoc.data();
-    } else {
-      console.log(`Info doc does not exist.`);
-    }
-
-  } catch (error) {
-    console.error("Error current date or data", error);
-  }
-};
-
-  export const editArticle = async (collectionKey, article) => {
-
-  
-    const articlesRef = collection(db, collectionKey);
-    const dateRef = doc(articlesRef, "24-06-2024");
-    const dateDoc = await getDoc(dateRef);
-  
-    if (dateDoc.exists()) {
-    const articles = dateDoc.data().articles;
-
-    // Check if an order with the same reservation_id already exists
-    const existingArticleIndex = articles.findIndex(art => art.id === article.id);
-
-    if (existingArticleIndex !== -1) {
-        // Update the existing order
-        articles[existingArticleIndex] = article;
-    }
-    else {
-        console.log("Article not found");
-    }
-
-// Update the document with the modified orders array
-    await updateDoc(dateRef, { articles: articles });
-
-    }
-
-    return "Article updated succesfully";
-
-  };
-
-  export const deleteArticle = async (collectionKey, article) => {
-
-  
-    const articlesRef = collection(db, collectionKey);
-    const dateRef = doc(articlesRef, "24-06-2024");
-    const dateDoc = await getDoc(dateRef);
-  
-    if (dateDoc.exists()) {
-    const articles = dateDoc.data().articles;
-    // Check if an order with the same reservation_id already exists
-    const existingArticleIndex = articles.findIndex(art => art.id === article.id);
-
-    if (existingArticleIndex !== -1) {
-        // Update the existing order
-        articles[existingArticleIndex].deleted=true;
-    }
-    else {
-        console.log("Article not found");
-    }
-
-// Update the document with the modified orders array
-    await updateDoc(dateRef, { articles: articles });
-
-    }
-
-    return "Article deleted succesfully";
-
-  };

@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import ReactGA from 'react-ga4';
+
 import Home from './pages/Home';
 import Category from './components/Category';
-import Admin from './pages/Admin';
-import './styles/global.css';
 import Contact from './pages/Contact';
+import Navbar from './components/Navbar';
+import Admin from './pages/Admin';
 import Footer from './components/Footer';
 import ArticleView from './components/ArticleView';
 import Search from './components/Search';
-import SubscribePopup from './components/SubscribePopup';
 import Podcasts from './pages/Podcasts';
 import About from './pages/About';
 import VideoTV from './pages/VideoTV';
 import Radio from './pages/Radio';
 import Terms from './pages/Terms';
-import ReactGA from 'react-ga4';
+
+
+import './styles/global.css';
 
 ReactGA.initialize('G-G-DPPGVTD3EL');
 
@@ -32,42 +34,34 @@ const Tracking = () => {
 const App = () => {
 
 
-  const [showPopup, setShowPopup] = useState(false);
+  // const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 10); // Show popup after 5 seconds
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowPopup(true);
+  //   }, 10);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  useEffect(() => {
-    // Function to handle scroll disabling
-    const handleScroll = () => {
-      if (showPopup) {
-        // Disable scrolling when popup is shown
-        document.body.style.overflow = 'hidden';
-      } else {
-        // Enable scrolling when popup is hidden
-        document.body.style.overflow = 'auto';
-      }
-    };
+  // useEffect(() => {
+    
+  //   const handleScroll = () => {
+  //     if (showPopup) {
+  //       document.body.style.overflow = 'hidden';
+  //     } else {
+  //       document.body.style.overflow = 'auto';
+  //     }
+  //   };
 
-    // Attach event listener for scroll
-    // window.addEventListener('scroll', handleScroll);
+   
+  // }, [showPopup]);
 
-    // Clean up function to remove event listener
-    // return () => {
-    //   window.removeEventListener('scroll', handleScroll);
-    // };
-  }, [showPopup]);
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    // Ensure scrolling is re-enabled when popup is closed
-    document.body.style.overflow = 'auto';
-  };
+  // const handleClosePopup = () => {
+  //   setShowPopup(false);
+    
+  //   document.body.style.overflow = 'auto';
+  // };
 
   return (
     <div className="App">

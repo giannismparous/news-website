@@ -1,43 +1,76 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { fetchArticles, fetchArticlesByCategory } from '../firebase/firebaseConfig';
-import Article from './Article';
-import '../styles/Category.css'; // Import the new CSS file for the category page
-import SmallArticle from './SmallArticle';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { ClockLoader } from 'react-spinners';
 import { Helmet } from 'react-helmet-async';
 
+import { fetchLatestArticles, fetchCategoryPage, fetchCategoryPageAfter } from '../firebase/firebaseConfig';
+
+import Article from './Article';
+import SmallArticle from './SmallArticle';
+
+import '../styles/Category.css';
+
 const Category = () => {
 
   const { categoryName } = useParams();
-
-  const [articles, setArticles] = useState([]);
-  const [latestArticles, setLatestArticles] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
   const isMobile = useMediaQuery({ maxWidth: 550 });
 
-  const fetchArticlesFromServer = async () => {
-    try {
-      var fetchedArticles;
-      var fetchedLatestArticles = await fetchArticles('articles');
-      fetchedLatestArticles = fetchedLatestArticles.filter(article => article.category !== "Test");
-      if (categoryName!=="all"){
-        fetchedArticles = await fetchArticlesByCategory('articles', categoryName); // Pass your collection key here
-      }
-      else {
-        fetchedArticles = fetchedLatestArticles
-      }
-      setArticles([...fetchedArticles].reverse());
-      setLatestArticles([...fetchedLatestArticles].reverse());
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-      setLoading(false);
+  const [articles, setArticles]       = useState([]);
+  const [latestArticles, setLatest]   = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const lastDocRef = useRef(null);
+
+   // Load initial page + latest 9
+   useEffect(() => {
+    setLoading(true);
+    lastDocRef.current = null;
+    Promise.all([
+      fetchCategoryPage('articles', categoryName, 5),
+      fetchLatestArticles('articles', 9)
+    ]).then(([ { docs, last }, latest ]) => {
+      setArticles(docs);
+      setLatest(latest);
+      lastDocRef.current = last;
+    }).catch(console.error)
+      .finally(() => setLoading(false));
+  }, [categoryName]);
+
+  // Infinite scroll handler
+  const handleScroll = useCallback(() => {
+    const threshold = document.documentElement.scrollHeight/2;
+    if (
+      window.innerHeight + window.scrollY >= threshold &&
+      !loadingMore &&
+      lastDocRef.current
+    ) {
+      setLoadingMore(true);
+      fetchCategoryPageAfter(
+        'articles',
+        categoryName,
+        lastDocRef.current,
+        15
+      )
+        .then(({ docs, last }) => {
+          // 2) filter out duplicates:
+          setArticles(prev => {
+            const existingIds = new Set(prev.map(a => a.id));
+            const newOnes = docs.filter(d => !existingIds.has(d.id));
+            return prev.concat(newOnes);
+          });
+          lastDocRef.current = last;
+        })
+        .catch(console.error)
+        .finally(() => setLoadingMore(false));
     }
-  };
+  }, [categoryName, loadingMore]);
+
+  // Attach scroll listener
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +90,6 @@ const Category = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
-    fetchArticlesFromServer();
   }, [categoryName]);
 
   const formatCategoryName = (name) => {

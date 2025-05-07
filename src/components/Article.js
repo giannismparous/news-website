@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Article.css'; // Import your CSS file
 import { Helmet } from 'react-helmet-async';
-import  { useEffect } from 'react';
+
+import '../styles/Article.css';
+
 
 const Article = ({ id, title, content, category, imagePath, authorImagePath, author, authorPrefix, date, caption, showContent = true, maxWordsPreview = 25, apopsi=false, showHelmet = true}) => {
+  
   // Function to format category names
   const formatCategoryName = (name) => {
     switch (name) {
@@ -24,8 +26,7 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Check if the user has scrolled to the bottom of the page
+    const handleScrollToBottom = () => {
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
         window.scrollTo({
           top: 0,
@@ -34,12 +35,12 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
       }
     };
   
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScrollToBottom);
+    return () => window.removeEventListener('scroll', handleScrollToBottom);
   }, []);
 
   // Strip HTML tags from content
-  const strippedContent = content.replace(/<[^>]*>?/gm, '');
+  const strippedContent = (content || '').replace(/<[^>]+>/g, '');
   const words = strippedContent.split(' ');
   const displayContent = words.slice(0, maxWordsPreview).join(' ');
   const displayContent2 = words.slice(0, 20).join(' ')+"...";

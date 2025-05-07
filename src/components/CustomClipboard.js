@@ -1,5 +1,8 @@
 import Quill from 'quill';
 
+import 'react-quill/dist/quill.snow.css';
+import '../styles/ArticleEditor.css';
+
 const Clipboard = Quill.import('modules/clipboard');
 
 class CustomClipboard extends Clipboard {

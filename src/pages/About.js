@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/About.css'; // Import the Contact CSS
+import React, { useEffect } from 'react';
+
+import '../styles/About.css';
 
 const About = () => {
 
     useEffect(() => {
-        // Scroll to the top of the page with smooth behavior when the page is loaded
         window.scrollTo({
           top: 0,
           behavior: 'smooth',
         });
-      }, []); // Empty dependency array ensures it runs only once, when the component mounts
+      }, []); 
 
     return (
         <div className="about-container">

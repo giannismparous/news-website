@@ -1,7 +1,6 @@
-// SubscribePopup.js
-
 import React, { useState } from 'react';
-import '../styles/SubscribePopup.css'; // Import your CSS for styling
+
+import '../styles/SubscribePopup.css';
 
 const SubscribePopup = ({ onClose }) => {
   const [email, setEmail] = useState('');

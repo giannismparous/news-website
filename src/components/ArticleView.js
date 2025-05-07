@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchArticleById, fetchArticles, fetchArticlesByCategory } from '../firebase/firebaseConfig'; // Import your fetch functions
-import { FacebookShareButton, TwitterShareButton, LinkedinShareButton, EmailShareButton } from 'react-share';
-import { FacebookIcon, TwitterIcon, LinkedinIcon, EmailIcon } from 'react-share';
-import '../styles/ArticleView.css'; // Import the CSS file for ArticleView
-import SmallArticle from './SmallArticle'; // Import SmallArticle component
-import Article from './Article';
 import { useMediaQuery } from 'react-responsive';
 import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
+import { FacebookShareButton, TwitterShareButton, LinkedinShareButton, EmailShareButton } from 'react-share';
+import { FacebookIcon, TwitterIcon, LinkedinIcon, EmailIcon } from 'react-share';
+
+import { fetchArticleById, fetchLatestArticles, fetchArticlesByCategory } from '../firebase/firebaseConfig';
+
+import SmallArticle from './SmallArticle';
+import Article from './Article';
+
+import '../styles/ArticleView.css';
+
+
 
 const ArticleView = () => {
+
+  const { articleId } = useParams();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  const [article,        setArticle]        = useState(null);
+  const [relatedArticles, setRelatedArticles] = useState([]);
+  const [latestArticles, setLatestArticles] = useState([]);
 
   const formatCategoryName = (name) => {
     switch (name) {
@@ -29,8 +41,24 @@ const ArticleView = () => {
   };
 
   useEffect(() => {
+    const id = parseInt(articleId, 10);
+    if (isNaN(id)) return;
+
+    (async () => {
+      const a = await fetchArticleById('articles', id);
+      setArticle(a);
+      if (!a) return;
+
+      const rel = await fetchArticlesByCategory('articles', a.category, 4);
+      setRelatedArticles(rel.filter(x => x.id !== id).slice(0, 3));
+
+      const latest9 = await fetchLatestArticles('articles', 9);
+      setLatestArticles(latest9.filter(x => x.id !== id));
+    })().catch(console.error);
+  }, [articleId]);
+
+  useEffect(() => {
     const handleScroll = () => {
-      // Check if the user has scrolled to the bottom of the page
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
         window.scrollTo({
           top: 0,
@@ -42,36 +70,6 @@ const ArticleView = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const { articleId } = useParams(); // Assuming your route provides articleId as a param
-
-  const [article, setArticle] = useState(null);
-  const [relatedArticles, setRelatedArticles] = useState([]);
-  const [latestArticles, setLatestArticles] = useState([]);
-
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const fetchedArticle = await fetchArticleById('articles', parseInt(articleId)); // Adjust as per your collection key
-        setArticle(fetchedArticle);
-
-        if (fetchedArticle) {
-          const related = await fetchArticlesByCategory('articles', fetchedArticle.category);
-          setRelatedArticles(related.filter(item => item.id !== fetchedArticle.id).slice(0, 3));
-
-          var fetchedLatestArticles = await fetchArticles('articles');
-          fetchedLatestArticles = fetchedLatestArticles.filter(article => article.category !== "Test");
-          setLatestArticles([...fetchedLatestArticles].reverse());
-        }
-      } catch (error) {
-        console.error('Error fetching article:', error);
-      }
-    };
-
-    fetchArticle();
-  }, [articleId]);
 
   if (!article) {
     return <div>Loading...</div>;

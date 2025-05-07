@@ -1,28 +1,27 @@
-// Search.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchArticlesByTitle } from '../firebase/firebaseConfig';
+
+import { searchArticlesByTitleSingleWord } from '../firebase/firebaseConfig';
+
 import Article from './Article';
-import '../styles/Search.css'; // Create and import a CSS file for search page styling
+
+import '../styles/Search.css';
 
 const Search = () => {
-  const { query } = useParams(); // Use query from URL parameters
-  const [articles, setArticles] = useState([]);
 
-  const fetchArticlesFromServer = async () => {
-    try {
-        
-      const fetchedArticles = await fetchArticlesByTitle('articles', query); // Pass your collection key here
-      setArticles(fetchedArticles);
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-    }
-  };
+  const { query } = useParams(); 
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(query)
-    fetchArticlesFromServer();
+    setLoading(true);
+    searchArticlesByTitleSingleWord('articles', query, 100)
+      .then(setArticles)
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, [query]);
+
+  if (loading) return <p>Loading…</p>;
 
   return (
     <div className='search-container'>
@@ -36,11 +35,11 @@ const Search = () => {
             content={article.content}
             category={article.category}
             imagePath={article.imagePath}
-            showHelmet = {false}
+            showHelmet={false}
           />
         ))
       ) : (
-        <p>No articles found matching your search query.</p>
+        <p>Δεν υπάρχουν αποτελέσματα.</p>
       )}
     </div>
   );

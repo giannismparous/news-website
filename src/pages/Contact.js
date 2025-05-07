@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Contact.css'; // Import the Contact CSS
 import { Helmet } from 'react-helmet-async';
-import { ClockLoader } from 'react-spinners';
+
+import '../styles/Contact.css';
+
+const groups = [
+  {
+    id: process.env.REACT_APP_MAILERLITE_API_CONTACT_ID,
+    name: process.env.REACT_APP_MAILERLITE_API_CONTACT_NAME
+  },
+]
 
 const Contact = () => {
 
   useEffect(() => {
-    // Scroll to the top of the page with smooth behavior when the page is loaded
+    
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  }, []); // Empty dependency array ensures it runs only once, when the component mounts
+  }, []); 
 
     const [formData, setFormData] = useState({
         name: '',
@@ -29,9 +36,9 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission, e.g., send data to server
+        
         console.log('Form submitted:', formData);
-        // Reset the form
+        
         setFormData({
             name: '',
             email: '',
@@ -39,17 +46,8 @@ const Contact = () => {
         });
     };
 
-    const groups = [
-        {
-          id: process.env.REACT_APP_MAILERLITE_API_CONTACT_ID,
-          name: process.env.REACT_APP_MAILERLITE_API_CONTACT_NAME
-        },
-    ]
 
     const [selectedGroups, setSelectedGroups] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    
 
     useEffect(() => {
         const groupIds = groups.map(group => group.id);
@@ -62,8 +60,6 @@ const Contact = () => {
         console.log(groupIds)
         try {
 
-          setLoading(true);
-          
           const response = await fetch('/.netlify/functions/sendContactEmail', {
             method: 'POST',
             headers: {
@@ -79,9 +75,7 @@ const Contact = () => {
             }),
           });
 
-          console.log(2222)
           const data = await response;
-          console.log(33333)
 
         if (response.ok) {
           alert('Η φόρμα καταχωρήθηκε επιτυχώς!');
@@ -91,11 +85,9 @@ const Contact = () => {
         return false;
         }
 
-          setLoading(false);
-
         } catch (error) {
-          alert('Σφάλμα. Η αποστολή newsletter απέτυχε!');
-          console.error('Error sending newsletter:', error);
+          alert('Σφάλμα. Η καταχώρηση φόρμας απέτυχε!');
+          console.error('Error submitting form:', error);
         }
       };
 
