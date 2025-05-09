@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAuth } from 'firebase/auth';
 
 import { attemptLogin } from '../firebase/firebaseConfig';
 
@@ -6,16 +7,23 @@ import '../styles/Login.css';
 
 const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
+
     e.preventDefault();
+
     const username = e.target.username.value;
     const password = e.target.password.value;
 
     const uid = await attemptLogin(username, password);
-    if (uid) {
-      onLogin(uid);
-    } else {
-      alert('Login failed. Please check your credentials.');
+    if (!uid) {
+      alert('Login failed');
+      return;
     }
+
+    const auth = getAuth();
+    await auth.currentUser.getIdTokenResult(true);
+
+    onLogin(uid);
+
   };
 
   return (
