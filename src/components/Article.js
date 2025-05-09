@@ -39,14 +39,14 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
     return () => window.removeEventListener('scroll', handleScrollToBottom);
   }, []);
 
-  // Strip HTML tags from content
+  
   const strippedContent = (content || '').replace(/<[^>]+>/g, '');
   const words = strippedContent.split(' ');
   const displayContent = words.slice(0, maxWordsPreview).join(' ');
   const displayContent2 = words.slice(0, 20).join(' ')+"...";
   const hasMore = words.length > maxWordsPreview;
 
-  // Default date value if date is undefined
+  
   const displayDate = date ? date : "24/6/2024 | 13:00";
 
   return (
@@ -54,7 +54,6 @@ const Article = ({ id, title, content, category, imagePath, authorImagePath, aut
       {showHelmet && (<Helmet>
           <title>{title}</title>  
           <meta name="description" content={displayContent2}/>
-          {/* <meta name="description" content={`Άρθρο στην κατηγορία ${category} στo syntaktes.gr`}/> */}
           <link rel="canonical" href={`/articles/${id}`}/>
       </Helmet>)}
       <Link to={`/articles/${id}`} className="article-link">
