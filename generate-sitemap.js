@@ -1,19 +1,29 @@
-require('dotenv').config()
-const fs = require('fs')
-const path = require('path')
-const { SitemapStream } = require('sitemap')
-const admin = require('firebase-admin')
+require('dotenv').config();
+const admin = require('firebase-admin');
+const { SitemapStream } = require('sitemap');
+const fs = require('fs');
+const path = require('path');
 
-const serviceAccount = require('./firebase-service-account.json')
+async function loadServiceAccount() {
+  const gistId = process.env.SERVICE_ACCOUNT_GIST_ID;
+  const token  = process.env.GIST_FETCH_TOKEN;
+  const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+    headers: { Authorization: `token ${token}` }
+  });
+  if (!res.ok) throw new Error(`Gist fetch failed: ${res.status}`);
+  const gist = await res.json();
+  const file = gist.files['service-account.json'] || Object.values(gist.files)[0];
+  return JSON.parse(file.content);
+}
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  // databaseURL: 'https://<YOUR_PROJECT>.firebaseio.com' // optional
-})
-
-const db = admin.firestore()
 
 const generateSitemap = async () => {
+
+    const serviceAccount = await loadServiceAccount();
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+    const db = admin.firestore();
 
     const links = [
         { url: '/', changefreq: 'daily', priority: 1.0 },
