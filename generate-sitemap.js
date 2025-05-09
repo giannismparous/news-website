@@ -4,9 +4,11 @@ const path = require('path')
 const { SitemapStream } = require('sitemap')
 const admin = require('firebase-admin')
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+const serviceAccount = require('./firebase-service-account.json')
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
+  // databaseURL: 'https://<YOUR_PROJECT>.firebaseio.com' // optional
 })
 
 const db = admin.firestore()
