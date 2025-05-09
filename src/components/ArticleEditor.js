@@ -124,7 +124,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    const fileName = generateRandomString(); // Generate random filename
+    const fileName = generateRandomString();
   
     if (file) {
       const reader = new FileReader();
@@ -132,19 +132,23 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         const img = new Image();
         img.src = event.target.result;
         img.onload = () => {
+
+          const MAX_WIDTH = 800;
+          const scale = img.width > MAX_WIDTH ? (MAX_WIDTH / img.width) : 1;
+
           const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-  
-          // Always convert to jpeg regardless of the original file type
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
           canvas.toBlob((blob) => {
-            const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' }); // Always save as jpeg
-            setImage(newFile); // Store the new JPEG file
+            const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' });
+            setImage(newFile); 
             const imageUrl = URL.createObjectURL(newFile);
-            setImagePath(imageUrl); // Set preview image path
-          }, 'image/jpeg', 1.0); // Always convert to JPEG for consistency
+            setImagePath(imageUrl);
+          }, 'image/jpeg', 0.8);
         };
       };
       reader.readAsDataURL(file);
@@ -157,7 +161,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   
   const handleAuthorImageUpload = (e) => {
     const file = e.target.files[0];
-    const fileName = generateRandomString(); // Generate random filename
+    const fileName = generateRandomString();
   
     if (file) {
       const reader = new FileReader();
@@ -165,18 +169,23 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         const img = new Image();
         img.src = event.target.result;
         img.onload = () => {
+
+          const MAX_WIDTH = 400;
+          const scale = img.width > MAX_WIDTH ? (MAX_WIDTH / img.width) : 1;
+
           const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-  
-          // Always convert to jpeg regardless of the original file type
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
           canvas.toBlob((blob) => {
-            const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' }); // Always save as jpeg
+            const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' });
             setAuthorImage(newFile); 
-          }, 'image/jpeg', 1.0); // Always convert to JPEG for consistency
+          }, 'image/jpeg', 0.8);
         };
+
       };
       reader.readAsDataURL(file);
     } else {
@@ -206,12 +215,12 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
   const handleQuillVideoEmbed = () => {
     const url = prompt('Enter YouTube URL');
     if (url) {
-      const videoId = url.split('v=')[1].split('&')[0]; // Extract YouTube video ID
+      const videoId = url.split('v=')[1].split('&')[0];
       const iframeHtml = `<iframe width="1200" height="675" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
       const quill = quillRef.current.getEditor();
       const range = quill.getSelection();
       quill.clipboard.dangerouslyPasteHTML(range.index, iframeHtml);
-      // Print the current content of the Quill editor
+      
       console.log(quill.root.innerHTML);
     }
   };
@@ -223,7 +232,6 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
       const range = quill.getSelection();
       quill.insertEmbed(range.index, 'twitter', url);
 
-      // Print the current content of the Quill editor
       console.log(quill.root.innerHTML);
     }
   };
@@ -326,13 +334,13 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['bold', 'italic', 'underline', 'blockquote'],
         [{ 'align': [] }],
-        ['link', 'image', 'video', 'x-post'], // Add the x-post button here
+        ['link', 'image', 'video', 'x-post'], 
         ['clean']
       ],
       handlers: {
         image: handleQuillImageUpload,
         video: handleQuillVideoEmbed,
-        'x-post': handleQuillXPostEmbed // Add custom handler for X post
+        'x-post': handleQuillXPostEmbed 
       }
     },
     clipboard: {
@@ -447,7 +455,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
                       <div style ={{   
                         display: 'flex', 
                         flexDirection: 'column',
-                        justifyContent: 'center', // Centers horizontally
+                        justifyContent: 'center', 
                         paddingLeft: '200px',
                         paddingRight: '200px'
                       }}>
@@ -467,7 +475,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
                             height: '133px', 
                             overflow: 'hidden', 
                             display: 'flex', 
-                            justifyContent: 'center' // Centers horizontally
+                            justifyContent: 'center'
                           }}>
                             <img
                               src={imagePath}
@@ -489,16 +497,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
                   </div>
                 </fieldset>
           </div>
-          {/* <label>
-            <input
-              type="checkbox"
-              checked={uploadOnFacebook}
-              onChange={(e) => setUploadOnFacebook(e.target.checked)}
-            />
-            Δημοσίευση στο Facebook
-          </label> */}
         </div>
-        <p>Αναγνωριστικό εκδότη: {uid}</p> {/* Display the UID */}
+        <p>Αναγνωριστικό εκδότη: {uid}</p>
         {!article && <button type="submit">Δημιουργία</button>}
         {article && <button type="submit">Επεξεργασία </button>}
       </form>

@@ -146,7 +146,6 @@ const Admin = () => {
   const openNewsletterPopup = (article) => {
     setShowNewsletterPopup(true);
     setSelectedArticle(article)
-    console.log(newsletterGroups)
   };
 
   const closeNewsletterPopup = () => {

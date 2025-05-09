@@ -22,7 +22,6 @@ const Category = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const lastDocRef = useRef(null);
 
-   // Load initial page + latest 9
    useEffect(() => {
     setLoading(true);
     lastDocRef.current = null;
@@ -37,7 +36,6 @@ const Category = () => {
       .finally(() => setLoading(false));
   }, [categoryName]);
 
-  // Infinite scroll handler
   const handleScroll = useCallback(() => {
     const threshold = document.documentElement.scrollHeight/2;
     if (
@@ -53,7 +51,7 @@ const Category = () => {
         15
       )
         .then(({ docs, last }) => {
-          // 2) filter out duplicates:
+          
           setArticles(prev => {
             const existingIds = new Set(prev.map(a => a.id));
             const newOnes = docs.filter(d => !existingIds.has(d.id));
@@ -66,7 +64,6 @@ const Category = () => {
     }
   }, [categoryName, loadingMore]);
 
-  // Attach scroll listener
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -74,13 +71,14 @@ const Category = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if the user has scrolled to the bottom of the page
+      
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
       }
+      
     };
   
     window.addEventListener('scroll', handleScroll);

@@ -1,10 +1,18 @@
-const fs = require('fs');
-const { SitemapStream, streamToPromise } = require('sitemap');
-const path = require('path');
-// const { fetchInfo } = require('./src/firebase/firebaseConfig');
+require('dotenv').config()
+const fs = require('fs')
+const path = require('path')
+const { SitemapStream } = require('sitemap')
+const admin = require('firebase-admin')
 
-// Function to generate the sitemap
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+})
+
+const db = admin.firestore()
+
 const generateSitemap = async () => {
+
     const links = [
         { url: '/', changefreq: 'daily', priority: 1.0 },
         { url: '/category/all/', changefreq: 'weekly', priority: 0.8 },
@@ -30,46 +38,37 @@ const generateSitemap = async () => {
         { url: '/terms/', changefreq: 'monthly', priority: 0.6 }
     ];
 
-    try {
-        // const info = await fetchInfo('articles'); // Adjust the collection key
-        // if (info) {
-            const article_id_counter=160;
-            const removed_ids=[10,12,14,16,17,25,27,32,39,41,42,45,46,47,49,50,51,52,53,60,61,63,64,65,66,67,68,69,70,72,74,79,80,81,87,90,92,107,117,118,119,120,131,133,134,137];
-            const removed_ids_as_strings = removed_ids.map(id => id.toString());
-            // Add dynamic article URLs
-            for (let i = 1; i <= article_id_counter; i++) {
-                if (!removed_ids_as_strings.includes(i.toString())) {
-                    links.push({ url: `/articles/${i}`, changefreq: 'daily', priority: 0.8 });
-                }
-            }
+  const infoSnap = await db.collection('articles').doc('info').get()
+  if (!infoSnap.exists) throw new Error('Missing articles/info doc')
+  const { article_id_counter, removed_ids = [] } = infoSnap.data()
+  const removedSet = new Set(removed_ids.map(String))
 
-            const sitemapStream = new SitemapStream({ hostname: 'https://www.syntaktes.gr' });
-
-            // Create a writable stream to save the sitemap to a file
-            const writeStream = fs.createWriteStream(path.resolve(__dirname, 'public', 'sitemap.xml'));
-
-            // Pipe the SitemapStream to the writable stream
-            sitemapStream.pipe(writeStream);
-
-            links.forEach(link => {
-                sitemapStream.write(link);
-            });
-
-            sitemapStream.end();
-
-            writeStream.on('finish', () => {
-                console.log('Sitemap generated and saved to sitemap.xml');
-            });
-
-            writeStream.on('error', err => {
-                console.error('Error writing sitemap:', err);
-            });
-        // } else {
-        //     console.log('No info document found.');
-        // }
-    } catch (error) {
-        console.error('Error generating sitemap:', error);
+  for (let i = 1; i <= article_id_counter; i++) {
+    if (!removedSet.has(String(i))) {
+      links.push({
+        url: `/articles/${i}`,
+        changefreq: 'daily',
+        priority: 0.8
+      })
     }
-};
+  }
 
-generateSitemap();
+  const sitemapStream = new SitemapStream({ hostname: 'https://www.syntaktes.gr' })
+  const writeStream   = fs.createWriteStream(path.join(__dirname, 'public', 'sitemap.xml'))
+  sitemapStream.pipe(writeStream)
+
+  for (const link of links) sitemapStream.write(link)
+  sitemapStream.end()
+
+  await new Promise((resolve, reject) => {
+    writeStream.on('finish', resolve)
+    writeStream.on('error', reject)
+  })
+
+  console.log('✅ sitemap.xml generated—total URLs:', links.length)
+}
+
+generateSitemap().catch(err => {
+  console.error(err)
+  process.exit(1)
+})

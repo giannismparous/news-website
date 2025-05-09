@@ -2,6 +2,11 @@
   command = "CI=false npm run build"
   publish = "build"
 
+[prerender]
+routes = [
+  "/articles/*"
+]
+
 [functions]
   directory = "netlify/functions"
   

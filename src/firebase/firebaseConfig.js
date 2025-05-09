@@ -19,17 +19,18 @@ import {
     serverTimestamp,
     runTransaction,
     startAfter,
+    arrayUnion
 } from 'firebase/firestore';
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAaWoCuGyFmgvQgCxzvZedhVGsK-QMnjf0",
-    authDomain: "news-website-a1a1d.firebaseapp.com",
-    projectId: "news-website-a1a1d",
-    storageBucket: "news-website-a1a1d.appspot.com",
-    messagingSenderId: "900434350719",
-    appId: "1:900434350719:web:e9cd804d9d64399c79654a",
-    measurementId: "G-CXVMG5X08Y"
+  apiKey: "AIzaSyAaWoCuGyFmgvQgCxzvZedhVGsK-QMnjf0",
+  authDomain: "news-website-a1a1d.firebaseapp.com",
+  projectId: "news-website-a1a1d",
+  storageBucket: "news-website-a1a1d.appspot.com",
+  messagingSenderId: "900434350719",
+  appId: "1:900434350719:web:e9cd804d9d64399c79654a",
+  measurementId: "G-CXVMG5X08Y"
   };
 
 
@@ -90,14 +91,8 @@ export function normalize(str = '') {
 }
 
 export function makeNgrams(s = '') {
-  const words = s.split(/\s+/);
-  const set = new Set();
-  for (const w of words) {
-    for (let len = 2; len <= w.length; len++) {
-      set.add(w.substr(0, len));
-    }
-  }
-  return Array.from(set);
+  const words = s.split(/\s+/).filter(Boolean);
+  return Array.from(new Set(words));
 }
 
 export const attemptLogin = async (username,password) => {
@@ -136,6 +131,7 @@ export async function addArticle(collectionKey, newArticle) {
     const payload = {
       id:               counter,
       title:            newArticle.title,
+      caption:          newArticle.caption,
       normalizedTitle:  normTitle,
       ngrams,
       content:          newArticle.content,
@@ -170,6 +166,7 @@ export async function editArticle(collectionKey, updated) {
 
   const payload = {
     title:           updated.title,
+    caption:         updated.caption,
     normalizedTitle: normTitle,
     ngrams,
     content:         updated.content,
@@ -188,23 +185,26 @@ export async function editArticle(collectionKey, updated) {
 }
 
 export const deleteArticle = async (collectionKey, article) => {
-
+  
   const q = query(
     collection(db, collectionKey),
-    where('id', '==', article.id),
+    where("id", "==", article.id),
     limit(1)
   );
   const snap = await getDocs(q);
-
   if (snap.empty) {
     throw new Error(`No document found with id = ${article.id}`);
   }
+  const articleRef = snap.docs[0].ref;
 
-  const realRef = snap.docs[0].ref;
-  await updateDoc(realRef, { deleted: true });
+  await updateDoc(articleRef, { deleted: true });
 
-  return `Article ${article.id} marked deleted`;
+  const infoRef = doc(db, collectionKey, "info");
+  await updateDoc(infoRef, {
+    removed_ids: arrayUnion(String(article.id))
+  });
 
+  return `Article ${article.id} marked deleted and info.updated`;
 };
 
 export const fetchInfo = async (collectionKey) => {
@@ -451,6 +451,7 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
         const docRef = snap2.docs[0].ref;
         
         const patch = {};
+
         if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID))
           patch.mailSentTest1 = true;
         if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID))
@@ -468,6 +469,8 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
           await updateDoc(docRef, patch);
           console.log("mailSent flags updated on doc", docRef.id);
         }
+
+        return true;
               
       } else {
 
@@ -476,8 +479,6 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
         return false;
 
       }
-      
-      return false;
 
     } catch (error) {
       console.error('Error while sending the newsletter:', error);
