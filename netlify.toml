@@ -7,7 +7,7 @@
 
 [[redirects]]
   from   = "/articles/*"
-  to     = "https://us-central1-news-website-a1a1d.cloudfunctions.net/ssr/articles/:splat
+  to     = "https://us-central1-news-website-a1a1d.cloudfunctions.net/ssr/articles/:splat"
   status = 200
   force  = true
 
