@@ -4,6 +4,9 @@
       "source": "functions",
       "platform": "gcfv2",
       "runtime": "nodejs20",
+      "environmentVariables": {
+        "SPA_URL": "https://syntaktes.gr"
+      },
       "invoker": [
         "public"
       ]

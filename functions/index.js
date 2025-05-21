@@ -19,9 +19,9 @@ function escapeHtml(str) {
 
 // ─── fetch the hosted index.html at runtime ───
 async function loadIndexHtml(req) {
-  const proto = req.headers['x-forwarded-proto'] || 'https';
-  const host  = req.get('host');
-  const url   = `${proto}://${host}/index.html`;
+  // use an env-var if provided, otherwise fall back to host header (for local dev)
+  const origin = process.env.SPA_URL || `${req.protocol}://${req.get('host')}`;
+  const url    = `${origin}/index.html`;
   console.log('SSR fetching index.html from', url);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch index.html: ${res.status}`);
