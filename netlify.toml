@@ -2,18 +2,17 @@
   command = "CI=false npm run build"
   publish = "build"
 
-# (If you’re not using any Netlify Functions in netlify/functions, you can remove this block)
 [functions]
+  # where Netlify will find your SSR function
   directory = "netlify/functions"
 
 [[redirects]]
-  from     = "/articles/*"
-  to       = "https://us-central1-news-website-a1a1d.cloudfunctions.net/ssr/:splat"
-  status   = 200
-  force    = true
-  headers  = { Host = "syntaktes.gr" }
+  from = "/articles/*"
+  to = "/.netlify/functions/ssr/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
-  from   = "/*"
-  to     = "/index.html"
+  from = "/*"
+  to = "/index.html"
   status = 200
