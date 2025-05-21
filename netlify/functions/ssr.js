@@ -1,9 +1,6 @@
-// netlify/functions/ssr.js
-
 const admin = require('firebase-admin');
-const fetch = require('node-fetch');
 
-// Pull in the same Firebase creds you use in React via your REACT_APP_… env-vars
+// Your Firebase config from Netlify env-vars
 const firebaseConfig = {
   apiKey:            process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain:        process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -13,8 +10,7 @@ const firebaseConfig = {
   appId:             process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-// Initialize the Admin SDK (you must have GOOGLE_APPLICATION_CREDENTIALS or 
-// equivalent on Netlify; see Netlify docs on service-account setup)
+// Initialize the Admin SDK
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   ...firebaseConfig,
@@ -32,13 +28,13 @@ exports.handler = async (event, context) => {
     const path = new URL(event.rawUrl).pathname;
     console.log('SSR hit for path:', path);
 
-    // If not an article, just proxy the SPA shell
+    // 1) Non-article ⇒ just proxy your SPA shell
     if (!path.startsWith('/articles/')) {
-      const shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text());
+      let shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text());
       return { statusCode: 200, headers: resHeaders, body: shell };
     }
 
-    // Extract article ID, fetch from Firestore
+    // 2) Article ⇒ pull its data
     const id = parseInt(path.split('/')[2], 10);
     if (isNaN(id)) {
       return { statusCode: 404, headers: resHeaders, body: 'Not found' };
@@ -55,19 +51,19 @@ exports.handler = async (event, context) => {
 
     const article = snap.docs[0].data();
 
-    // Build the meta tags
+    // 3) Build your <meta> tags
     const metas = [
-      `<meta property="og:title" content="${article.title.replace(/"/g, '&quot;')}">`,
-      `<meta property="og:description" content="${article.content.slice(0, 150).replace(/"/g, '&quot;')}">`,
-      `<meta property="og:image" content="${article.imagePath}">`,
-      `<meta property="og:url" content="https://syntaktes.gr${path}">`,
-      `<meta property="twitter:card" content="summary_large_image">`,
-      `<meta property="twitter:title" content="${article.title.replace(/"/g, '&quot;')}">`,
-      `<meta property="twitter:description" content="${article.content.slice(0, 150).replace(/"/g, '&quot;')}">`,
-      `<meta property="twitter:image" content="${article.imagePath}">`
+      `<meta property="og:title"       content="${article.title.replace(/"/g, '&quot;')}">`,
+      `<meta property="og:description" content="${article.content.slice(0,150).replace(/"/g, '&quot;')}">`,
+      `<meta property="og:image"       content="${article.imagePath}">`,
+      `<meta property="og:url"         content="https://syntaktes.gr${path}">`,
+      `<meta property="twitter:card"         content="summary_large_image">`,
+      `<meta property="twitter:title"        content="${article.title.replace(/"/g, '&quot;')}">`,
+      `<meta property="twitter:description"  content="${article.content.slice(0,150).replace(/"/g, '&quot;')}">`,
+      `<meta property="twitter:image"        content="${article.imagePath}">`
     ].join('\n');
 
-    // Fetch the SPA shell and inject metas
+    // 4) Inject into your shell
     let shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text());
     shell = shell.replace('</head>', metas + '\n</head>');
 
