@@ -7,8 +7,8 @@
 
 [[redirects]]
   from   = "/articles/*"
-  to     = "/.netlify/functions/ssr/:splat"
-  status = 200
+  to     = "https://us-central1-news-website-a1a1d.cloudfunctions.net/ssr/articles/:splat"
+  status = 302
   force  = true
 
 [[redirects]]
