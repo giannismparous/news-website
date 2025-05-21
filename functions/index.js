@@ -19,8 +19,7 @@ function escapeHtml(str) {
 
 // ─── fetch the hosted index.html at runtime ───
 async function loadIndexHtml(req) {
-  // use an env-var if provided, otherwise fall back to host header (for local dev)
-  const origin = process.env.SPA_URL || `${req.protocol}://${req.get('host')}`;
+  const origin = 'https://syntaktes.gr';
   const url    = `${origin}/index.html`;
   console.log('SSR fetching index.html from', url);
   const res = await fetch(url);
