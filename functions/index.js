@@ -39,6 +39,7 @@ function injectMeta(html, metas) {
 exports.ssr = functions
   .runWith({ minInstances: 0 })
   .https.onRequest(async (req, res) => {
+    res.set('Cache-Control', 'no-store, max-age=0');
     try {
       const path = req.path;
       console.log('SSR hit for path:', path);
