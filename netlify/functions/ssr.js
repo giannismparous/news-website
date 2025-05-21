@@ -56,7 +56,15 @@ exports.handler = async (event, context) => {
         ].join('\n')
 
         let shell = await fetch('https://syntaktes.gr/index.html').then(r=>r.text())
-        shell = shell.replace('</head>', metas + '\n</head>')
+        shell = shell.replace(
+          '<head>',
+          '<head>\n  <base href="/">'
+        );
+
+        shell = shell.replace(
+          '</head>',
+          metas + '\n</head>'
+        );
         return { statusCode: 200, headers, body: shell }
       }
       return { statusCode: 404, headers, body: 'Not found' }
