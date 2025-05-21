@@ -1,66 +1,80 @@
 // netlify/functions/ssr.js
-const admin = require('firebase-admin')
-const fetch = require('node-fetch')
 
-admin.initializeApp()
-const db = admin.firestore()
+const admin = require('firebase-admin');
+const fetch = require('node-fetch');
+
+// Pull in the same Firebase creds you use in React via your REACT_APP_… env-vars
+const firebaseConfig = {
+  apiKey:            process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain:        process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId:         process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket:     process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId:             process.env.REACT_APP_FIREBASE_APP_ID,
+};
+
+// Initialize the Admin SDK (you must have GOOGLE_APPLICATION_CREDENTIALS or 
+// equivalent on Netlify; see Netlify docs on service-account setup)
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  ...firebaseConfig,
+});
+
+const db = admin.firestore();
 
 exports.handler = async (event, context) => {
-  // no caching at the CDN or browser
-  const headers = {
+  const resHeaders = {
     'Cache-Control': 'no-store, max-age=0',
-    'Content-Type': 'text/html'
-  }
+    'Content-Type':  'text/html',
+  };
 
   try {
-    // parse the incoming path
-    const url = new URL(event.rawUrl)
-    const path = url.pathname       // e.g. "/articles/287"
+    const path = new URL(event.rawUrl).pathname;
+    console.log('SSR hit for path:', path);
 
-    // if it’s NOT an article, just serve your SPA shell
+    // If not an article, just proxy the SPA shell
     if (!path.startsWith('/articles/')) {
-      const shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text())
-      return { statusCode: 200, headers, body: shell }
+      const shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text());
+      return { statusCode: 200, headers: resHeaders, body: shell };
     }
 
-    // extract the article ID
-    const id = parseInt(path.split('/')[2], 10)
+    // Extract article ID, fetch from Firestore
+    const id = parseInt(path.split('/')[2], 10);
     if (isNaN(id)) {
-      return { statusCode: 404, headers, body: 'Not found' }
+      return { statusCode: 404, headers: resHeaders, body: 'Not found' };
     }
 
-    // fetch from Firestore
-    const snap = await db
-      .collection('articles')
+    const snap = await db.collection('articles')
       .where('id', '==', id)
       .limit(1)
-      .get()
+      .get();
 
     if (snap.empty) {
-      return { statusCode: 404, headers, body: 'Not found' }
+      return { statusCode: 404, headers: resHeaders, body: 'Not found' };
     }
 
-    const article = snap.docs[0].data()
-    // build your Open Graph + Twitter tags
+    const article = snap.docs[0].data();
+
+    // Build the meta tags
     const metas = [
-      `<meta property="og:title"       content="${article.title.replace(/"/g,'&quot;')}">`,
-      `<meta property="og:description" content="${article.content.slice(0,150).replace(/"/g,'&quot;')}">`,
-      `<meta property="og:image"       content="${article.imagePath}">`,
-      `<meta property="og:url"         content="https://syntaktes.gr${path}">`,
-      `<meta name="twitter:card"       content="summary_large_image">`,
-      `<meta name="twitter:title"      content="${article.title.replace(/"/g,'&quot;')}">`,
-      `<meta name="twitter:description"content="${article.content.slice(0,150).replace(/"/g,'&quot;')}">`,
-      `<meta name="twitter:image"      content="${article.imagePath}">`
-    ].join('\n')
+      `<meta property="og:title" content="${article.title.replace(/"/g, '&quot;')}">`,
+      `<meta property="og:description" content="${article.content.slice(0, 150).replace(/"/g, '&quot;')}">`,
+      `<meta property="og:image" content="${article.imagePath}">`,
+      `<meta property="og:url" content="https://syntaktes.gr${path}">`,
+      `<meta property="twitter:card" content="summary_large_image">`,
+      `<meta property="twitter:title" content="${article.title.replace(/"/g, '&quot;')}">`,
+      `<meta property="twitter:description" content="${article.content.slice(0, 150).replace(/"/g, '&quot;')}">`,
+      `<meta property="twitter:image" content="${article.imagePath}">`
+    ].join('\n');
 
-    // fetch your published shell, inject the tags, and return
-    let shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text())
-    shell = shell.replace('</head>', metas + '\n</head>')
+    // Fetch the SPA shell and inject metas
+    let shell = await fetch('https://syntaktes.gr/index.html').then(r => r.text());
+    shell = shell.replace('</head>', metas + '\n</head>');
 
-    return { statusCode: 200, headers, body: shell }
+    return { statusCode: 200, headers: resHeaders, body: shell };
+
+  } catch (err) {
+    console.error(err);
+    return { statusCode: 500, headers: resHeaders, body: 'Server error' };
   }
-  catch (err) {
-    console.error(err)
-    return { statusCode: 500, headers, body: 'Server error' }
-  }
-}
+};
