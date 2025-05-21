@@ -33,7 +33,7 @@ function injectMeta(html, metas) {
     const safe = escapeHtml(m.content);
     return `<meta property="${m.property}" content="${safe}">`;
   }).join('\n');
-  return html.replace('</head>', tags + '\n</head>');
+  return html.replace(/<head>/i, match => match + '\n' + tags);
 }
 
 exports.ssr = functions
