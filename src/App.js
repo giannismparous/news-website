@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
 import Home from './pages/Home';
@@ -16,23 +16,15 @@ import VideoTV from './pages/VideoTV';
 import Radio from './pages/Radio';
 import Terms from './pages/Terms';
 
-
 import './styles/global.css';
-
-ReactGA.initialize('G-G-DPPGVTD3EL');
-
-const Tracking = () => {
-  const location = useLocation();
-  
-  useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: location.pathname });
-  }, [location]);
-
-  return null;
-};
 
 const App = () => {
 
+  useEffect(() => {
+    // only runs in browser, never during SSR
+    ReactGA.initialize('G-G-DPPGVTD3EL');
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname });
+  }, []);
 
   // const [showPopup, setShowPopup] = useState(false);
 
@@ -66,7 +58,6 @@ const App = () => {
   return (
     <div className="App">
       {/* {showPopup && <SubscribePopup onClose={handleClosePopup} />} */}
-      <Tracking />
       <Navbar />
       <Routes>
         <Route path="/" exact element={<Home />} />

@@ -87,7 +87,7 @@ const ArticleView = () => {
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.content} />
         <meta property="og:image" content={article.imagePath} />
-        <meta property="og:url" content={`https://syntaktes.com/articles/${articleId}`} />
+        <meta property="og:url" content={`https://syntaktes.gr/articles/${articleId}`} />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content={article.title} />
         <meta property="twitter:description" content={article.content} />

@@ -1,70 +1,78 @@
-{
-  "name": "syntaktes-website",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@fortawesome/free-brands-svg-icons": "^6.5.2",
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "@mailchimp/mailchimp_marketing": "^3.0.80",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.5",
-    "firebase": "^10.12.2",
-    "firebase-admin": "^13.3.0",
-    "gh-pages": "^6.1.1",
-    "hamburger-react": "^2.5.1",
-    "node-fetch": "^3.3.2",
-    "quill-image-uploader": "^1.3.0",
-    "quill-tweet": "^1.0.0",
-    "react": "^18.3.1",
-    "react-burger-menu": "^3.0.9",
-    "react-dom": "^18.3.1",
-    "react-ga": "^3.3.1",
-    "react-ga4": "^2.1.0",
-    "react-gtm-module": "^2.0.11",
-    "react-helmet-async": "^2.0.5",
-    "react-image-crop": "^11.0.6",
-    "react-quill": "^2.0.0",
-    "react-responsive": "^10.0.0",
-    "react-responsive-carousel": "^3.2.23",
-    "react-router-dom": "^6.23.1",
-    "react-scripts": "^5.0.1",
-    "react-share": "^5.1.0",
-    "react-spinners": "^0.14.1",
-    "sitemap": "^8.0.0",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "cross-env NODE_OPTIONS=--no-deprecation react-scripts start",
-    "prebuild": "node generate-sitemap.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "generate-sitemap": "node generate-sitemap.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.5.0"
+  {
+    "name": "syntaktes-website",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@fortawesome/free-brands-svg-icons": "^6.5.2",
+      "@fortawesome/free-solid-svg-icons": "^6.6.0",
+      "@fortawesome/react-fontawesome": "^0.2.2",
+      "@mailchimp/mailchimp_marketing": "^3.0.80",
+      "@testing-library/jest-dom": "^5.17.0",
+      "@testing-library/react": "^13.4.0",
+      "@testing-library/user-event": "^13.5.0",
+      "axios": "^1.7.5",
+      "firebase": "^10.12.2",
+      "firebase-admin": "^13.3.0",
+      "gh-pages": "^6.1.1",
+      "hamburger-react": "^2.5.1",
+      "node-fetch": "^2.7.0",
+      "quill-image-uploader": "^1.3.0",
+      "quill-tweet": "^1.0.0",
+      "react": "^18.3.1",
+      "react-burger-menu": "^3.0.9",
+      "react-dom": "^18.3.1",
+      "react-ga": "^3.3.1",
+      "react-ga4": "^2.1.0",
+      "react-gtm-module": "^2.0.11",
+      "react-helmet-async": "^2.0.5",
+      "react-image-crop": "^11.0.6",
+      "react-quill": "^2.0.0",
+      "react-responsive": "^10.0.0",
+      "react-responsive-carousel": "^3.2.23",
+      "react-router-dom": "^6.23.1",
+      "react-scripts": "^5.0.1",
+      "react-share": "^5.1.0",
+      "react-spinners": "^0.14.1",
+      "sitemap": "^8.0.0",
+      "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+      "start": "cross-env NODE_OPTIONS=--no-deprecation react-scripts start",
+      "prebuild": "node generate-sitemap.js",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "devDependencies": {
+      "@babel/core": "^7.27.1",
+      "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+      "@babel/preset-env": "^7.27.2",
+      "@babel/preset-react": "^7.27.1",
+      "babel-loader": "^10.0.0",
+      "cross-env": "^7.0.3",
+      "dotenv": "^16.5.0",
+      "null-loader": "^4.0.1",
+      "react-snap": "^1.23.0",
+      "webpack": "^5.99.9",
+      "webpack-cli": "^6.0.1",
+      "xml2js": "^0.6.2"
+    }
   }
-}
