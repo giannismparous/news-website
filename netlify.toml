@@ -3,16 +3,15 @@
   publish = "build"
 
 [functions]
-  # where Netlify will find your SSR function
   directory = "netlify/functions"
 
 [[redirects]]
-  from = "/articles/*"
-  to = "/.netlify/functions/ssr/:splat"
+  from   = "/articles/*"
+  to     = "https://us-central1-news-website-a1a1d.cloudfunctions.net/ssr/:splat"
   status = 200
-  force = true
+  force  = true
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from   = "/*"
+  to     = "/index.html"
   status = 200
