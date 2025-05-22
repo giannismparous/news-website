@@ -1,9 +1,12 @@
 require('dotenv').config()
+const fs = require('fs').promises
+const pathModule = require('path')
 const fetch = require('node-fetch')
 const admin = require('firebase-admin')
 
+// Load service account JSON from GitHub Gist
 async function loadServiceAccount() {
-  const gistId = process.env.GCP_FIREBASE_SERVICE_ACCOUNT_GIST_ID
+  const gistId = process.env.SERVICE_ACCOUNT_GIST_ID
   const token  = process.env.GIST_FETCH_TOKEN
   const res = await fetch(`https://api.github.com/gists/${gistId}`, {
     headers: { Authorization: `token ${token}` }
@@ -14,6 +17,7 @@ async function loadServiceAccount() {
   return JSON.parse(file.content)
 }
 
+// Initialize Firebase Admin if not already
 async function ensureFirebase() {
   if (!admin.apps.length) {
     const creds = await loadServiceAccount()
@@ -22,60 +26,69 @@ async function ensureFirebase() {
   return admin
 }
 
-exports.handler = async (event, context) => {
-  await ensureFirebase()
-  const db = admin.firestore()
-
-  const headers = {
-    'Cache-Control': 'no-store, max-age=0',
-    'Content-Type':  'text/html',
-  }
-
+exports.handler = async (event) => {
   try {
-    // Netlify gives you event.rawUrl; parse its pathname
-    const url = new URL(event.rawUrl, 'https://syntaktes.gr')
-    const path = url.pathname
-    console.log('SSR for:', path)
+    await ensureFirebase()
+    const db = admin.firestore()
 
-    // **inject** for anything under /articles/ (no more strict startsWith)
-    if (path.match(/^\/articles\/\d+/)) {
-      const id = parseInt(path.split('/')[2], 10)
-      const snap = await db.collection('articles')
-        .where('id','==',id).limit(1).get()
-      if (!snap.empty) {
-        const article = snap.docs[0].data()
-        const metas = [
-          `<meta property="og:title"       content="${article.title.replace(/"/g,'&quot;')}">`,
-          `<meta property="og:description" content="${article.content.slice(0,150).replace(/"/g,'&quot;')}">`,
-          `<meta property="og:image"       content="${article.imagePath}">`,
-          `<meta property="og:url"         content="https://syntaktes.gr${path}">`,
-          `<meta property="twitter:card"   content="summary_large_image">`,
-          `<meta property="twitter:title"  content="${article.title.replace(/"/g,'&quot;')}">`,
-          `<meta property="twitter:description" content="${article.content.slice(0,150).replace(/"/g,'&quot;')}">`,
-          `<meta property="twitter:image"  content="${article.imagePath}">`
-        ].join('\n')
+    // Get the incoming path, e.g. '/articles/287'
+    const path = event.path
 
-        let shell = await fetch('https://syntaktes.gr/index.html').then(r=>r.text())
-        shell = shell.replace(
-          '<head>',
-          '<head>\n  <base href="/">'
-        );
-
-        shell = shell.replace(
-          '</head>',
-          metas + '\n</head>'
-        );
-        return { statusCode: 200, headers, body: shell }
-      }
-      return { statusCode: 404, headers, body: 'Not found' }
+    // Only handle /articles/:id
+    if (!path.startsWith('/articles/')) {
+      return { statusCode: 404, body: 'Not found' }
     }
 
-    // everything else → just serve shell
-    const shell = await fetch('https://syntaktes.gr/index.html').then(r=>r.text())
-    return { statusCode: 200, headers, body: shell }
+    // Parse the article ID
+    const parts = path.split('/').filter(Boolean)
+    const id = Number(parts[1])
+    if (!id) {
+      return { statusCode: 400, body: 'Invalid article ID' }
+    }
 
-  } catch(err) {
-    console.error(err)
-    return { statusCode: 500, headers, body: 'Server error' }
+    // Query Firestore for the article
+    const snap = await db.collection('articles')
+      .where('id', '==', id).limit(1).get()
+    if (snap.empty) {
+      return { statusCode: 404, body: 'Article not found' }
+    }
+    const article = snap.docs[0].data()
+
+    // Read the built React shell directly from disk
+    const buildPath = pathModule.join(__dirname, '../../build/index.html')
+    let shell = await fs.readFile(buildPath, 'utf8')
+
+    // Inject <base href="/"> so all relative assets resolve to your domain root
+    shell = shell.replace(
+      '<head>',
+      `<head>\n  <base href=\"/\">`
+    )
+
+    // Prepare meta tags
+    const metas = [
+      `<meta property=\"og:title\" content=\"${article.title.replace(/\"/g, '&quot;')}\">`,
+      `<meta property=\"og:description\" content=\"${article.content.slice(0,150).replace(/\"/g, '&quot;')}\">`,
+      `<meta property=\"og:image\" content=\"${article.imagePath}\">`,
+      `<meta property=\"og:url\" content=\"https://syntaktes.gr${path}\">`,
+      `<meta property=\"twitter:card\" content=\"summary_large_image\">`,
+      `<meta property=\"twitter:title\" content=\"${article.title.replace(/\"/g, '&quot;')}\">`,
+      `<meta property=\"twitter:description\" content=\"${article.content.slice(0,150).replace(/\"/g, '&quot;')}\">`,
+      `<meta property=\"twitter:image\" content=\"${article.imagePath}\">`
+    ].join('\n')
+
+    // Inject metas before closing </head>
+    shell = shell.replace('</head>', `${metas}\n</head>`)
+
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'text/html' },
+      body: shell
+    }
+  } catch (err) {
+    console.error('SSR error:', err)
+    return {
+      statusCode: 500,
+      body: `SSR error: ${err.message}`
+    }
   }
 }
