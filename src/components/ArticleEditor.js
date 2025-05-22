@@ -129,6 +129,12 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
+
+        if (img.width < 200 || img.height < 200) {
+         alert('Παρακαλώ επιλέξτε εικόνα με διαστάσεις τουλάχιστον 200×200 px.');
+        return;
+        }
+
         const img = new Image();
         img.src = event.target.result;
         img.onload = () => {
@@ -279,10 +285,8 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
 
         const docRef = await addArticle('articles', newArticle);
 
-        console.log("before fetch")
-        fetch(`https://syntaktes.gr/articles/${docRef.id}`)
+        fetch(`https://syntaktes.gr/articles/${docRef.id}`) //warm up the cache
           .catch(() => {});
-        console.log("after fetch")
 
         if (uploadOnFacebook) {
           await postOnFacebook(newArticle, docRef.id);
@@ -310,14 +314,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           date,
         };
 
-        console.log("before fetch")
         await editArticle('articles', newArticle);
-        console.log("after fetch")
 
-        console.log("before fetch")
-        fetch(`https://syntaktes.gr/articles/${newArticle.id}`)
+        fetch(`https://syntaktes.gr/articles/${newArticle.id}`) //warm up the cache
           .catch(() => {});
-        console.log("after fetch")
 
         if (uploadOnFacebook) {
           await postOnFacebook(newArticle);
