@@ -308,7 +308,9 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           date,
         };
 
+        console.log("before fetch")
         await editArticle('articles', newArticle);
+        console.log("after fetch")
 
         fetch(`https://syntaktes.gr/articles/${newArticle.id}`)
           .catch(err => console.warn('Cache-warm fetch failed', err));
