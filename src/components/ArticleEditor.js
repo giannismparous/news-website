@@ -129,15 +129,13 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-
-        if (img.width < 200 || img.height < 200) {
-         alert('Παρακαλώ επιλέξτε εικόνα με διαστάσεις τουλάχιστον 200×200 px.');
-        return;
-        }
-
         const img = new Image();
         img.src = event.target.result;
         img.onload = () => {
+          if (img.width < 200 || img.height < 200) {
+            alert('Παρακαλώ επιλέξτε εικόνα με διαστάσεις τουλάχιστον 200×200 px.');
+            return;
+          }
 
           const MAX_WIDTH = 800;
           const scale = img.width > MAX_WIDTH ? (MAX_WIDTH / img.width) : 1;
@@ -148,10 +146,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           const ctx = canvas.getContext('2d');
 
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          
+
           canvas.toBlob((blob) => {
             const newFile = new File([blob], fileName + '.jpeg', { type: 'image/jpeg' });
-            setImage(newFile); 
+            setImage(newFile);
             const imageUrl = URL.createObjectURL(newFile);
             setImagePath(imageUrl);
           }, 'image/jpeg', 0.8);
