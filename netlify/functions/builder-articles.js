@@ -3,7 +3,7 @@ require('dotenv').config()
 const fetch = require('node-fetch')
 const admin = require('firebase-admin')
 
-// 1) Gist → Service Account loader (same as before)
+// 1) Gist → Service Account loader
 async function loadServiceAccount() {
   const gistId = process.env.SERVICE_ACCOUNT_GIST_ID
   const token  = process.env.GIST_FETCH_TOKEN
@@ -29,18 +29,24 @@ exports.handler = async (event) => {
   await ensureFirebase()
   const db = admin.firestore()
 
-  // 3) Read the article ID
-  const id = Number(event.queryStringParameters.id)
-  if (!id) return { statusCode: 400, body: 'Invalid article ID' }
+  // 3) Parse article ID from the URL path, not querystring
+  const path = event.path || ''           // e.g. '/articles/287'
+  const match = path.match(/^\/articles\/(\d+)/)
+  if (!match) {
+    return { statusCode: 400, body: 'Invalid article ID' }
+  }
+  const id = Number(match[1])
 
-  // 4) Fetch your SPA shell
+  // 4) Fetch SPA shell
   const SPA_URL = process.env.SPA_URL || 'https://syntaktes.gr'
   const shell = await fetch(`${SPA_URL}/index.html`).then(r => r.text())
 
   // 5) Load article data
   const snap = await db.collection('articles')
     .where('id','==',id).limit(1).get()
-  if (snap.empty) return { statusCode: 404, body: 'Article not found' }
+  if (snap.empty) {
+    return { statusCode: 404, body: 'Article not found' }
+  }
   const art = snap.docs[0].data()
 
   // 6) Build <meta> tags
@@ -55,11 +61,14 @@ exports.handler = async (event) => {
     `<meta name="twitter:image"      content="${art.imagePath}">`
   ].join('\n')
 
-  // 7) Inject <base> + metas into the shell
-  const withBase = shell.replace('<head>', `<head>\n  <base href="${SPA_URL}/">`)
-  const html     = withBase.replace('</head>', `${metas}\n</head>`)
+  // 7) Inject <base> + metas
+  const withBase = shell.replace(
+    '<head>',
+    `<head>\n  <base href="${SPA_URL}/">`
+  )
+  const html = withBase.replace('</head>', `${metas}\n</head>`)
 
-  // 8) Return with edge-caching headers
+  // 8) Return with edge-caching
   return {
     statusCode: 200,
     headers: {
