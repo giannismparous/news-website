@@ -29,8 +29,12 @@ exports.handler = async (event) => {
     await ensureFirebase()
     const db = admin.firestore()
 
+    // Extract original request path from event.rawUrl
+    const fullUrl = event.rawUrl || `${process.env.SPA_URL}${event.path}`
+    const parsed = new URL(fullUrl)
+    const path = parsed.pathname   // e.g. '/articles/287'
+
     // Only handle /articles/:id
-    const path = event.path  // e.g. '/articles/287'
     if (!path.startsWith('/articles/')) {
       return { statusCode: 404, body: 'Not found' }
     }
