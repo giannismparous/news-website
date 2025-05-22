@@ -31,7 +31,7 @@ const ArticleView = () => {
         return 'Υγεία/ Συντάξεις';
       case 'Plus_Life':
         return 'Plus/ Life';
-      case 'Εκτός Συνόρων':
+      case 'Εκτός_Συνόρων':
         return 'Εκτός Συνόρων';
       case 'Αγορά_Καταναλωτές':
         return 'Αγορά/ Καταναλωτές';

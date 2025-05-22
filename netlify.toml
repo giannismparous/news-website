@@ -5,6 +5,13 @@
 [functions]
   directory = "netlify/functions"
 
+  [[redirects]]
+  from    = "/articles/:id"
+  to      = "/.netlify/functions/builder-articles?id=:id"
+  status  = 200
+  force   = true
+  builder = true   # ← On-Demand Builder, caches at edge
+
 [[redirects]]
   from   = "/*"
   to     = "/index.html"

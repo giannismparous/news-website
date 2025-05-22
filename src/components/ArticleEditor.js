@@ -279,8 +279,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
 
         const docRef = await addArticle('articles', newArticle);
 
+        console.log("before fetch")
         fetch(`https://syntaktes.gr/articles/${docRef.id}`)
-          .catch(err => console.warn('Cache-warm fetch failed', err));
+          .catch(() => {});
+        console.log("after fetch")
 
         if (uploadOnFacebook) {
           await postOnFacebook(newArticle, docRef.id);
@@ -312,8 +314,10 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
         await editArticle('articles', newArticle);
         console.log("after fetch")
 
+        console.log("before fetch")
         fetch(`https://syntaktes.gr/articles/${newArticle.id}`)
-          .catch(err => console.warn('Cache-warm fetch failed', err));
+          .catch(() => {});
+        console.log("after fetch")
 
         if (uploadOnFacebook) {
           await postOnFacebook(newArticle);
