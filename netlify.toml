@@ -6,10 +6,11 @@
   directory = "netlify/functions"
 
 [[redirects]]
-  from   = "/articles/*"
-  to     = "/.netlify/functions/ssr/:splat"
-  status = 200
-  force  = true
+  from    = "/articles/:id"
+  to      = "/.netlify/functions/builder-articles?id=:id"
+  status  = 200
+  force   = true
+  builder = true
 
 [[redirects]]
   from   = "/*"
