@@ -220,7 +220,7 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
     const url = prompt('Enter YouTube URL');
     if (url) {
       const videoId = url.split('v=')[1].split('&')[0];
-      const iframeHtml = `<iframe width="1200" height="675" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+      const iframeHtml = `<iframe width="1200px" height="675px" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
       const quill = quillRef.current.getEditor();
       const range = quill.getSelection();
       quill.clipboard.dangerouslyPasteHTML(range.index, iframeHtml);
