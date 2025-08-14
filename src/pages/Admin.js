@@ -177,18 +177,22 @@ const Admin = () => {
       id: process.env.REACT_APP_MAILERLITE_API_GROUP1_ID,
       name: process.env.REACT_APP_MAILERLITE_API_GROUP1_NAME
     },
-    {
-      id: process.env.REACT_APP_MAILERLITE_API_GROUP2_ID,
-      name: process.env.REACT_APP_MAILERLITE_API_GROUP2_NAME
-    }
-    ,
-    {
-      id: process.env.REACT_APP_MAILERLITE_API_GROUP3_ID,
-      name: process.env.REACT_APP_MAILERLITE_API_GROUP3_NAME
-    },
+    // {
+    //   id: process.env.REACT_APP_MAILERLITE_API_GROUP2_ID,
+    //   name: process.env.REACT_APP_MAILERLITE_API_GROUP2_NAME
+    // }
+    // ,
+    // {
+    //   id: process.env.REACT_APP_MAILERLITE_API_GROUP3_ID,
+    //   name: process.env.REACT_APP_MAILERLITE_API_GROUP3_NAME
+    // },
     {
       id: process.env.REACT_APP_MAILERLITE_API_GROUP4_ID,
       name: process.env.REACT_APP_MAILERLITE_API_GROUP4_NAME
+    },
+    {
+      id: process.env.REACT_APP_MAILERLITE_API_GROUP5_ID,
+      name: process.env.REACT_APP_MAILERLITE_API_GROUP5_NAME
     }
   ];
 
@@ -236,17 +240,20 @@ const Admin = () => {
                       {article.mailSentGroup1===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο MELH(124)✔️</p>
                       )}
-                      {article.mailSentGroup2===true && (
+                      {/* {article.mailSentGroup2===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο AUGOUSTOS_XWRIS_SYNENAISI(451)✔️</p>
                       ) }
                       {article.mailSentGroup3===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο AUGOUSTOS_ME_SYNENAISI(270)✔️</p>
-                      ) }
+                      ) } */}
                       {article.mailSentGroup4===true && (
                         <p className='newsletter'>Έχει αποσταλεί ως newsletter στο NEA_LISTA(1123)✔️</p>
                       ) }
+                      {article.mailSentGroup5===true && (
+                        <p className='newsletter'>Έχει αποσταλεί ως newsletter στο katalogos-melwn-11-8-2025(5000+)✔️</p>
+                      ) }
                     </div>
-                    {!(article.mailSentGroup1===true && article.mailSentGroup2===true && article.mailSentGroup3===true && article.mailSentGroup4===true) && <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>}
+                    {!(article.mailSentGroup1===true && article.mailSentGroup2===true && article.mailSentGroup3===true && article.mailSentGroup4===true && article.mailSentGroup5===true) && <button className="newsletter-button newsletter" onClick={() => openNewsletterPopup(article)}>Αποστολή ως Newsletter</button>}
                     <FacebookShareButton url={`www.syntaktes.gr/articles/${article.id}`} quote={article.title} hashtag={`#${article.category}`}>
                       <FacebookIcon size={32} round />
                     </FacebookShareButton>
@@ -285,9 +292,10 @@ const Admin = () => {
                 (group.id === process.env.REACT_APP_MAILERLITE_API_TEST1_GROUP_ID && selectedArticle.mailSentTest1) ||
                 (group.id === process.env.REACT_APP_MAILERLITE_API_TEST2_GROUP_ID && selectedArticle.mailSentTest2) ||
                 (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP1_ID && selectedArticle.mailSentGroup1) ||
-                (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP2_ID && selectedArticle.mailSentGroup2) ||
-                (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP3_ID && selectedArticle.mailSentGroup3) ||
-                (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP4_ID && selectedArticle.mailSentGroup4);
+                // (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP2_ID && selectedArticle.mailSentGroup2) ||
+                // (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP3_ID && selectedArticle.mailSentGroup3) ||
+                (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP4_ID && selectedArticle.mailSentGroup4) ||
+                (group.id === process.env.REACT_APP_MAILERLITE_API_GROUP5_ID && selectedArticle.mailSentGroup5);
 
                 return (
                   <label key={group.id}>

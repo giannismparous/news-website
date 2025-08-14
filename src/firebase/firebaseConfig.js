@@ -458,13 +458,14 @@ export const sendNewsletterAndUpdate = async (collectionKey, article_id, groupId
           patch.mailSentTest2 = true;
         if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP1_ID))
           patch.mailSentGroup1 = true;
-        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP2_ID))
-          patch.mailSentGroup2 = true;
-        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP3_ID))
-          patch.mailSentGroup3 = true;
+        // if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP2_ID))
+        //   patch.mailSentGroup2 = true;
+        // if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP3_ID))
+        //   patch.mailSentGroup3 = true;
         if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP4_ID))
           patch.mailSentGroup4 = true;
-
+        if (groupIds.includes(process.env.REACT_APP_MAILERLITE_API_GROUP5_ID))
+          patch.mailSentGroup5 = true;
         if (Object.keys(patch).length > 0) {
           await updateDoc(docRef, patch);
           console.log("mailSent flags updated on doc", docRef.id);
