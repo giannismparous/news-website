@@ -130,6 +130,13 @@ const ArticleView = () => {
             {article.caption && <p className='article-caption'>{article.caption}</p>}
             <h1>{article.title}</h1>
             <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
+              {author && authorImagePath && (
+  <img
+    src={authorImagePath}
+    alt={author}
+    className="article-image profile-pic"
+  />
+)}
             <div className='share-buttons'>
               <strong>Κοινοποιήστε αυτό το άρθρο:</strong>
               <FacebookShareButton url={`www.syntaktes.gr/articles/${articleId}`} quote={title} hashtag={`#${article.category}`}>
