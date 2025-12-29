@@ -130,10 +130,10 @@ const ArticleView = () => {
             {article.caption && <p className='article-caption'>{article.caption}</p>}
             <h1>{article.title}</h1>
             <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
-              {author && authorImagePath && (
+              {article.author && article.authorImagePath && (
   <img
-    src={authorImagePath}
-    alt={author}
+    src={article.authorImagePath}
+    alt={article.author}
     className="article-image profile-pic"
   />
 )}
