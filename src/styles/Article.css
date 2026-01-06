@@ -61,7 +61,11 @@
     /* Ensures the image covers the circle without distortion */
 }
 
-.article-view-container .profile-pic {
+.article-view-container .align-left-author-pic-article-view {
+    text-align: left;
+}
+
+.article-view-container .align-left-author-pic-article-view .profile-pic {
     border-radius: 50%;
     width: 150px;
     /* Adjust size as needed */
