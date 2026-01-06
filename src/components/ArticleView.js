@@ -131,11 +131,13 @@ const ArticleView = () => {
             <h1>{article.title}</h1>
             <p className='author-text'>{article.author ? `${article.authorPrefix ? article.authorPrefix : 'Του'} ${article.author}` : 'News Room'}</p>
               {article.author && article.authorImagePath && (
+                <div className='align-left-author-pic-article-view'>
   <img
     src={article.authorImagePath}
     alt={article.author}
     className="article-image profile-pic"
   />
+      </div>
 )}
             <div className='share-buttons'>
               <strong>Κοινοποιήστε αυτό το άρθρο:</strong>
