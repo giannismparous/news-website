@@ -61,6 +61,16 @@
     /* Ensures the image covers the circle without distortion */
 }
 
+.article-view-container .profile-pic {
+    border-radius: 50%;
+    width: 150px;
+    /* Adjust size as needed */
+    height: 150px;
+    /* Adjust size as needed */
+    object-fit: cover;
+    /* Ensures the image covers the circle without distortion */
+}
+
 .read-more {
     display: inline;
     color: #007BFF;
