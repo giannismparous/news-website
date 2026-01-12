@@ -25,56 +25,112 @@ async function ensureFirebase() {
   return admin
 }
 
+// Helper function to strip HTML tags
+function stripHtml(html) {
+  if (!html) return ''
+  return html.replace(/<[^>]*>?/gm, '').trim()
+}
+
 exports.handler = async (event) => {
-  await ensureFirebase()
-  const db = admin.firestore()
+  try {
+    await ensureFirebase()
+    const db = admin.firestore()
 
-  // 3) Parse article ID from the URL path, not querystring
-  const path = event.path || ''           // e.g. '/articles/287'
-  const match = path.match(/^\/articles\/(\d+)/)
-  if (!match) {
-    return { statusCode: 400, body: 'Invalid article ID' }
-  }
-  const id = Number(match[1])
+    // 3) Parse article ID from the URL path
+    // Netlify passes the splat as part of event.path
+    // event.path will be like: /.netlify/functions/builder-articles/287
+    const path = event.path || ''
+    
+    // Extract ID from path (handles both direct calls and redirects)
+    let id
+    const pathMatch = path.match(/builder-articles\/(\d+)/)
+    if (pathMatch) {
+      id = Number(pathMatch[1])
+    } else {
+      // Fallback: try to extract from any numeric path segment
+      const fallbackMatch = path.match(/\/(\d+)$/)
+      if (fallbackMatch) {
+        id = Number(fallbackMatch[1])
+      }
+    }
+    
+    if (!id || isNaN(id)) {
+      return { statusCode: 400, body: 'Invalid article ID' }
+    }
 
-  // 4) Fetch SPA shell
-  const SPA_URL = process.env.SPA_URL || 'https://syntaktes.gr'
-  const shell = await fetch(`${SPA_URL}/index.html`).then(r => r.text())
+    // 4) Fetch SPA shell
+    const SPA_URL = process.env.SPA_URL || 'https://syntaktes.gr'
+    const shellRes = await fetch(`${SPA_URL}/index.html`)
+    if (!shellRes.ok) {
+      throw new Error(`Failed to fetch shell: ${shellRes.status}`)
+    }
+    const shell = await shellRes.text()
 
-  // 5) Load article data
-  const snap = await db.collection('articles')
-    .where('id','==',id).limit(1).get()
-  if (snap.empty) {
-    return { statusCode: 404, body: 'Article not found' }
-  }
-  const art = snap.docs[0].data()
+    // 5) Load article data (filter out deleted articles)
+    const snap = await db.collection('articles')
+      .where('id', '==', id)
+      .where('deleted', '==', false)
+      .limit(1)
+      .get()
+    
+    if (snap.empty) {
+      return { statusCode: 404, body: 'Article not found' }
+    }
+    const art = snap.docs[0].data()
 
-  // 6) Build <meta> tags
-  const metas = [
-    `<meta property="og:title"       content="${art.title.replace(/"/g,'&quot;')}">`,
-    `<meta property="og:description" content="${art.content.slice(0,150).replace(/"/g,'&quot;')}">`,
-    `<meta property="og:image"       content="${art.imagePath}">`,
-    `<meta property="og:url"         content="${SPA_URL}/articles/${id}">`,
-    `<meta name="twitter:card"       content="summary_large_image">`,
-    `<meta name="twitter:title"      content="${art.title.replace(/"/g,'&quot;')}">`,
-    `<meta name="twitter:description"content="${art.content.slice(0,150).replace(/"/g,'&quot;')}">`,
-    `<meta name="twitter:image"      content="${art.imagePath}">`
-  ].join('\n')
+    // Strip HTML from content for description
+    const strippedContent = stripHtml(art.content)
+    const description = strippedContent.slice(0, 200).trim()
 
-  // 7) Inject <base> + metas
-  const withBase = shell.replace(
-    '<head>',
-    `<head>\n  <base href="${SPA_URL}/">`
-  )
-  const html = withBase.replace('</head>', `${metas}\n</head>`)
+    // Ensure imagePath exists and is absolute URL
+    // Firebase Storage URLs are already absolute, but handle edge cases
+    let imageUrl = art.imagePath || `${SPA_URL}/syntaktes-black.png`
+    
+    // Make sure image URL is absolute (starts with http/https)
+    if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+      // If relative, make it absolute
+      imageUrl = imageUrl.startsWith('/') 
+        ? `${SPA_URL}${imageUrl}` 
+        : `${SPA_URL}/${imageUrl}`
+    }
 
-  // 8) Return with edge-caching
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'text/html',
-      'Cache-Control': 'public, max-age=31536000, immutable'
-    },
-    body: html
+    // 6) Build <meta> tags with proper escaping
+    const metas = [
+      `<meta property="og:title" content="${art.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">`,
+      `<meta property="og:description" content="${description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">`,
+      `<meta property="og:image" content="${imageUrl}">`,
+      `<meta property="og:image:width" content="1200">`,
+      `<meta property="og:image:height" content="630">`,
+      `<meta property="og:url" content="${SPA_URL}/articles/${id}">`,
+      `<meta property="og:type" content="article">`,
+      `<meta name="twitter:card" content="summary_large_image">`,
+      `<meta name="twitter:title" content="${art.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">`,
+      `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">`,
+      `<meta name="twitter:image" content="${imageUrl}">`
+    ].join('\n')
+
+    // 7) Inject <base> + metas
+    const withBase = shell.replace(
+      '<head>',
+      `<head>\n  <base href="${SPA_URL}/">`
+    )
+    const html = withBase.replace('</head>', `${metas}\n</head>`)
+
+    // 8) Return with appropriate caching
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600'
+      },
+      body: html
+    }
+  } catch (err) {
+    console.error('Builder-articles error:', err)
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'text/plain' },
+      body: `Error: ${err.message}`
+    }
   }
 }

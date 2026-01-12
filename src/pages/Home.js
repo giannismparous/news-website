@@ -1,42 +1,47 @@
 import React, { useState, useEffect } from 'react';
+import { fetchArticles, fetchArticlesByCategory } from '../firebase/firebaseConfig';
+import Article from '../components/Article';
+import SmallArticle from '../components/SmallArticle';
+import '../styles/Home.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { ClockLoader } from 'react-spinners';
 import { Helmet } from 'react-helmet-async';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-
-import Article from '../components/Article';
-import SmallArticle from '../components/SmallArticle';
-
-import { fetchArticlesByCategory, fetchTrendingArticles, fetchLatestArticles} from '../firebase/firebaseConfig';
-
-import '../styles/Home.css';
 
 const Home = () => {
 
     useEffect(() => {
+        const handleScroll = () => {
+          // Check if the user has scrolled to the bottom
+          if (
+            window.innerHeight + window.scrollY >=
+            document.documentElement.scrollHeight
+          ) {
+            // Smooth scroll to the top
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        };
+    
+        // Attach the scroll event listener
+        window.addEventListener("scroll", handleScroll);
+    
+        // Cleanup the event listener on component unmount
+        return () => {
+          window.removeEventListener("scroll", handleScroll);
+        };
+      }, []);
+
+    useEffect(() => {
+        // Scroll to the top of the page with smooth behavior when the page is loaded
         window.scrollTo({
           top: 0,
           behavior: 'smooth',
         });
-      }, []);
+      }, []); // Empty dependency array ensures it runs only once, when the component mounts
 
-    useEffect(() => {
-    const handleScroll = () => {
-        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-        }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const [latestArticles, setLatestArticles] = useState([]);
+    const [articles, setArticles] = useState([]);
     const [trendingArticles, setTrendingArticles] = useState([]);
     const [politikiArticles, setPolitikiArticles] = useState([]);
     const [apopseisArticles, setApopseisArticles] = useState([]);
@@ -55,11 +60,14 @@ const Home = () => {
 
     const [loading, setLoading] = useState(true);
 
-    // TRENDING (5 items)
-    const fetchTrendingArticlesFromServer = async () => {
+    const fetchArticlesFromServer = async () => {
         try {
-            const tr = await fetchTrendingArticles('articles', 5);
-            setTrendingArticles(tr);
+            var fetchedArticles;
+            fetchedArticles = await fetchArticles('articles');
+            fetchedArticles = fetchedArticles.filter(article => article.category !== "Test");
+            setArticles([...fetchedArticles].reverse());
+            setTrendingArticles([...fetchedArticles].reverse().filter(article => article.trending)  // Step 1: Filter articles that are trending
+            .slice(0, 5)); // Assuming the latest articles are at the top
             setLoading(false);
         } catch (error) {
             console.error('Error fetching articles:', error);
@@ -67,180 +75,166 @@ const Home = () => {
         }
     };
 
-    // LATEST (4 items)
-    const fetchLatestArticlesFromServer = async () => {
-        try {
-            const latest = await fetchLatestArticles('articles', 4);
-            setLatestArticles(latest);
-        } catch (err) {
-            console.error("Failed to load latest:", err);
-        }
+    const filterArticlesByCategory = (category) => {
+        const filtered = articles.filter(article => article.category === category);
+        return filtered.slice(0, 9)
     };
 
-    // ΠΟΛΙΤΙΚΗ (3 items)
-    const fetchPolitikiArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Πολιτική', 3);
-      fetched.reverse();
-      setPolitikiArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Πολιτική articles:', error);
-    }
-  };
-  
-  // ΑΠΟΨΕΙΣ (1 items)
-  const fetchApopseisArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Απόψεις', 1);
-      setApopseisArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Απόψεις articles:', error);
-    }
-  };
-  
-  // ΠΑΡΑΣΚΗΝΙΑ (5 items)
-  const fetchParaskiniaArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Παρασκήνια', 5);
-      fetched.reverse();
-      setParaskiniaArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Παρασκήνια articles:', error);
-    }
-  };
-  
-  // KEDPRESS/ ΕΣΗΕΑ (4 items)
-  const fetchKedpressEsheaArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Kedpress_ΕΣΗΕΑ', 4);
-      setKedpressEsheaArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Kedpress ΕΣΗΕΑ articles:', error);
-    }
-  };
-  
-  // ΟΙΚΟΝΟΜΙΑ (5 items)
-  const fetchOikonomiaArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Οικονομία', 5);
-      fetched.reverse();
-      setOikonomiaArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Οικονομία articles:', error);
-    }
-  };
-  
-  // ΕΚΤΟΣ ΣΥΝΟΡΩΝ (9 items)
-  const fetchEktosSynorwnArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Εκτός_Συνόρων', 9);
-      setEktosSynorwnArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Εκτός Συνόρων articles:', error);
-    }
-  };
-  
-  // ΑΓΟΡΑ/ ΚΑΤΑΝΑΛΩΤΕΣ (5 items)
-  const fetchAgoraKatanalwtesArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Αγορά_Καταναλωτές', 5);
-      fetched.reverse();
-      setAgoraKatanalwtesArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Αγορά/ Καταναλωτές articles:', error);
-    }
-  };
-  
-  // PLUS/ LIFE (4 items)
-  const fetchPlusLifeArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Plus_Life', 4);
-      setPlusLifeArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Plus/ Life articles:', error);
-    }
-  };
-  
-  // ΣΠΟΡ (9 items)
-  const fetchSporArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Σπορ', 9);
-      setSporArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Σπορ articles:', error);
-    }
-  };
-  
-  // ART (4 items)
-  const fetchArtArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Art', 4);
-      setArtArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Art articles:', error);
-    }
-  };
-  
-  // PET (4 items)
-  const fetchPetArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Pet', 4);
-      setPetArticles(fetched.reverse());
-    } catch (error) {
-      console.error('Error fetching Pet articles:', error);
-    }
-  };
-  
-  // ΥΓΕΙΑ/ ΣΥΝΤΑΞΕΙΣ (5 items)
-  const fetchYgeiaSyntaxeisArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Υγεία_Συντάξεις', 5);
-      setYgeiaSyntaxeisArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Υγεία/ Συντάξεις articles:', error);
-    }
-  };
-  
-  // ΕΡΓΑΣΙΑ (5 items)
-  const fetchErgasiaArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Εργασία', 5);
-      fetched.reverse();
-      setErgasiaArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Εργασία articles:', error);
-    }
-  };
-  
-  // ΔΙΚΑΣΤΙΚΑ (4 items)
-  const fetchDikastikaArticles = async () => {
-    try {
-      const fetched = await fetchArticlesByCategory('articles', 'Δικαστικά', 4);
-      setDikastikaArticles(fetched);
-    } catch (error) {
-      console.error('Error fetching Δικαστικά articles:', error);
-    }
-  };
+    // const fetchPolitikiArticles = async () => {
+    //     try {
+    //         const fetchedPolitikiArticles = await fetchArticlesByCategory('articles', 'Πολιτική');
+    //         setPolitikiArticles([...fetchedPolitikiArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
+    //     } catch (error) {
+    //         console.error('Error fetching Πολιτική articles:', error);
+    //     }
+    // };
+
+    // const fetchApopseisArticles = async () => {
+    //     try {
+    //         const fetchedApopseisArticles = await fetchArticlesByCategory('articles', 'Απόψεις');
+    //         setApopseisArticles([...fetchedApopseisArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
+    //     } catch (error) {
+    //         console.error('Error fetching Απόψεις articles:', error);
+    //     }
+    // };
+
+    // const fetchParaskiniaArticles = async () => {
+    //     try {
+    //         const fetchedParaskiniaArticles = await fetchArticlesByCategory('articles', 'Παρασκήνια');
+    //         setParaskiniaArticles([...fetchedParaskiniaArticles].reverse().slice(0, 9)); // Fetching top 9 articles for Κοινωνία (3x3 grid)
+    //     } catch (error) {
+    //         console.error('Error fetching Παρασκήνια articles:', error);
+    //     }
+    // };
+
+    // const fetchKedpressEsheaArticles = async () => {
+    //     try {
+    //         const fetchedKedpressEsheaArticles = await fetchArticlesByCategory('articles', 'Kedpress_ΕΣΗΕΑ');
+    //         setKedpressEsheaArticles([...fetchedKedpressEsheaArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Kedpress ΕΣΗΕΑ articles:', error);
+    //     }
+    // };
+
+    // const fetchEktosSynorwnArticles = async () => {
+    //     try {
+    //         const fetchedEktosSynorwnArticles = await fetchArticlesByCategory('articles', 'Εκτός_Συνόρων');
+    //         setEktosSynorwnArticles([...fetchedEktosSynorwnArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Εκτός Συνόρων articles:', error);
+    //     }
+    // };
+
+    // const fetchAgoraKatanalwtesArticles = async () => {
+    //     try {
+    //         const fetchedAgoraKatanalwtesArticles = await fetchArticlesByCategory('articles', 'Αγορά_Καταναλωτές');
+    //         setAgoraKatanalwtesArticles([...fetchedAgoraKatanalwtesArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Αγορά/ Καταναλωτές articles:', error);
+    //     }
+    // };
+
+    // const fetchPlusLifeArticles = async () => {
+    //     try {
+    //         const fetchedPlusLifeArticles = await fetchArticlesByCategory('articles', 'Plus_Life');
+    //         setPlusLifeArticles([...fetchedPlusLifeArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Plus/ Life articles:', error);
+    //     }
+    // };
+
+    // const fetchSporArticles = async () => {
+    //     try {
+    //         const fetchedSporArticles = await fetchArticlesByCategory('articles', 'Σπορ');
+    //         setSporArticles([...fetchedSporArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Σπορ articles:', error);
+    //     }
+    // };
+
+    // const fetchArtArticles = async () => {
+    //     try {
+    //         const fetchedArtArticles = await fetchArticlesByCategory('articles', 'Art');
+    //         setArtArticles([...fetchedArtArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Art articles:', error);
+    //     }
+    // };
+
+    // const fetchPetArticles = async () => {
+    //     try {
+    //         const fetchedPetArticles = await fetchArticlesByCategory('articles', 'Pet');
+    //         setPetArticles([...fetchedPetArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Pet articles:', error);
+    //     }
+    // };
+
+    // const fetchYgeiaSyntaxeisArticles = async () => {
+    //     try {
+    //         const fetchedYgeiaSyntaxeisArticles = await fetchArticlesByCategory('articles', 'Υγεία_Συντάξεις');
+    //         setYgeiaSyntaxeisArticles([...fetchedYgeiaSyntaxeisArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Υγεία/ Συντάξεις articles:', error);
+    //     }
+    // };
+
+
+    // const fetchErgasiaArticles = async () => {
+    //     try {
+    //         const fetchedErgasiaArticles = await fetchArticlesByCategory('articles', 'Εργασία');
+    //         setErgasiaArticles([...fetchedErgasiaArticles].reverse().slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching Εργασία articles:', error);
+    //     }
+    // };
+
+    // const fetchDikastikaArticles = async () => {
+    //     try {
+    //         const fetchedDikastikaArticles = await fetchArticlesByCategory('articles', 'Δικαστικά');
+    //         setDikastikaArticles([...fetchedDikastikaArticles].reverse().slice(0, 5)); // Fetching top 5 articles for Οικονομία
+    //     } catch (error) {
+    //         console.error('Error fetching Δικαστικά articles:', error);
+    //     }
+    // };
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetchTrendingArticlesFromServer();
-        fetchLatestArticlesFromServer();
-        fetchPolitikiArticles();
-        fetchOikonomiaArticles();
-        fetchApopseisArticles();
-        fetchParaskiniaArticles();
-        fetchKedpressEsheaArticles();
-        fetchEktosSynorwnArticles();
-        fetchAgoraKatanalwtesArticles();
-        fetchPlusLifeArticles();
-        fetchSporArticles();
-        fetchArtArticles();
-        fetchPetArticles();
-        fetchYgeiaSyntaxeisArticles();
-        fetchErgasiaArticles();
-        fetchDikastikaArticles();
+        fetchArticlesFromServer();
+        // fetchPolitikiArticles();
+        // fetchApopseisArticles();
+        // fetchParaskiniaArticles();
+        // fetchKedpressEsheaArticles();
+        // fetchEktosSynorwnArticles();
+        // fetchAgoraKatanalwtesArticles();
+        // fetchPlusLifeArticles();
+        // fetchSporArticles();
+        // fetchArtArticles();
+        // fetchPetArticles();
+        // fetchYgeiaSyntaxeisArticles();
+        // fetchErgasiaArticles();
+        // fetchDikastikaArticles();
     }, []);
+
+    useEffect(() => {
+        setPolitikiArticles(filterArticlesByCategory("Πολιτική"));
+        setApopseisArticles(filterArticlesByCategory("Απόψεις"));
+        setParaskiniaArticles(filterArticlesByCategory("Παρασκήνια"));
+        setKedpressEsheaArticles(filterArticlesByCategory("Kedpress_ΕΣΗΕΑ"));
+        setOikonomiaArticles(filterArticlesByCategory("Οικονομία"));
+        setEktosSynorwnArticles(filterArticlesByCategory("Εκτός_Συνόρων"));
+        setAgoraKatanalwtesArticles(filterArticlesByCategory("Αγορά_Καταναλωτές"));
+        setPlusLifeArticles(filterArticlesByCategory("Plus_Life"));
+        setSporArticles(filterArticlesByCategory("Σπορ"));
+        setArtArticles(filterArticlesByCategory("Art"));
+        setPetArticles(filterArticlesByCategory("Pet"));
+        setYgeiaSyntaxeisArticles(filterArticlesByCategory("Υγεία_Συντάξεις"));
+        setErgasiaArticles(filterArticlesByCategory("Εργασία"));
+        setDikastikaArticles(filterArticlesByCategory("Δικαστικά"));
+    }, [articles]);
+
+    const latestArticles = articles.slice(0, 4);
 
     const isMobile = useMediaQuery({ maxWidth: 550 });
 
@@ -313,8 +307,9 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {latestArticles.slice(1, 4).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
+                            <div className="small-article-container-outer">
                             <SmallArticle
+                                key={article.id}
                                 id={article.id}
                                 title={article.title}
                                 category={article.category}
@@ -356,17 +351,17 @@ const Home = () => {
                         ))}
                     </div>
                     <div className="kosmos-article-large">
-                        {politikiArticles[2] && (
+                        {politikiArticles[3] && (
                             <Article
-                                key={politikiArticles[2].id}
-                                id={politikiArticles[2].id}
-                                title={politikiArticles[2].title}
-                                content={politikiArticles[2].content}
-                                category={politikiArticles[2].category}
-                                author={politikiArticles[2].author}
-                                date={politikiArticles[2].date}
-                                imagePath={politikiArticles[2].imagePath}
-                                caption={politikiArticles[2].caption}
+                                key={politikiArticles[3].id}
+                                id={politikiArticles[3].id}
+                                title={politikiArticles[3].title}
+                                content={politikiArticles[3].content}
+                                category={politikiArticles[3].category}
+                                author={politikiArticles[3].author}
+                                date={politikiArticles[3].date}
+                                imagePath={politikiArticles[3].imagePath}
+                                caption={politikiArticles[3].caption}
                                 showContent={!isMobile}
                                 showHelmet = {false}
                             />
@@ -451,7 +446,7 @@ const Home = () => {
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {paraskiniaArticles.slice(0, 4).map((article, index) => (
-                            <div key={article.id} className="small-article-column">
+                            <div className="small-article-column" key={article.id}>
                                 <SmallArticle
                                     id={article.id}
                                     title={article.title}
@@ -510,8 +505,9 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {kedpressEsheaArticles.slice(1, 4).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
+                            <div className="small-article-container-outer">
                             <SmallArticle
+                                key={article.id}
                                 id={article.id}
                                 title={article.title}
                                 category={article.category}
@@ -535,7 +531,7 @@ const Home = () => {
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {oikonomiaArticles.slice(0, 4).map((article, index) => (
-                            <div key={article.id} className="small-article-column">
+                            <div className="small-article-column" key={article.id}>
                                 <SmallArticle
                                     id={article.id}
                                     title={article.title}
@@ -634,7 +630,7 @@ const Home = () => {
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {agoraKanalwtesArticles.slice(0, 4).map((article, index) => (
-                            <div key={article.id} className="small-article-column">
+                            <div className="small-article-column" key={article.id}>
                                 <SmallArticle
                                     id={article.id}
                                     title={article.title}
@@ -693,8 +689,9 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {plusLifeArticles.slice(1, 4).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
+                            <div className="small-article-container-outer">
                             <SmallArticle
+                                key={article.id}
                                 id={article.id}
                                 title={article.title}
                                 category={article.category}
@@ -735,35 +732,37 @@ const Home = () => {
                     </div>
                     <div className="koinonia-articles-small">
                         {sporArticles.slice(3, 6).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
-                                <SmallArticle
-                                    id={article.id}
-                                    title={article.title}
-                                    category={article.category}
-                                    author={article.author}
-                                    date={article.date}
-                                    imagePath={article.imagePath}
-                                    caption={article.caption}
-                                    showContent={!isMobile}
-                                    showHelmet = {false}
-                                />
+                            <div className="small-article-container-outer">
+                            <SmallArticle
+                                key={article.id}
+                                id={article.id}
+                                title={article.title}
+                                category={article.category}
+                                author={article.author}
+                                date={article.date}
+                                imagePath={article.imagePath}
+                                caption={article.caption}
+                                showContent={!isMobile}
+                                showHelmet = {false}
+                            />
                             </div>
                         ))}
                     </div>
                     <div className="koinonia-articles-small">
                         {sporArticles.slice(6, 9).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
-                                <SmallArticle
-                                    id={article.id}
-                                    title={article.title}
-                                    category={article.category}
-                                    author={article.author}
-                                    date={article.date}
-                                    imagePath={article.imagePath}
-                                    caption={article.caption}
-                                    showContent={!isMobile}
-                                    showHelmet = {false}
-                                />
+                            <div className="small-article-container-outer">
+                            <SmallArticle
+                                key={article.id}
+                                id={article.id}
+                                title={article.title}
+                                category={article.category}
+                                author={article.author}
+                                date={article.date}
+                                imagePath={article.imagePath}
+                                caption={article.caption}
+                                showContent={!isMobile}
+                                showHelmet = {false}
+                            />
                             </div>
                         ))}
                     </div>
@@ -794,8 +793,9 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {artArticles.slice(1, 4).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
+                            <div className="small-article-container-outer">
                             <SmallArticle
+                                key={article.id}
                                 id={article.id}
                                 title={article.title}
                                 category={article.category}
@@ -877,7 +877,7 @@ const Home = () => {
                     </div>
                     <div className="politismos-articles-small-columns">
                         {ygeiaSyntaxeisArticles.slice(1, 5).map((article, index) => (
-                            <div key={article.id} className="small-article-column">
+                            <div className="small-article-column" key={article.id}>
                                 <SmallArticle
                                     id={article.id}
                                     title={article.title}
@@ -902,7 +902,7 @@ const Home = () => {
                 <div className="oikonomia-articles">
                     <div className="oikonomia-articles-small-columns">
                         {ergasiaArticles.slice(0, 4).map((article, index) => (
-                            <div key={article.id} className="small-article-column">
+                            <div className="small-article-column" key={article.id}>
                                 <SmallArticle
                                     id={article.id}
                                     title={article.title}
@@ -961,8 +961,9 @@ const Home = () => {
                     </div>
                     <div className="latest-articles-small">
                         {dikastikaArticles.slice(1, 4).map(article => (
-                            <div key={article.id} className="small-article-container-outer">
+                            <div className="small-article-container-outer">
                             <SmallArticle
+                                key={article.id}
                                 id={article.id}
                                 title={article.title}
                                 category={article.category}
