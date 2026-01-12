@@ -33,29 +33,54 @@ function stripHtml(html) {
 
 exports.handler = async (event) => {
   try {
+    // Initialize Firebase first
     await ensureFirebase()
     const db = admin.firestore()
 
     // 3) Parse article ID from the URL path
-    // Netlify passes the splat as part of event.path
-    // event.path will be like: /.netlify/functions/builder-articles/287
-    const path = event.path || ''
+    // Netlify can pass the path in different ways depending on redirect configuration
+    let id = null
     
-    // Extract ID from path (handles both direct calls and redirects)
-    let id
-    const pathMatch = path.match(/builder-articles\/(\d+)/)
+    // Try multiple ways to get the article ID
+    // Method 1: From event.path (most common with :splat redirect)
+    const path = event.path || event.rawPath || ''
+    let pathMatch = path.match(/(?:builder-articles|articles)\/(\d+)/)
     if (pathMatch) {
       id = Number(pathMatch[1])
-    } else {
-      // Fallback: try to extract from any numeric path segment
-      const fallbackMatch = path.match(/\/(\d+)$/)
-      if (fallbackMatch) {
-        id = Number(fallbackMatch[1])
+    }
+    
+    // Method 1b: Check headers for original path (Netlify sometimes provides this)
+    if (!id && event.headers && event.headers['x-forwarded-path']) {
+      pathMatch = event.headers['x-forwarded-path'].match(/\/articles\/(\d+)/)
+      if (pathMatch) {
+        id = Number(pathMatch[1])
+      }
+    }
+    
+    // Method 2: From query string (if redirect uses ?id=)
+    if (!id && event.queryStringParameters && event.queryStringParameters.id) {
+      id = Number(event.queryStringParameters.id)
+    }
+    
+    // Method 3: From path segments (fallback - extract any number from path)
+    if (!id) {
+      const segments = path.split('/').filter(Boolean)
+      for (const segment of segments) {
+        const num = Number(segment)
+        if (!isNaN(num) && num > 0 && num < 100000) { // Reasonable article ID range
+          id = num
+          break
+        }
       }
     }
     
     if (!id || isNaN(id)) {
-      return { statusCode: 400, body: 'Invalid article ID' }
+      console.error('Could not parse article ID from:', { path, query: event.queryStringParameters })
+      return { 
+        statusCode: 400, 
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Invalid article ID' 
+      }
     }
 
     // 4) Fetch SPA shell
@@ -67,16 +92,38 @@ exports.handler = async (event) => {
     const shell = await shellRes.text()
 
     // 5) Load article data (filter out deleted articles)
-    const snap = await db.collection('articles')
-      .where('id', '==', id)
-      .where('deleted', '==', false)
-      .limit(1)
-      .get()
+    let snap
+    try {
+      snap = await db.collection('articles')
+        .where('id', '==', id)
+        .where('deleted', '==', false)
+        .limit(1)
+        .get()
+    } catch (firestoreError) {
+      console.error('Firestore query error:', firestoreError)
+      throw new Error(`Database error: ${firestoreError.message}`)
+    }
     
     if (snap.empty) {
-      return { statusCode: 404, body: 'Article not found' }
+      console.error(`Article ${id} not found or deleted`)
+      return { 
+        statusCode: 404, 
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Article not found' 
+      }
     }
+    
     const art = snap.docs[0].data()
+    
+    // Validate article has required fields
+    if (!art || !art.title) {
+      console.error(`Article ${id} missing required fields`)
+      return { 
+        statusCode: 500, 
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Article data incomplete' 
+      }
+    }
 
     // Strip HTML from content for description
     const strippedContent = stripHtml(art.content)
@@ -127,10 +174,29 @@ exports.handler = async (event) => {
     }
   } catch (err) {
     console.error('Builder-articles error:', err)
+    console.error('Error stack:', err.stack)
+    console.error('Event:', JSON.stringify(event, null, 2))
+    
+    // Return a proper HTML error page so Facebook doesn't see 502
+    const errorHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Error</title>
+  <meta property="og:title" content="syntaktes.gr">
+  <meta property="og:description" content="Article">
+  <meta property="og:image" content="https://syntaktes.gr/syntaktes-black.png">
+</head>
+<body>
+  <h1>Error loading article</h1>
+  <p>${err.message}</p>
+</body>
+</html>`
+    
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'text/plain' },
-      body: `Error: ${err.message}`
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      body: errorHtml
     }
   }
 }
