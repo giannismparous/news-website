@@ -94,11 +94,26 @@ exports.handler = async (event) => {
     // 5) Load article data (filter out deleted articles)
     let snap
     try {
+      // First try: query by id field
       snap = await db.collection('articles')
         .where('id', '==', id)
         .where('deleted', '==', false)
         .limit(1)
         .get()
+      
+      // Fallback: if empty, try to get by document ID (in case id field doesn't match)
+      if (snap.empty) {
+        console.log(`Article ${id} not found by id field, trying document ID...`)
+        const docRef = db.collection('articles').doc(id.toString())
+        const docSnap = await docRef.get()
+        if (docSnap.exists() && !docSnap.data().deleted) {
+          // Create a fake snapshot-like object
+          snap = {
+            empty: false,
+            docs: [{ data: () => docSnap.data(), id: docSnap.id }]
+          }
+        }
+      }
     } catch (firestoreError) {
       console.error('Firestore query error:', firestoreError)
       throw new Error(`Database error: ${firestoreError.message}`)
@@ -115,6 +130,25 @@ exports.handler = async (event) => {
     
     const art = snap.docs[0].data()
     
+    // Debug mode: if ?debug=true, return JSON data (for easy debugging)
+    if (event.queryStringParameters && event.queryStringParameters.debug === 'true') {
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          articleId: id,
+          article: {
+            title: art.title,
+            imagePath: art.imagePath || 'MISSING',
+            hasImagePath: !!art.imagePath,
+            imagePathType: typeof art.imagePath,
+            allFields: Object.keys(art),
+            imagePathValue: art.imagePath
+          }
+        }, null, 2)
+      }
+    }
+    
     // Validate article has required fields
     if (!art || !art.title) {
       console.error(`Article ${id} missing required fields`)
@@ -125,13 +159,43 @@ exports.handler = async (event) => {
       }
     }
 
+    // Debug: Log article data to see what we're getting
+    console.log(`Article ${id} data:`, {
+      title: art.title,
+      hasImagePath: !!art.imagePath,
+      imagePath: art.imagePath ? art.imagePath.substring(0, 50) + '...' : 'MISSING',
+      imagePathType: typeof art.imagePath,
+      imagePathLength: art.imagePath ? art.imagePath.length : 0,
+      allFields: Object.keys(art)
+    })
+
     // Strip HTML from content for description
-    const strippedContent = stripHtml(art.content)
-    const description = strippedContent.slice(0, 200).trim()
+    const strippedContent = stripHtml(art.content || '')
+    const description = strippedContent.slice(0, 200).trim() || 'Article from syntaktes.gr'
 
     // Ensure imagePath exists and is absolute URL
-    // Firebase Storage URLs are already absolute, but handle edge cases
-    let imageUrl = art.imagePath || `${SPA_URL}/syntaktes-black.png`
+    // Check for imagePath - handle empty strings, null, undefined
+    // Also check alternative field names just in case
+    let imageUrl = null
+    
+    // Try imagePath first (standard field name)
+    if (art.imagePath && typeof art.imagePath === 'string' && art.imagePath.trim().length > 0) {
+      imageUrl = art.imagePath.trim()
+    }
+    // Fallback: check for image (some systems use this)
+    else if (art.image && typeof art.image === 'string' && art.image.trim().length > 0) {
+      imageUrl = art.image.trim()
+    }
+    // Fallback: check for imageUrl
+    else if (art.imageUrl && typeof art.imageUrl === 'string' && art.imageUrl.trim().length > 0) {
+      imageUrl = art.imageUrl.trim()
+    }
+    
+    // If no valid imagePath, use fallback logo
+    if (!imageUrl) {
+      console.warn(`Article ${id} has no imagePath/image/imageUrl field. Available fields:`, Object.keys(art))
+      imageUrl = `${SPA_URL}/syntaktes-black.png`
+    }
     
     // Make sure image URL is absolute (starts with http/https)
     if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
@@ -140,6 +204,8 @@ exports.handler = async (event) => {
         ? `${SPA_URL}${imageUrl}` 
         : `${SPA_URL}/${imageUrl}`
     }
+    
+    console.log(`Using image URL for article ${id}:`, imageUrl.substring(0, 100))
 
     // 6) Build <meta> tags with proper escaping
     const metas = [
