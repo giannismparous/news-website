@@ -115,6 +115,8 @@ export async function addArticle(collectionKey, newArticle) {
   const infoRef = doc(db, collectionKey, 'info');
   const newDocRef = doc(colRef);
 
+  let articleId = null; // Store the article ID to return
+
   await runTransaction(db, async (tx) => {
     const infoSnap = await tx.get(infoRef);
     let counter = 0;
@@ -122,6 +124,7 @@ export async function addArticle(collectionKey, newArticle) {
       throw new Error('Missing info doc');
     }
     counter = infoSnap.data().article_id_counter + 1;
+    articleId = counter; // Store the counter value
     tx.update(infoRef, { article_id_counter: counter });
 
     const normTitle = normalize(newArticle.title);
@@ -150,7 +153,8 @@ export async function addArticle(collectionKey, newArticle) {
     tx.set(newDocRef, payload);
   });
 
-  return newDocRef.id;
+  // Return the numeric article ID (counter), not the Firestore document ID
+  return articleId;
 }
 
 export async function editArticle(collectionKey, updated) {

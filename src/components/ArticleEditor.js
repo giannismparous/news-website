@@ -281,13 +281,16 @@ const ArticleEditor = ({ article, onArticleAdded, uid }) => {
           newArticle.authorImagePath = await getDownloadURL(snapshot.ref);
         }
 
-        const docRef = await addArticle('articles', newArticle);
+        const articleId = await addArticle('articles', newArticle);
 
-        fetch(`https://syntaktes.gr/articles/${docRef.id}`) //warm up the cache
-          .catch(() => {});
+        // Warm up the cache for the new article
+        if (articleId) {
+          fetch(`https://syntaktes.gr/articles/${articleId}`) //warm up the cache
+            .catch(() => {});
+        }
 
         if (uploadOnFacebook) {
-          await postOnFacebook(newArticle, docRef.id);
+          await postOnFacebook(newArticle, articleId);
         }
 
         setLoading(false);
